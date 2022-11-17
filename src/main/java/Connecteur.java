@@ -2,7 +2,6 @@
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
-import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -157,11 +156,12 @@ public class Connecteur extends Observable {
 
     }
 
-    public void disconnect() {
-
+    public int disconnect() {
+        
         if (portComm != null) {
             portComm.closePort();
         }
+        return 0;
 
     }
 
@@ -178,7 +178,7 @@ public class Connecteur extends Observable {
 
     }
 
-    private int envoyerData(String dataToSend) {
+    public int envoyerData(String dataToSend) {
 
         outputStream = portComm.getOutputStream();
 
