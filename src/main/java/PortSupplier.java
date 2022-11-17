@@ -21,7 +21,7 @@ public class PortSupplier implements ActionListener  {
        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         
           //System.out.println("Port sélectionné: " + e.getActionCommand());
-          Interface.portName = e.getActionCommand();
+          Connecteur.portName = e.getActionCommand();
     }
     
 }

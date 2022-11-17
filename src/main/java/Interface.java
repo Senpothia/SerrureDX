@@ -10,6 +10,7 @@ import java.util.Observer;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
 /*
@@ -21,11 +22,8 @@ import javax.swing.JRadioButtonMenuItem;
  *
  * @author Michel
  */
-public class Interface extends javax.swing.JFrame {
+public class Interface extends javax.swing.JFrame implements Observer{
 
-    public static String portName = null;
-    SerialPort[] ports = null;
-    public SerialPort portComm;
     private int baudeRate = 9600;
     private int numDatabits = 8;
     private int parity = 0;
@@ -33,10 +31,13 @@ public class Interface extends javax.swing.JFrame {
     private int newReadTimeout = 1000;
     private int newWriteTimeout = 0;
 
-    /**
+    Connecteur connecteur = getConnecteur();
+    
+    /*
      * Creates new form Interface
      */
     public Interface() {
+
         initComponents();
         statutRemote.setBackground(Color.red);
         statutRemote.setForeground(Color.red);
@@ -44,22 +45,26 @@ public class Interface extends javax.swing.JFrame {
         statutRs232.setBackground(Color.red);
         statutRs232.setForeground(Color.red);
         statutRs232.setOpaque(true);
+
+        voyant.setBackground(Color.RED);
+        voyant.setForeground(Color.RED);
+        voyant.setOpaque(true);
+        
+        pause.setVisible(false);
+        stop.setVisible(false);
+        
         this.getContentPane().setBackground(new Color(248, 217, 194));
-        this.ports = SerialPort.getCommPorts();
+
         List<JRadioButtonMenuItem> listePorts = new ArrayList<JRadioButtonMenuItem>();
 
-        for (SerialPort p : ports) {
+        List<String> listePortString = connecteur.getListPorts();
 
-            JRadioButtonMenuItem m = new JRadioButtonMenuItem(p.getSystemPortName());
-            listePorts.add(m);
-        }
-        for (JMenuItem m : listePorts) {
+        for (String p : listePortString) {
 
+            JRadioButtonMenuItem m = new JRadioButtonMenuItem(p);
             groupPorts.add(m);
             m.addActionListener(new PortSupplier());
-
             menuPort.add(m);
-
         }
 
     }
@@ -109,10 +114,7 @@ public class Interface extends javax.swing.JFrame {
         selectEch5 = new javax.swing.JRadioButton();
         setCompteur5 = new javax.swing.JTextField();
         set5 = new javax.swing.JButton();
-        Voyant = new javax.swing.JLabel();
-        start = new javax.swing.JButton();
-        stop = new javax.swing.JButton();
-        pause = new javax.swing.JButton();
+        voyant = new javax.swing.JLabel();
         version = new javax.swing.JLabel();
         console = new javax.swing.JTextField();
         statutRs232 = new javax.swing.JLabel();
@@ -122,6 +124,9 @@ public class Interface extends javax.swing.JFrame {
         pause6 = new javax.swing.JButton();
         pause7 = new javax.swing.JButton();
         pause8 = new javax.swing.JButton();
+        pause = new javax.swing.JButton();
+        start = new javax.swing.JButton();
+        stop = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuFichier = new javax.swing.JMenu();
         menuNouveau = new javax.swing.JMenuItem();
@@ -274,35 +279,10 @@ public class Interface extends javax.swing.JFrame {
         set5.setForeground(new java.awt.Color(255, 51, 0));
         set5.setText("Set");
 
-        Voyant.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Voyant.setText("Voyant");
-
-        start.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        start.setForeground(new java.awt.Color(0, 102, 0));
-        start.setText("START");
-        start.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startActionPerformed(evt);
-            }
-        });
-
-        stop.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        stop.setForeground(new java.awt.Color(255, 51, 0));
-        stop.setText("STOP");
-        stop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopActionPerformed(evt);
-            }
-        });
-
-        pause.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        pause.setForeground(new java.awt.Color(255, 102, 0));
-        pause.setText("PAUSE");
-        pause.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pauseActionPerformed(evt);
-            }
-        });
+        voyant.setBackground(new java.awt.Color(255, 51, 0));
+        voyant.setForeground(new java.awt.Color(255, 0, 0));
+        voyant.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        voyant.setText("Voyant");
 
         version.setText("V1.0");
 
@@ -341,6 +321,33 @@ public class Interface extends javax.swing.JFrame {
         pause8.setForeground(new java.awt.Color(255, 0, 0));
         pause8.setText("STOP");
 
+        pause.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        pause.setForeground(new java.awt.Color(255, 102, 0));
+        pause.setText("PAUSE");
+        pause.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pauseActionPerformed(evt);
+            }
+        });
+
+        start.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        start.setForeground(new java.awt.Color(0, 102, 0));
+        start.setText("START");
+        start.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startActionPerformed(evt);
+            }
+        });
+
+        stop.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        stop.setForeground(new java.awt.Color(255, 51, 0));
+        stop.setText("STOP");
+        stop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopActionPerformed(evt);
+            }
+        });
+
         MenuFichier.setText("Fichier");
 
         menuNouveau.setText("Nouveau");
@@ -364,6 +371,11 @@ public class Interface extends javax.swing.JFrame {
         jMenuBar1.add(MenuFichier);
 
         menuConnexion.setText("Connexion");
+        menuConnexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuConnexionActionPerformed(evt);
+            }
+        });
 
         menuPort.setText("Port");
         menuConnexion.add(menuPort);
@@ -562,85 +574,92 @@ public class Interface extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(statutRs232, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(RS232))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(statutRemote)
-                        .addGap(18, 18, 18)
-                        .addComponent(Remote)))
-                .addGap(281, 281, 281)
-                .addComponent(titre, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(174, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(stop, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(start, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(pause)
-                        .addGap(428, 428, 428))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(version)
                         .addGap(36, 36, 36))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(selectEch2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(compteur2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(50, 50, 50)
+                                    .addComponent(setCompteur2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(set2)
+                                    .addGap(34, 34, 34)
+                                    .addComponent(reset2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(pause2))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(selectEch1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(compteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(50, 50, 50)
+                                    .addComponent(setCompteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(set1)
+                                    .addGap(34, 34, 34)
+                                    .addComponent(reset1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(pause1)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(selectEch2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(compteur2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(50, 50, 50)
-                                            .addComponent(setCompteur2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(set2)
-                                            .addGap(34, 34, 34)
-                                            .addComponent(reset2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(pause2))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(selectEch1)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(compteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(50, 50, 50)
-                                            .addComponent(setCompteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(set1)
-                                            .addGap(34, 34, 34)
-                                            .addComponent(reset1)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(pause1)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(selectEch5)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(compteur5, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(50, 50, 50)
-                                        .addComponent(setCompteur5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(set5)
-                                        .addGap(34, 34, 34)
-                                        .addComponent(reset5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(pause5)))
+                                        .addGap(50, 50, 50))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(stop)
+                                        .addGap(22, 22, 22)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(setCompteur5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(start)
+                                        .addGap(8, 8, 8)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pause6)
-                                    .addComponent(pause7)
-                                    .addComponent(pause8)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(Voyant, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(477, 477, 477)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(set5)
+                                        .addGap(34, 34, 34)
+                                        .addComponent(reset5))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(pause)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(pause5)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pause6)
+                            .addComponent(pause7)
+                            .addComponent(pause8))
                         .addGap(162, 162, 162))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(console, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(205, 205, 205))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(statutRs232, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(RS232))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(statutRemote)
+                                .addGap(18, 18, 18)
+                                .addComponent(Remote)))
+                        .addGap(281, 281, 281)
+                        .addComponent(titre, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(594, 594, 594)
+                        .addComponent(voyant, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -685,14 +704,14 @@ public class Interface extends javax.swing.JFrame {
                     .addComponent(reset5)
                     .addComponent(pause5)
                     .addComponent(pause8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(Voyant, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(voyant, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(start)
-                    .addComponent(stop)
-                    .addComponent(pause))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                    .addComponent(pause)
+                    .addComponent(stop))
+                .addGap(33, 33, 33)
                 .addComponent(console, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addComponent(version)
@@ -704,19 +723,6 @@ public class Interface extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_stopActionPerformed
-
-    private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-
-        //System.out.println("Interface.startActionPerformed(), port sélectionné: " + portName);
-    }//GEN-LAST:event_startActionPerformed
-
-    private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pauseActionPerformed
-
     private void menuNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNouveauActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuNouveauActionPerformed
@@ -727,12 +733,27 @@ public class Interface extends javax.swing.JFrame {
 
     private void btnConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnexionActionPerformed
 
-        makeConnection();
+        int i = connecteur.makeConnection(Connecteur.portName, baudeRate, numDatabits, parity, stopBits);
+        if (i == 99) {
+
+            console.setForeground(Color.BLUE);
+            console.setText("Connexion réussie");
+            setStatusRS232(true);
+
+        } else {
+
+            console.setForeground(Color.red);
+            console.setText("Tentative de connexion échouée");
+            setStatusRS232(false);
+
+        }
+
+
     }//GEN-LAST:event_btnConnexionActionPerformed
 
     private void btnDeconnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeconnexionActionPerformed
 
-        disconnect();
+        // disconnect();
     }//GEN-LAST:event_btnDeconnexionActionPerformed
 
     private void baud9600StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_baud9600StateChanged
@@ -839,6 +860,24 @@ public class Interface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_parityEvenStateChanged
 
+    private void menuConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConnexionActionPerformed
+
+
+    }//GEN-LAST:event_menuConnexionActionPerformed
+
+    private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stopActionPerformed
+
+    private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
+
+        //System.out.println("Interface.startActionPerformed(), port sélectionné: " + portName);
+    }//GEN-LAST:event_startActionPerformed
+
+    private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pauseActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -878,7 +917,6 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JMenu MenuFichier;
     private javax.swing.JLabel RS232;
     private javax.swing.JLabel Remote;
-    private javax.swing.JLabel Voyant;
     private javax.swing.JMenuItem ajouterRemote;
     private javax.swing.JRadioButtonMenuItem baud115200;
     private javax.swing.JRadioButtonMenuItem baud19200;
@@ -961,62 +999,8 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem stop2;
     private javax.swing.JLabel titre;
     private javax.swing.JLabel version;
+    private javax.swing.JLabel voyant;
     // End of variables declaration//GEN-END:variables
-
-    private void makeConnection() {
-
-        try {
-
-            if (portName == null) {
-
-                System.out.println("Interface.makeConnection() - Port non sélectionné");
-                return;
-            }
-
-            for (SerialPort p : ports) {
-
-                //System.out.println("Interface.makeConnection() - getSystemPortName: " + p.getSystemPortName() + " // " + portName);
-                if (p.getSystemPortName().equals(portName)) {
-
-                    portComm = p;
-                }
-            }
-            portComm.setBaudRate(baudeRate);
-            portComm.setNumDataBits(numDatabits);
-            portComm.setParity(parity);
-            portComm.setNumStopBits(stopBits);
-            portComm.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, newReadTimeout, newWriteTimeout);
-            portComm.openPort();
-
-            if (portComm.isOpen()) {
-
-                console.setForeground(Color.BLUE);
-                console.setText("Connexion réussie");
-
-                setStatusRS232(true);
-                setStatusRS232(true);
-
-            } else {
-
-                console.setForeground(Color.red);
-                console.setText("Tentative de connexion échouée");
-                setStatusRS232(false);
-
-            }
-
-        } catch (Exception e) {
-
-            console.setForeground(Color.red);
-            console.setText("Connexion échouée");
-            setStatusRS232(false);
-
-        }
-
-    }
-
-    private void disconnect() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     private void setStatusRS232(boolean statut) {
 
@@ -1029,6 +1013,28 @@ public class Interface extends javax.swing.JFrame {
             statutRs232.setBackground(Color.RED);
         }
 
+    }
+
+    public void montrerError(String message, String titre) {
+        JOptionPane.showMessageDialog(this, message, titre, JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private Connecteur getConnecteur(){
+        
+        if (this.connecteur == null) {
+        this.connecteur = new Connecteur();
+        this.connecteur.addObserver(this);
+        }
+        return this.connecteur;
+    
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        
+        String inputLine = (String) arg;
+        console.setText(inputLine);
+        
     }
 
 }
