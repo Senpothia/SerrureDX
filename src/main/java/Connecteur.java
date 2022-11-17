@@ -136,10 +136,14 @@ public class Connecteur extends Observable {
 
                     int numRead = portComm.readBytes(readBuffer,
                             readBuffer.length);
+                     byte[] lecture = new byte[numRead];
+                   for(int i=0; i<numRead; i++){
+                       
+                       lecture[i] = readBuffer[i];
+                   }
+                    inputLine = new String(lecture, StandardCharsets.UTF_8);
 
-                    inputLine = new String(readBuffer, StandardCharsets.UTF_8);
-                
-                    System.out.println("Received -> " + inputLine);
+                    System.out.println("Received -> " + numRead + "bits lus - " + inputLine);
                     notifierResultat();
 
                 } catch (Exception e) {   // Traitement des exceptions
@@ -148,11 +152,7 @@ public class Connecteur extends Observable {
                 }
             }
         });
-        
-        
-        
-        
-        
+
         return 99;
 
     }
