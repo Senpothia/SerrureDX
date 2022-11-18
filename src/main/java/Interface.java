@@ -165,6 +165,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         ajouterRemote = new javax.swing.JMenuItem();
         remoteSelect = new javax.swing.JMenuItem();
         changerRemote = new javax.swing.JMenuItem();
+        connexionRemote = new javax.swing.JMenuItem();
+        deconnexionRemote = new javax.swing.JMenuItem();
         menuConfig = new javax.swing.JMenu();
         cadence = new javax.swing.JMenu();
         cad_2_min = new javax.swing.JRadioButtonMenuItem();
@@ -554,6 +556,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         changerRemote.setText("Changer");
         menuRemote.add(changerRemote);
+
+        connexionRemote.setText("Connexion");
+        menuRemote.add(connexionRemote);
+
+        deconnexionRemote.setText("Déconnexion");
+        deconnexionRemote.setEnabled(false);
+        menuRemote.add(deconnexionRemote);
 
         jMenuBar1.add(menuRemote);
 
@@ -1032,7 +1041,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel compteur3;
     private javax.swing.JLabel compteur4;
     private javax.swing.JLabel compteur5;
+    private javax.swing.JMenuItem connexionRemote;
     private javax.swing.JTextField console;
+    private javax.swing.JMenuItem deconnexionRemote;
     private javax.swing.ButtonGroup groupBaud;
     private javax.swing.ButtonGroup groupBits;
     private javax.swing.ButtonGroup groupParity;

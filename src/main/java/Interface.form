@@ -387,6 +387,17 @@
                 <Property name="text" type="java.lang.String" value="Changer"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="connexionRemote">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Connexion"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="deconnexionRemote">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="D&#xe9;connexion"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuConfig">
