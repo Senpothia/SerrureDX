@@ -24,18 +24,22 @@ import javax.swing.JRadioButtonMenuItem;
  */
 public class Interface extends javax.swing.JFrame implements Observer {
 
-    private static final String ordreMarche = "0";   // ordre de lancement du test
-    private static final String ordreArret = "1";    // ordre d'arrêt du test
-    private static final String ordrePause = "2";    // ordre de mettre le test en pause
-    private static final String RAZ1 = "raz1";
-    private static final String RAZ2 = "raz2";
-    private static final String RAZ3 = "raz3";
+    private static final String ordreMarche = "W:0";   // ordre de lancement du test
+    private static final String ordreArret = "W:1";    // ordre d'arrêt du test
+    private static final String ordrePause = "W:2";    // ordre de mettre le test en pause
+    private static final String RAZ1 = "W:RAZ1";
+    private static final String RAZ2 = "W:RAZ2";
+    private static final String RAZ3 = "W:RAZ3";
 
     private boolean buzzer = false;
-    private boolean test_off = false;
-    private boolean test_on = false;
-    private boolean test_pause = false;
-    private boolean arret_valide = false;
+    private boolean test_off = true;           // le test est arrêté
+    private boolean test_on = false;            // le test est en cours
+    private boolean test_pause = false;         // le test est en pause
+    private boolean arret_valide = false;       // le test est arrêté et la séquence/cycle est terminé
+
+    private boolean[] actifs = {false, false, false};
+    private boolean[] erreurs = {false, false, false};
+    private long[] totaux = {0, 0, 0};
 
     private int baudeRate = 9600;
     private int numDatabits = 8;
@@ -43,8 +47,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private int stopBits = 1;
     private int newReadTimeout = 1000;
     private int newWriteTimeout = 0;
-    
-    private boolean connexionActive = false;
+
+    private boolean connexionActive = false;    // état de la connexion
 
     Connecteur connecteur = getConnecteur();
     Controller controller = new Controller();
@@ -66,8 +70,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         voyant.setForeground(Color.RED);
         voyant.setOpaque(true);
 
-        pause.setEnabled(false);
-        stop.setEnabled(false);
+        startWaiting(true);
+        resetStateMachine();
 
         this.getContentPane().setBackground(new Color(128, 193, 255));
 
@@ -891,69 +895,28 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
 
-        test_pause = false;
-        test_on = false;
-        test_off = true;
-        stop.setEnabled(false);
-        pause.setEnabled(false);
-        start.setEnabled(true);
-
+        stopRequested();
         connecteur.envoyerData(ordreArret);
 
     }//GEN-LAST:event_stopActionPerformed
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-        
-        if(!connexionActive){
-            
+
+        if (!connexionActive) {
+
             montrerError("Vous devez activer la connexion série!", "Défaut de connexion");
             return;
         }
-        arret_valide = false;
-        if (!test_pause) {
 
-            test_pause = true;
-            test_on = true;
-            test_off = false;
+        startRequested();
+        connecteur.envoyerData(ordreMarche);
 
-            start.setEnabled(false);
-
-            voyant.setBackground(Color.GREEN);
-            voyant.setForeground(Color.GREEN);
-
-            pause.setEnabled(true);
-            stop.setEnabled(true);
-            console.setText("Test en pause");
-            connecteur.envoyerData(ordrePause);
-
-        } else {
-
-            test_pause = false;
-            test_on = true;
-            test_off = false;
-
-            start.setVisible(true);
-            voyant.setBackground(Color.RED);
-            voyant.setForeground(Color.RED);
-            console.setText("STOP");
-
-            pause.setVisible(true);
-
-            console.setText("Reprise du test après interruption!");
-            connecteur.envoyerData(ordreMarche);
-        }
 
     }//GEN-LAST:event_startActionPerformed
 
     private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
 
-        test_pause = true;
-        test_on = true;
-        test_off = false;
-        stop.setEnabled(true);
-        pause.setEnabled(false);
-        start.setEnabled(true);
-
+        pauseRequested();
         connecteur.envoyerData(ordrePause);
     }//GEN-LAST:event_pauseActionPerformed
 
@@ -1121,6 +1084,183 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void gestionRapport(Rapport rapport) {
 
+    }
+
+    private void startWaiting(boolean activation) {
+
+        if (activation) {
+
+            start.setEnabled(true);
+            pause.setEnabled(false);
+            stop.setEnabled(false);
+
+        } else {
+
+            start.setEnabled(false);
+            pause.setEnabled(true);
+            stop.setEnabled(true);
+
+        }
+
+    }
+
+    private void startRequested() {
+
+        test_off = false;
+        test_on = true;
+        test_pause = false;
+        voyant.setForeground(Color.GREEN);
+        voyant.setBackground(Color.GREEN);
+        pause.setEnabled(true);
+        start.setEnabled(false);
+        stop.setEnabled(true);
+
+    }
+
+    private void pauseRequested() {
+
+        test_off = false;
+        test_on = true;
+        test_pause = true;
+        voyant.setForeground(Color.ORANGE);
+        voyant.setBackground(Color.ORANGE);
+        pause.setEnabled(false);
+        start.setEnabled(true);
+        stop.setEnabled(true);
+
+    }
+
+    private void stopRequested() {
+
+        test_off = true;
+        test_on = false;
+        test_pause = false;
+        voyant.setForeground(Color.RED);
+        voyant.setBackground(Color.RED);
+        pause.setEnabled(false);
+        start.setEnabled(true);
+        stop.setEnabled(false);
+
+    }
+
+    private void resetStateMachine() {
+
+        test_off = true;
+        test_on = false;
+        test_pause = false;
+        arret_valide = false;
+
+    }
+
+    private void activationVoyant(boolean activation) {
+
+        if (activation) {
+
+            voyant.setForeground(Color.GREEN);
+            voyant.setBackground(Color.GREEN);
+
+        } else {
+
+            voyant.setForeground(Color.RED);
+            voyant.setBackground(Color.RED);
+        }
+
+    }
+
+    public boolean[] getActifs() {
+        return actifs;
+    }
+
+    public void setActifs(boolean[] actifs) {
+        this.actifs = actifs;
+    }
+
+    public long[] getTotaux() {
+        return totaux;
+    }
+
+    public void setTotaux(long[] totaux) {
+        this.totaux = totaux;
+    }
+
+    public boolean[] getErreurs() {
+        return erreurs;
+    }
+
+    public void setErreurs(boolean[] erreurs) {
+        this.erreurs = erreurs;
+    }
+
+    public void setTotal1(long total1) {
+        this.totaux[0] = total1;
+    }
+
+    public void setTotal2(long total2) {
+        this.totaux[1] = total2;
+    }
+
+    public void setTotal3(long total3) {
+        this.totaux[2] = total3;
+    }
+
+    public long getTotal1() {
+        return totaux[0];
+    }
+
+    public long getTotal2() {
+        return totaux[1];
+    }
+
+    public long getTotal3() {
+        return totaux[2];
+    }
+
+    public boolean getActif1() {
+        return actifs[0];
+    }
+
+    public boolean getActif2() {
+        return actifs[1];
+    }
+
+    public boolean getActif3() {
+        return actifs[2];
+    }
+
+    public void setActif1(boolean actifs1) {
+        this.actifs[0] = actifs1;
+    }
+
+    public void setActif2(boolean actifs2) {
+        this.actifs[1] = actifs2;
+    }
+
+    public void setActif3(boolean actifs3) {
+        this.actifs[2] = actifs3;
+    }
+
+    public boolean getErreur1() {
+        return erreurs[0];
+    }
+
+    public boolean getErreur2() {
+        return erreurs[1];
+    }
+
+    public boolean getErreur3() {
+        return erreurs[2];
+    }
+
+    public void setErreur1(boolean erreur1) {
+        this.erreurs[0] = erreur1;
+    }
+
+    public void setErreur2(boolean erreur2) {
+        this.erreurs[1] = erreur2;
+    }
+
+    public void setErreur3(boolean erreur3) {
+        this.erreurs[2] = erreur3;
     }
 
 }
