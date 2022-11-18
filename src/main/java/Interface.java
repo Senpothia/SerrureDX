@@ -14,12 +14,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
 public class Interface extends javax.swing.JFrame implements Observer {
-     
+
     private boolean buzzer = false;
-    private boolean test_off = true;           // le test est arrêté
+    private boolean test_off = true;            // le test est arrêté
     private boolean test_on = false;            // le test est en cours
     private boolean test_pause = false;         // le test est en pause
     private boolean arret_valide = false;       // le test est arrêté et la séquence/cycle est terminé
+    private boolean auto = true;                // le mode de marche: auto ou manuel
 
     private boolean[] actifs = {false, false, false};
     private boolean[] erreurs = {false, false, false};
@@ -36,6 +37,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     Connecteur connecteur = getConnecteur();
     Controller controller = new Controller();
+
 
     /*
      * Creates new form Interface
@@ -168,6 +170,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         cad_2_min = new javax.swing.JRadioButtonMenuItem();
         cad_1_par_2mins = new javax.swing.JRadioButtonMenuItem();
         cad_1_par_5mins = new javax.swing.JRadioButtonMenuItem();
+        menuAuto = new javax.swing.JMenuItem();
+        menuManuel = new javax.swing.JMenuItem();
 
         reset3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         reset3.setForeground(new java.awt.Color(255, 51, 0));
@@ -554,6 +558,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jMenuBar1.add(menuRemote);
 
         menuConfig.setText("Configuration");
+        menuConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuConfigActionPerformed(evt);
+            }
+        });
 
         cadence.setText("Cadence");
 
@@ -568,6 +577,23 @@ public class Interface extends javax.swing.JFrame implements Observer {
         cadence.add(cad_1_par_5mins);
 
         menuConfig.add(cadence);
+
+        menuAuto.setText("Auto");
+        menuAuto.setEnabled(false);
+        menuAuto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAutoActionPerformed(evt);
+            }
+        });
+        menuConfig.add(menuAuto);
+
+        menuManuel.setText("Manuel");
+        menuManuel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuManuelActionPerformed(evt);
+            }
+        });
+        menuConfig.add(menuManuel);
 
         jMenuBar1.add(menuConfig);
 
@@ -879,8 +905,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
 
-        stopRequested();
-        connecteur.envoyerData(Constants.ORDRE_ARRET);
+        if (auto) {
+
+            stopRequested();
+            connecteur.envoyerData(Constants.ORDRE_ARRET);
+
+        } else {
+        }
+
 
     }//GEN-LAST:event_stopActionPerformed
 
@@ -900,9 +932,45 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
 
-        pauseRequested();
-        connecteur.envoyerData(Constants.ORDRE_PAUSE);
+        if (auto) {
+            pauseRequested();
+            connecteur.envoyerData(Constants.ORDRE_PAUSE);
+        } else {
+
+        }
+
     }//GEN-LAST:event_pauseActionPerformed
+
+    private void menuManuelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuManuelActionPerformed
+
+        auto = false;
+        start.setEnabled(false);
+        start.setForeground(Color.GRAY);
+        stop.setText("Effacer");
+        pause.setText("Envoyer");
+        pause.setForeground(new Color(0, 102, 0));
+        stop.setEnabled(true);
+        stop.setForeground(Color.RED);
+        pause.setEnabled(true);
+        menuAuto.setEnabled(true);
+        menuManuel.setEnabled(false);
+        console.setText("");
+    }//GEN-LAST:event_menuManuelActionPerformed
+
+    private void menuConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConfigActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuConfigActionPerformed
+
+    private void menuAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAutoActionPerformed
+
+        auto = true;
+        stop.setText("STOP");
+        pause.setText("PAUSE");
+        menuAuto.setEnabled(false);
+        menuManuel.setEnabled(true);
+        startWaiting(true);
+
+    }//GEN-LAST:event_menuAutoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -972,10 +1040,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.ButtonGroup groupStop;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenuItem menuAuto;
     private javax.swing.JMenu menuBaud;
     private javax.swing.JMenu menuBits;
     private javax.swing.JMenu menuConfig;
     private javax.swing.JMenu menuConnexion;
+    private javax.swing.JMenuItem menuManuel;
     private javax.swing.JMenuItem menuModifier;
     private javax.swing.JMenuItem menuNouveau;
     private javax.swing.JMenu menuParity;
@@ -1075,14 +1145,20 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (activation) {
 
             start.setEnabled(true);
+            start.setForeground(new Color(0, 102, 0));
             pause.setEnabled(false);
+            pause.setForeground(Color.GRAY);
             stop.setEnabled(false);
+            stop.setForeground(Color.GRAY);
 
         } else {
 
             start.setEnabled(false);
+            start.setForeground(Color.GRAY);
             pause.setEnabled(true);
+            pause.setForeground(Color.ORANGE);
             stop.setEnabled(true);
+            stop.setForeground(Color.RED);
 
         }
 
@@ -1096,34 +1172,53 @@ public class Interface extends javax.swing.JFrame implements Observer {
         voyant.setForeground(Color.GREEN);
         voyant.setBackground(Color.GREEN);
         pause.setEnabled(true);
+        pause.setForeground(new Color(255, 102, 0));
         start.setEnabled(false);
+        start.setForeground(Color.GRAY);
         stop.setEnabled(true);
-
+        stop.setForeground(Color.RED);
     }
 
     private void pauseRequested() {
 
-        test_off = false;
-        test_on = true;
-        test_pause = true;
-        voyant.setForeground(Color.ORANGE);
-        voyant.setBackground(Color.ORANGE);
-        pause.setEnabled(false);
-        start.setEnabled(true);
-        stop.setEnabled(true);
+        if (auto) {
+            test_off = false;
+            test_on = true;
+            test_pause = true;
+            voyant.setForeground(Color.ORANGE);
+            voyant.setBackground(Color.ORANGE);
+            pause.setEnabled(false);
+            pause.setForeground(Color.GRAY);
+            start.setEnabled(true);
+            start.setForeground(new Color(0, 102, 0));
+            stop.setEnabled(true);
+            stop.setForeground(Color.RED);
+
+        } else {
+
+        }
 
     }
 
     private void stopRequested() {
 
-        test_off = true;
-        test_on = false;
-        test_pause = false;
-        voyant.setForeground(Color.RED);
-        voyant.setBackground(Color.RED);
-        pause.setEnabled(false);
-        start.setEnabled(true);
-        stop.setEnabled(false);
+        if (auto) {
+
+            test_off = true;
+            test_on = false;
+            test_pause = false;
+            voyant.setForeground(Color.RED);
+            voyant.setBackground(Color.RED);
+            pause.setEnabled(false);
+            pause.setForeground(Color.GRAY);
+            start.setEnabled(true);
+            start.setForeground(new Color(0, 102, 0));
+            stop.setEnabled(false);
+            stop.setForeground(Color.GRAY);
+
+        } else {
+
+        }
 
     }
 
@@ -1138,15 +1233,21 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void activationVoyant(boolean activation) {
 
-        if (activation) {
+        if (auto) {
 
-            voyant.setForeground(Color.GREEN);
-            voyant.setBackground(Color.GREEN);
+            if (activation) {
+
+                voyant.setForeground(Color.GREEN);
+                voyant.setBackground(Color.GREEN);
+
+            } else {
+
+                voyant.setForeground(Color.RED);
+                voyant.setBackground(Color.RED);
+            }
 
         } else {
 
-            voyant.setForeground(Color.RED);
-            voyant.setBackground(Color.RED);
         }
 
     }
