@@ -13,24 +13,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author Michel
- */
 public class Interface extends javax.swing.JFrame implements Observer {
-
-    private static final String ordreMarche = "W:0";   // ordre de lancement du test
-    private static final String ordreArret = "W:1";    // ordre d'arrêt du test
-    private static final String ordrePause = "W:2";    // ordre de mettre le test en pause
-    private static final String RAZ1 = "W:RAZ1";
-    private static final String RAZ2 = "W:RAZ2";
-    private static final String RAZ3 = "W:RAZ3";
-
+     
     private boolean buzzer = false;
     private boolean test_off = true;           // le test est arrêté
     private boolean test_on = false;            // le test est en cours
@@ -896,7 +880,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
 
         stopRequested();
-        connecteur.envoyerData(ordreArret);
+        connecteur.envoyerData(Constants.ORDRE_ARRET);
 
     }//GEN-LAST:event_stopActionPerformed
 
@@ -909,7 +893,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
 
         startRequested();
-        connecteur.envoyerData(ordreMarche);
+        connecteur.envoyerData(Constants.ORDRE_MARCHE);
 
 
     }//GEN-LAST:event_startActionPerformed
@@ -917,7 +901,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
 
         pauseRequested();
-        connecteur.envoyerData(ordrePause);
+        connecteur.envoyerData(Constants.ORDRE_PAUSE);
     }//GEN-LAST:event_pauseActionPerformed
 
     /**

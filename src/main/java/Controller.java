@@ -15,28 +15,31 @@ public class Controller {
     private String arret = "@ARRET";
     private String sequence = "@SEQ";
     private String erreur = "@ERREUR";
-    private String acquittement ="W:";
+    private String message = "W:";
 
     private boolean isCompteur;
     private boolean isActifs;
     private boolean isArret;
     private boolean isErreur;
     private boolean isSequence;
-    private boolean isMessage;
+    private boolean isOrdre;
     private Rapport rapport = new Rapport();
 
     public Rapport parser(String inputLine) {
 
-        isCompteur = inputLine.startsWith("@TOTAL");
-        isActifs = inputLine.startsWith("@ACTIFS");
-        isArret = inputLine.startsWith("@ARRET");
-        isErreur = inputLine.startsWith("@Erreur");
-        isMessage = inputLine.startsWith("W:");
-        isSequence = inputLine.startsWith("@SEQ");
+        isCompteur = inputLine.startsWith(Constants.TOTAL);
+        isActifs = inputLine.startsWith(Constants.ACTIFS);
+        isArret = inputLine.startsWith(Constants.ARRET);
+        isErreur = inputLine.startsWith(Constants.ERREUR);
+        isOrdre = inputLine.startsWith(Constants.ORDRE);
+        isSequence = inputLine.startsWith(Constants.SEQUENCE);
 
         System.out.println("isCompteur: " + isCompteur);
         System.out.println("isActif: " + isActifs);
         System.out.println("isArret: " + isArret);
+        System.out.println("isErreur: " + isErreur);
+        System.out.println("isOrdre: " + isOrdre);
+        System.out.println("isSequence: " + isSequence);
 
         if (isCompteur) {
 
@@ -66,11 +69,11 @@ public class Controller {
             gestionErreurs(inputLine);
 
         }
-        
-        if (isMessage){
-            
-            gestionMessages(inputLine);
-        
+
+        if (isOrdre) {
+
+            gestionOrdres(inputLine);
+
         }
         return rapport;
 
@@ -163,14 +166,13 @@ public class Controller {
 
     }
 
-    private void gestionMessages(String inputLine) {
-        
-        
+    private void gestionOrdres(String inputLine) {
+
         String[] recept = inputLine.split(":");
-        if(recept[1].equals("ACQ")){
-        
+        if (recept[1].equals("ACQ")) {
+
             rapport.setSauvegarde(false);
-        
+
         }
     }
 
