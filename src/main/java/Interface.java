@@ -10,6 +10,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
@@ -42,6 +43,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private String nomDeFichier = null;
     private File repertoire;
 
+    private List<JLabel> compteurs = new ArrayList<>();
+
+
     /*
      * Creates new form Interface
      */
@@ -61,6 +65,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         startWaiting(true);
         resetStateMachine();
+
+        compteurs.add(compteur1);
+        compteurs.add(compteur2);
+        compteurs.add(compteur3);
 
         this.getContentPane().setBackground(new Color(128, 193, 255));
 
@@ -87,18 +95,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        reset3 = new javax.swing.JButton();
-        compteur3 = new javax.swing.JLabel();
-        pause3 = new javax.swing.JButton();
-        selectEch3 = new javax.swing.JRadioButton();
-        setCompteur3 = new javax.swing.JTextField();
-        set3 = new javax.swing.JButton();
-        reset4 = new javax.swing.JButton();
-        compteur4 = new javax.swing.JLabel();
-        pause4 = new javax.swing.JButton();
-        selectEch4 = new javax.swing.JRadioButton();
-        setCompteur4 = new javax.swing.JTextField();
-        set4 = new javax.swing.JButton();
         groupPorts = new javax.swing.ButtonGroup();
         groupBaud = new javax.swing.ButtonGroup();
         groupBits = new javax.swing.ButtonGroup();
@@ -119,10 +115,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
         setCompteur2 = new javax.swing.JTextField();
         set2 = new javax.swing.JButton();
         reset5 = new javax.swing.JButton();
-        compteur5 = new javax.swing.JLabel();
+        compteur3 = new javax.swing.JLabel();
         pause5 = new javax.swing.JButton();
         selectEch5 = new javax.swing.JRadioButton();
-        setCompteur5 = new javax.swing.JTextField();
+        setCompteur3 = new javax.swing.JTextField();
         set5 = new javax.swing.JButton();
         voyant = new javax.swing.JLabel();
         version = new javax.swing.JLabel();
@@ -178,48 +174,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
         cad_1_par_5mins = new javax.swing.JRadioButtonMenuItem();
         menuAuto = new javax.swing.JMenuItem();
         menuManuel = new javax.swing.JMenuItem();
-
-        reset3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        reset3.setForeground(new java.awt.Color(255, 51, 0));
-        reset3.setText("Reset");
-
-        compteur3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        compteur3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        compteur3.setText("0");
-
-        pause3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        pause3.setForeground(new java.awt.Color(255, 102, 51));
-        pause3.setText("Pause");
-
-        selectEch3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        selectEch3.setText("Echantillon 1");
-
-        setCompteur3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
-        set3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        set3.setForeground(new java.awt.Color(255, 51, 0));
-        set3.setText("Set");
-
-        reset4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        reset4.setForeground(new java.awt.Color(255, 51, 0));
-        reset4.setText("Reset");
-
-        compteur4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        compteur4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        compteur4.setText("0");
-
-        pause4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        pause4.setForeground(new java.awt.Color(255, 102, 51));
-        pause4.setText("Pause");
-
-        selectEch4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        selectEch4.setText("Echantillon 1");
-
-        setCompteur4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
-        set4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        set4.setForeground(new java.awt.Color(255, 51, 0));
-        set4.setText("Set");
 
         selectionFichier.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
 
@@ -278,9 +232,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
         reset5.setForeground(new java.awt.Color(255, 51, 0));
         reset5.setText("Reset");
 
-        compteur5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        compteur5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        compteur5.setText("0");
+        compteur3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        compteur3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        compteur3.setText("0");
 
         pause5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         pause5.setForeground(new java.awt.Color(255, 102, 51));
@@ -289,7 +243,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         selectEch5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         selectEch5.setText("Echantillon 3");
 
-        setCompteur5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        setCompteur3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
         set5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         set5.setForeground(new java.awt.Color(255, 51, 0));
@@ -639,9 +593,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(selectEch5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(compteur5, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(compteur3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(setCompteur5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(setCompteur3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(set5)
                                 .addGap(34, 34, 34)
@@ -749,8 +703,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selectEch5)
-                    .addComponent(compteur5)
-                    .addComponent(setCompteur5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(compteur3)
+                    .addComponent(setCompteur3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(set5)
                     .addComponent(reset5)
                     .addComponent(pause5)
@@ -1008,6 +962,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         nomDeFichier = repertoire + "\\" + nomDeFichier + ".csv";
         console.setForeground(Color.red);
         console.setText("Les résultats seront sauvegardés à l'emplacement: " + nomDeFichier);
+        int i = controller.creationFichier(nomDeFichier);
+        if (i == -1) {
+
+            montrerError("Erreur à la création du fichier de sauvegarde!", "Echec création fichier");
+        }
     }//GEN-LAST:event_menuSauvegardesActionPerformed
 
     private void MenuFichierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuFichierActionPerformed
@@ -1072,8 +1031,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel compteur1;
     private javax.swing.JLabel compteur2;
     private javax.swing.JLabel compteur3;
-    private javax.swing.JLabel compteur4;
-    private javax.swing.JLabel compteur5;
     private javax.swing.JMenuItem connexionRemote;
     private javax.swing.JTextField console;
     private javax.swing.JMenuItem deconnexionRemote;
@@ -1104,8 +1061,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton pause;
     private javax.swing.JButton pause1;
     private javax.swing.JButton pause2;
-    private javax.swing.JButton pause3;
-    private javax.swing.JButton pause4;
     private javax.swing.JButton pause5;
     private javax.swing.JButton pause6;
     private javax.swing.JButton pause7;
@@ -1113,25 +1068,17 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem remoteSelect;
     private javax.swing.JButton reset1;
     private javax.swing.JButton reset2;
-    private javax.swing.JButton reset3;
-    private javax.swing.JButton reset4;
     private javax.swing.JButton reset5;
     private javax.swing.JRadioButton selectEch1;
     private javax.swing.JRadioButton selectEch2;
-    private javax.swing.JRadioButton selectEch3;
-    private javax.swing.JRadioButton selectEch4;
     private javax.swing.JRadioButton selectEch5;
     private javax.swing.JFileChooser selectionFichier;
     private javax.swing.JButton set1;
     private javax.swing.JButton set2;
-    private javax.swing.JButton set3;
-    private javax.swing.JButton set4;
     private javax.swing.JButton set5;
     private javax.swing.JTextField setCompteur1;
     private javax.swing.JTextField setCompteur2;
     private javax.swing.JTextField setCompteur3;
-    private javax.swing.JTextField setCompteur4;
-    private javax.swing.JTextField setCompteur5;
     private javax.swing.JButton start;
     private javax.swing.JLabel statutRemote;
     private javax.swing.JLabel statutRs232;
@@ -1176,12 +1123,38 @@ public class Interface extends javax.swing.JFrame implements Observer {
         String inputLine = (String) arg;
         console.setText(inputLine);
         Rapport rapport = controller.parser(inputLine);
-        traiterRapport(rapport);     // Analyse du rapport pour mise à jour de l'interface
-        controller.parser(Constants.ACQUITTEMENT);  // demande de sauvegarde du rapport
+        traiterRapport(rapport);                    // Analyse du rapport pour mise à jour de l'interface
 
     }
 
-    private void traiterRapport(Rapport rapport) {
+    private void traiterRapport(Rapport rapport) {  // Gestion des affichages en fonction des résultats remontés par Arduino
+
+        Color color = null;
+        for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
+
+            boolean erreur = rapport.getErreurs()[i];
+            boolean actif = rapport.getActifs()[i];
+            String total = Long.toString(rapport.getTotaux()[i]);
+
+            if (erreur) {
+
+                color = Color.RED;
+
+            } else {
+
+                color = Color.BLUE;
+            }
+
+            if (!actif) {
+                
+                  color = Color.GRAY;
+            }
+            
+            JLabel l = compteurs.get(i);
+            l.setForeground(color);
+            l.setText(total);
+
+        }
 
     }
 

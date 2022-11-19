@@ -10,6 +10,7 @@
  */
 public class Constants {
 
+    public static final int NBRE_ECHANTILLONS = 3;
     public static final String ORDRE_MARCHE = "W:0";   // ordre de lancement du test
     public static final String ORDRE_ARRET = "W:1";    // ordre d'arrêt du test
     public static final String ORDRE_PAUSE = "W:2";    // ordre de mettre le test en pause
@@ -71,8 +72,8 @@ public class Constants {
                public static final String ERREUR = "@ERREUR";           // @ERREUR:#0:1:0:1 remonte les cas d'erreur sur les échantillons 1=erreur, 0=aucune erreur
                                                                         // @ERREUR:#1:na:na:na notifie une erreur sur l'échantillon 1
                public static final String ORDRE = "W:";                 // préfixe d'un ordre envoyer depuis l'interface
-               public static final String SEQUENCE = "@SEQ";            // notification d'une fin de cycle
-               public static final String ACQUITTEMENT = "W:ACQ";       // demande de sauvegarde du rapport dans fichier csv
+               public static final String SEQUENCE = "@SEQ";            // notification d'une fin de cycle, demande de sauvegarde du rapport dans fichier csv
+               public static final String ACQUITTEMENT = "W:ACQ";       // Acquittement des commande transmises en mode manuel. Mode debug
                public static final String FICHIER = "W:FICHIER";        // demande de création du fichier de sauvegarde. W:FICHIER:<nom du fichier>:<repertoire de sauvegarde>
     
      */

@@ -17,8 +17,8 @@ public class Controller {
     private boolean isSequence;
     private boolean isOrdre;
     private boolean isAcquittement;
-     private boolean isFichier;
-    
+    private boolean isFichier;
+
     private Rapport rapport = new Rapport();
     private Enregistreur enregistreur = new Enregistreur();
 
@@ -76,17 +76,16 @@ public class Controller {
             gestionOrdres(inputLine);
 
         }
-        
-        if (isAcquittement){
-        
+
+        if (isAcquittement) {
+
             gestionSauvegarde(inputLine);
         }
-        
-         if (isAcquittement){
-        
-            creationFichier(inputLine);
+
+        if (isFichier) {
+
         }
-        
+
         return rapport;
 
     }
@@ -209,13 +208,14 @@ public class Controller {
     }
 
     private void gestionSauvegarde(String inputLine) {
-       
+
         enregistreur.sauvegarder(rapport);
     }
 
-    private void creationFichier(String inputLine) {
-        
-        enregistreur.creerFichier(inputLine);
+    public int creationFichier(String inputLine) {
+
+        int i = enregistreur.creerFichier(inputLine);
+        return i;
     }
 
 }
