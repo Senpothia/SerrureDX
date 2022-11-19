@@ -378,7 +378,12 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="174" max="32767" attributes="0"/>
+              <EmptySpace pref="133" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="statutEch3" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="statutEch2" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="statutEch1" alignment="1" min="-2" max="-2" attributes="0"/>
+              </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="version" min="-2" max="-2" attributes="0"/>
@@ -387,6 +392,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Component id="selectEch5" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="compteur3" min="-2" pref="155" max="-2" attributes="0"/>
@@ -400,7 +406,7 @@
                               <Component id="pause5" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="17" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
@@ -471,7 +477,7 @@
                               <Component id="Remote" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="281" max="-2" attributes="0"/>
+                      <EmptySpace pref="719" max="32767" attributes="0"/>
                       <Component id="titre" min="-2" pref="458" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -504,15 +510,24 @@
                       <Component id="titre" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="selectEch1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="compteur1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="setCompteur1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="set1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="reset1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="pause1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="arret1" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="selectEch1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="compteur1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="setCompteur1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="set1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="reset1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="pause1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="arret1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="statutEch1" min="-2" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -523,6 +538,10 @@
                   <Component id="reset2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pause2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="arret2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                      <Component id="statutEch2" min="-2" pref="28" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -533,8 +552,12 @@
                   <Component id="reset5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pause5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="arret3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Component id="statutEch3" min="-2" pref="28" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="34" max="32767" attributes="0"/>
+              <EmptySpace pref="40" max="32767" attributes="0"/>
               <Component id="voyant" min="-2" pref="69" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -881,6 +904,39 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pauseActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="statutEch1">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="99" red="0" type="rgb"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="99" red="0" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="0000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="statutEch2">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="99" red="0" type="rgb"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="99" red="0" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="0000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="statutEch3">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="99" red="0" type="rgb"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="99" red="0" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="0000"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

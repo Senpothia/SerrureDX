@@ -12,6 +12,8 @@ public class Rapport {
 
     private boolean[] actifs = {false, false, false};
     private boolean[] erreurs = {false, false, false};
+    private boolean[] arrets = {false, false, false};
+    private boolean[] pauses = {false, false, false};
     private long[] totaux = {0, 0, 0};
     private boolean sauvegarde = false;
     boolean marche = false;
@@ -133,8 +135,8 @@ public class Rapport {
     public void setErreur2(boolean erreur2) {
         this.erreurs[1] = erreur2;
     }
-    
-     public void setErreur3(boolean erreur3) {
+
+    public void setErreur3(boolean erreur3) {
         this.erreurs[2] = erreur3;
     }
 
@@ -145,6 +147,23 @@ public class Rapport {
     public void setSauvegarde(boolean sauvegarde) {
         this.sauvegarde = sauvegarde;
     }
-     
-     
+
+    public boolean[] getArrets() {
+        return arrets;
+    }
+
+    public void setArrets(boolean[] arrets) {
+        this.arrets = arrets;
+    }
+
+    public boolean[] getPauses() {
+        return pauses;
+    }
+
+    public void setPauses(boolean[] pauses) {
+        this.pauses = pauses;
+    }
+    
+    
+
 }

@@ -44,6 +44,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private File repertoire;
 
     private List<JLabel> compteurs = new ArrayList<>();
+    private List<JLabel> statutsEchs = new ArrayList<>();
 
 
     /*
@@ -55,9 +56,22 @@ public class Interface extends javax.swing.JFrame implements Observer {
         statutRemote.setBackground(Color.red);
         statutRemote.setForeground(Color.red);
         statutRemote.setOpaque(true);
+
         statutRs232.setBackground(Color.red);
         statutRs232.setForeground(Color.red);
         statutRs232.setOpaque(true);
+
+        statutEch1.setBackground(Color.GRAY);
+        statutEch1.setForeground(Color.GRAY);
+        statutEch1.setOpaque(true);
+
+        statutEch2.setBackground(Color.GRAY);
+        statutEch2.setForeground(Color.GRAY);
+        statutEch2.setOpaque(true);
+
+        statutEch3.setBackground(Color.GRAY);
+        statutEch3.setForeground(Color.GRAY);
+        statutEch3.setOpaque(true);
 
         voyant.setBackground(Color.RED);
         voyant.setForeground(Color.RED);
@@ -69,6 +83,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
         compteurs.add(compteur1);
         compteurs.add(compteur2);
         compteurs.add(compteur3);
+
+        statutsEchs.add(statutEch1);
+        statutsEchs.add(statutEch2);
+        statutsEchs.add(statutEch3);
 
         this.getContentPane().setBackground(new Color(128, 193, 255));
 
@@ -133,6 +151,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
         start = new javax.swing.JButton();
         stop = new javax.swing.JButton();
         pause = new javax.swing.JButton();
+        statutEch1 = new javax.swing.JLabel();
+        statutEch2 = new javax.swing.JLabel();
+        statutEch3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuFichier = new javax.swing.JMenu();
         menuNouveau = new javax.swing.JMenuItem();
@@ -317,6 +338,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 pauseActionPerformed(evt);
             }
         });
+
+        statutEch1.setBackground(new java.awt.Color(0, 153, 0));
+        statutEch1.setForeground(new java.awt.Color(0, 153, 51));
+        statutEch1.setText("0000");
+
+        statutEch2.setBackground(new java.awt.Color(0, 153, 0));
+        statutEch2.setForeground(new java.awt.Color(0, 153, 51));
+        statutEch2.setText("0000");
+
+        statutEch3.setBackground(new java.awt.Color(0, 153, 0));
+        statutEch3.setForeground(new java.awt.Color(0, 153, 51));
+        statutEch3.setText("0000");
 
         MenuFichier.setText("Fichier");
         MenuFichier.addActionListener(new java.awt.event.ActionListener() {
@@ -583,7 +616,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(174, Short.MAX_VALUE)
+                .addContainerGap(133, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(statutEch3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(statutEch2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(statutEch1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(version)
@@ -591,6 +628,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
                                 .addComponent(selectEch5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(compteur3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -603,7 +641,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(pause5))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(0, 17, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -659,7 +697,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                                 .addComponent(statutRemote)
                                 .addGap(18, 18, 18)
                                 .addComponent(Remote)))
-                        .addGap(281, 281, 281)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 719, Short.MAX_VALUE)
                         .addComponent(titre, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(594, 594, 594)
@@ -682,15 +720,21 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(titre)))
-                .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectEch1)
-                    .addComponent(compteur1)
-                    .addComponent(setCompteur1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(set1)
-                    .addComponent(reset1)
-                    .addComponent(pause1)
-                    .addComponent(arret1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(selectEch1)
+                            .addComponent(compteur1)
+                            .addComponent(setCompteur1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(set1)
+                            .addComponent(reset1)
+                            .addComponent(pause1)
+                            .addComponent(arret1)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(statutEch1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selectEch2)
@@ -699,7 +743,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addComponent(set2)
                     .addComponent(reset2)
                     .addComponent(pause2)
-                    .addComponent(arret2))
+                    .addComponent(arret2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(statutEch2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selectEch5)
@@ -708,8 +755,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addComponent(set5)
                     .addComponent(reset5)
                     .addComponent(pause5)
-                    .addComponent(arret3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                    .addComponent(arret3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(statutEch3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(voyant, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1080,6 +1130,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JTextField setCompteur2;
     private javax.swing.JTextField setCompteur3;
     private javax.swing.JButton start;
+    private javax.swing.JLabel statutEch1;
+    private javax.swing.JLabel statutEch2;
+    private javax.swing.JLabel statutEch3;
     private javax.swing.JLabel statutRemote;
     private javax.swing.JLabel statutRs232;
     private javax.swing.JButton stop;
@@ -1134,6 +1187,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             boolean erreur = rapport.getErreurs()[i];
             boolean actif = rapport.getActifs()[i];
+            boolean pause = rapport.getPauses()[i];
+            boolean arret = rapport.getArrets()[i];
+
             String total = Long.toString(rapport.getTotaux()[i]);
 
             if (erreur) {
@@ -1146,13 +1202,28 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
 
             if (!actif) {
-                
-                  color = Color.GRAY;
+
+                color = Color.GRAY;
             }
-            
-            JLabel l = compteurs.get(i);
-            l.setForeground(color);
-            l.setText(total);
+
+            if (pause) {
+
+                color = Color.ORANGE;
+            }
+
+            if (arret) {
+
+                color = Color.YELLOW;
+            }
+
+            JLabel lab1 = compteurs.get(i);
+            lab1.setForeground(color);
+            lab1.setText(total);
+
+            JLabel lab2 = statutsEchs.get(i);
+            lab2.setForeground(color);
+            lab2.setBackground(color);
+           
 
         }
 

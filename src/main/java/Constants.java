@@ -33,8 +33,9 @@ public class Constants {
 
     public static final String TOTAL = "@TOTAL";
     public static final String ACTIFS = "@ACTIFS";
-    public static final String ARRET = "@ARRET";
-    public static final String ERREUR = "@ERREUR";
+    public static final String ARRETS = "@ARRETS";
+    public static final String PAUSES = "@PAUSES";
+    public static final String ERREUR = "@ERREURS";
     public static final String ORDRE = "W:";
     public static final String SEQUENCE = "@SEQ";
     public static final String ACQUITTEMENT = "W:ACQ";
@@ -68,7 +69,8 @@ public class Constants {
                                                                         // pour l'enregsitrement
                                                                         // @TOTAL:#1:1233:na:na indique que le total pour l'échantillon 1 est 1233 cycles.
                public static final String ACTIFS = "@ACTIFS";           // @ACTIFS:1:0:1 remonte l'état d'activation des échantillons 1=actif, 0=inactif
-               public static final String ARRET = "@ARRET";             // notification de l'arrêt de la scéance de test sur tous les échantillons
+               public static final String ARRET = "@ARRETS";            // @ARRETs:1:0:1 notification de l'arrêt de la scéance de test les échantillons
+               public static final String PAUSES = "@PAUSES";           // @PAUSES:1:0:1 notification des pause de la scéance de test sur les échantillons
                public static final String ERREUR = "@ERREUR";           // @ERREUR:#0:1:0:1 remonte les cas d'erreur sur les échantillons 1=erreur, 0=aucune erreur
                                                                         // @ERREUR:#1:na:na:na notifie une erreur sur l'échantillon 1
                public static final String ORDRE = "W:";                 // préfixe d'un ordre envoyer depuis l'interface
