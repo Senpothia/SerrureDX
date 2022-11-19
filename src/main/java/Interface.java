@@ -3,6 +3,7 @@ import com.fazecast.jSerialComm.SerialPort;
 import java.awt.Color;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -38,6 +39,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     Connecteur connecteur = getConnecteur();
     Controller controller = new Controller();
 
+    private String nomDeFichier = null;
+    private File repertoire;
 
     /*
      * Creates new form Interface
@@ -101,6 +104,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         groupBits = new javax.swing.ButtonGroup();
         groupStop = new javax.swing.ButtonGroup();
         groupParity = new javax.swing.ButtonGroup();
+        selectionFichier = new javax.swing.JFileChooser();
         titre = new javax.swing.JLabel();
         compteur1 = new javax.swing.JLabel();
         selectEch1 = new javax.swing.JRadioButton();
@@ -216,6 +220,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         set4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         set4.setForeground(new java.awt.Color(255, 51, 0));
         set4.setText("Set");
+
+        selectionFichier.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Test d'endurance DX200I");
@@ -359,6 +365,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
 
         MenuFichier.setText("Fichier");
+        MenuFichier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuFichierActionPerformed(evt);
+            }
+        });
 
         menuNouveau.setText("Nouveau");
         menuNouveau.addActionListener(new java.awt.event.ActionListener() {
@@ -372,6 +383,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         MenuFichier.add(menuModifier);
 
         menuSauvegardes.setLabel("Sauvegardes");
+        menuSauvegardes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSauvegardesActionPerformed(evt);
+            }
+        });
         MenuFichier.add(menuSauvegardes);
         MenuFichier.add(jSeparator1);
 
@@ -926,7 +942,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_stopActionPerformed
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
+        if (nomDeFichier == null) {
 
+            // TODO
+        }
         if (!connexionActive) {
 
             montrerError("Vous devez activer la connexion série!", "Défaut de connexion");
@@ -980,6 +999,20 @@ public class Interface extends javax.swing.JFrame implements Observer {
         startWaiting(true);
 
     }//GEN-LAST:event_menuAutoActionPerformed
+
+    private void menuSauvegardesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSauvegardesActionPerformed
+
+        nomDeFichier = JOptionPane.showInputDialog("Entrez un nom pour le fichier de sauvegarde!");
+        int showOpenDialog = selectionFichier.showOpenDialog(this);
+        repertoire = selectionFichier.getSelectedFile();
+        nomDeFichier = repertoire + "\\" + nomDeFichier + ".csv";
+        console.setForeground(Color.red);
+        console.setText("Les résultats seront sauvegardés à l'emplacement: " + nomDeFichier);
+    }//GEN-LAST:event_menuSauvegardesActionPerformed
+
+    private void MenuFichierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuFichierActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MenuFichierActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1088,6 +1121,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JRadioButton selectEch3;
     private javax.swing.JRadioButton selectEch4;
     private javax.swing.JRadioButton selectEch5;
+    private javax.swing.JFileChooser selectionFichier;
     private javax.swing.JButton set1;
     private javax.swing.JButton set2;
     private javax.swing.JButton set3;

@@ -126,12 +126,20 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="groupParity">
     </Component>
+    <Component class="javax.swing.JFileChooser" name="selectionFichier">
+      <Properties>
+        <Property name="fileSelectionMode" type="int" value="1"/>
+      </Properties>
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="MenuFichier">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fichier"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuFichierActionPerformed"/>
+          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuNouveau">
               <Properties>
@@ -150,6 +158,9 @@
               <Properties>
                 <Property name="label" type="java.lang.String" value="Sauvegardes"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuSauvegardesActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
