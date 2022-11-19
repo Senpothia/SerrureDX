@@ -13,6 +13,7 @@ import javax.swing.ButtonModel;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 
@@ -47,11 +48,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private List<JLabel> compteurs = new ArrayList<>();
     private List<JLabel> statutsEchs = new ArrayList<>();
     private List<JTextField> setCompteurs = new ArrayList<>();
+    private List<JRadioButton> echantillonsActifs = new ArrayList<>();
 
     private List<String> ordresSETS = new ArrayList<>();
     private List<String> ordresRAZ = new ArrayList<>();
     private List<String> ordresPAUSES = new ArrayList<>();
     private List<String> ordresSTOP = new ArrayList<>();
+    private List<String> ordresCadences = new ArrayList<>();
 
     /*
      * Creates new form Interface
@@ -114,6 +117,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
         ordresSTOP.add(Constants.STOP2);
         ordresSTOP.add(Constants.STOP3);
 
+        ordresCadences.add(Constants.CADENCE1);
+        ordresCadences.add(Constants.CADENCE2);
+        ordresCadences.add(Constants.CADENCE3);
+
+        echantillonsActifs.add(selectEch1);
+        echantillonsActifs.add(selectEch2);
+        echantillonsActifs.add(selectEch3);
+
         this.getContentPane().setBackground(new Color(128, 193, 255));
 
         List<JRadioButtonMenuItem> listePorts = new ArrayList<JRadioButtonMenuItem>();
@@ -145,6 +156,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         groupStop = new javax.swing.ButtonGroup();
         groupParity = new javax.swing.ButtonGroup();
         selectionFichier = new javax.swing.JFileChooser();
+        groupCadence = new javax.swing.ButtonGroup();
         titre = new javax.swing.JLabel();
         compteur1 = new javax.swing.JLabel();
         selectEch1 = new javax.swing.JRadioButton();
@@ -160,8 +172,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         set2 = new javax.swing.JButton();
         reset5 = new javax.swing.JButton();
         compteur3 = new javax.swing.JLabel();
-        pause5 = new javax.swing.JButton();
-        selectEch5 = new javax.swing.JRadioButton();
+        pause3 = new javax.swing.JButton();
+        selectEch3 = new javax.swing.JRadioButton();
         setCompteur3 = new javax.swing.JTextField();
         set3 = new javax.swing.JButton();
         voyant = new javax.swing.JLabel();
@@ -318,17 +330,17 @@ public class Interface extends javax.swing.JFrame implements Observer {
         compteur3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         compteur3.setText("0");
 
-        pause5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        pause5.setForeground(new java.awt.Color(255, 102, 51));
-        pause5.setText("Pause");
-        pause5.addActionListener(new java.awt.event.ActionListener() {
+        pause3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        pause3.setForeground(new java.awt.Color(255, 102, 51));
+        pause3.setText("Pause");
+        pause3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pause5ActionPerformed(evt);
+                pause3ActionPerformed(evt);
             }
         });
 
-        selectEch5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        selectEch5.setText("Echantillon 3");
+        selectEch3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        selectEch3.setText("Echantillon 3");
 
         setCompteur3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
@@ -660,14 +672,32 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         cadence.setText("Cadence");
 
+        groupCadence.add(cad_2_min);
         cad_2_min.setSelected(true);
         cad_2_min.setText("2x1min");
+        cad_2_min.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cad_2_minActionPerformed(evt);
+            }
+        });
         cadence.add(cad_2_min);
 
+        groupCadence.add(cad_1_par_2mins);
         cad_1_par_2mins.setText("1x2mins");
+        cad_1_par_2mins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cad_1_par_2minsActionPerformed(evt);
+            }
+        });
         cadence.add(cad_1_par_2mins);
 
+        groupCadence.add(cad_1_par_5mins);
         cad_1_par_5mins.setText("1x5mins");
+        cad_1_par_5mins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cad_1_par_5minsActionPerformed(evt);
+            }
+        });
         cadence.add(cad_1_par_5mins);
 
         menuConfig.add(cadence);
@@ -751,7 +781,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                                         .addGroup(layout.createSequentialGroup()
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addGroup(layout.createSequentialGroup()
-                                                    .addComponent(selectEch5)
+                                                    .addComponent(selectEch3)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                     .addComponent(compteur3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createSequentialGroup()
@@ -773,7 +803,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                                         .addGap(34, 34, 34)
                                         .addComponent(reset5)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(pause5)))))
+                                        .addComponent(pause3)))))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(arret1)
@@ -832,12 +862,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
                         .addComponent(statutEch2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectEch5)
+                    .addComponent(selectEch3)
                     .addComponent(compteur3)
                     .addComponent(setCompteur3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(set3)
                     .addComponent(reset5)
-                    .addComponent(pause5)
+                    .addComponent(pause3)
                     .addComponent(arret3)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -1040,8 +1070,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
             return;
         }
 
-        startRequested();
-        connecteur.envoyerData(Constants.ORDRE_MARCHE);
+        int i = envoyerConfiguration();
+        console.setForeground(Color.RED);
+        console.setText("En attente de démarrage!");
+        if (i == -1) {
+            return;
+        }
 
 
     }//GEN-LAST:event_startActionPerformed
@@ -1149,20 +1183,34 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     }//GEN-LAST:event_pause2ActionPerformed
 
-    private void pause5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pause5ActionPerformed
+    private void pause3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pause3ActionPerformed
 
         envoyerOrdrePause(3);
-    }//GEN-LAST:event_pause5ActionPerformed
+    }//GEN-LAST:event_pause3ActionPerformed
 
     private void arret2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret2ActionPerformed
-        
+
         envoyerOrdreStop(2);
     }//GEN-LAST:event_arret2ActionPerformed
 
     private void arret3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret3ActionPerformed
-      
+
         envoyerOrdreStop(3);
     }//GEN-LAST:event_arret3ActionPerformed
+
+    private void cad_2_minActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cad_2_minActionPerformed
+
+        envoyerOdreCadence(1);
+    }//GEN-LAST:event_cad_2_minActionPerformed
+
+    private void cad_1_par_2minsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cad_1_par_2minsActionPerformed
+
+        envoyerOdreCadence(2);
+    }//GEN-LAST:event_cad_1_par_2minsActionPerformed
+
+    private void cad_1_par_5minsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cad_1_par_5minsActionPerformed
+        envoyerOdreCadence(3);
+    }//GEN-LAST:event_cad_1_par_5minsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1230,6 +1278,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem deconnexionRemote;
     private javax.swing.ButtonGroup groupBaud;
     private javax.swing.ButtonGroup groupBits;
+    private javax.swing.ButtonGroup groupCadence;
     private javax.swing.ButtonGroup groupParity;
     private javax.swing.ButtonGroup groupPorts;
     private javax.swing.ButtonGroup groupStop;
@@ -1255,14 +1304,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton pause;
     private javax.swing.JButton pause1;
     private javax.swing.JButton pause2;
-    private javax.swing.JButton pause5;
+    private javax.swing.JButton pause3;
     private javax.swing.JMenuItem remoteSelect;
     private javax.swing.JButton reset1;
     private javax.swing.JButton reset2;
     private javax.swing.JButton reset5;
     private javax.swing.JRadioButton selectEch1;
     private javax.swing.JRadioButton selectEch2;
-    private javax.swing.JRadioButton selectEch5;
+    private javax.swing.JRadioButton selectEch3;
     private javax.swing.JFileChooser selectionFichier;
     private javax.swing.JButton set1;
     private javax.swing.JButton set2;
@@ -1320,6 +1369,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
         traiterRapport(rapport);                    // Analyse du rapport pour mise à jour de l'interface
         console.setForeground(rapport.color);
         console.setText(rapport.getLog());
+        if (rapport.acquittement) {
+            connecteur.envoyerData(Constants.ORDRE_MARCHE);
+        }
+        startRequested();
 
     }
 
@@ -1581,10 +1634,24 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void envoyerInitCompteur(int i) {
 
-        String compteur = setCompteurs.get(i - 1).getText();
-        String ordre = ordresSETS.get(i - 1) + ":" + compteur;
-        System.out.println("Ordre:" + ordre);
-        connecteur.envoyerData(ordre);
+        try {
+            String compteur = setCompteurs.get(i - 1).getText();
+            try {
+                Long.parseLong(compteur);
+                String ordre = ordresSETS.get(i - 1) + ":" + compteur;
+                System.out.println("Ordre:" + ordre);
+                connecteur.envoyerData(ordre);
+
+            } catch (Exception e) {
+
+                montrerError("Vous devez indiquez une valeur numérique!", "Erreur de format");
+            }
+
+        } catch (Exception e) {
+
+            montrerError("Vous devez determiner une valeur", "Défaut de valeur");
+        }
+
     }
 
     private void envoyerResetCompteur(int i) {
@@ -1606,6 +1673,66 @@ public class Interface extends javax.swing.JFrame implements Observer {
         String ordre = ordresSTOP.get(i - 1);
         System.out.println("Ordre:" + ordre);
         connecteur.envoyerData(ordre);
+    }
+
+    private void envoyerOdreCadence(int i) {
+
+        String ordre = ordresCadences.get(i - 1);
+        System.out.println("Ordre:" + ordre);
+        connecteur.envoyerData(ordre);
+
+    }
+
+    private int envoyerConfiguration() {
+
+        String ordre = Constants.CONFIG;
+        String s;
+
+        for (int i = 0; i < 3; i++) {
+
+            actifs[i] = echantillonsActifs.get(i).isSelected();
+
+            s = actifs[i] ? ":1" : ":0";
+            ordre = ordre + s;
+
+        }
+        if (ordre.equals("W:CONFIG:0:0:0")) {
+
+            montrerError("Vous devez sélectionner les échantillons actifs", "Défaut de configuration");
+            return -1;
+        }
+
+        String cadence = null;
+        if (cad_1_par_2mins.isSelected()) {
+            cadence = ":2";
+        }
+
+        if (cad_1_par_5mins.isSelected()) {
+            cadence = ":3";
+        }
+
+        if (cad_2_min.isSelected()) {
+            cadence = ":1";
+        }
+
+        ordre = ordre + cadence;
+
+        String mode = null;
+
+        if (menuManuel.isSelected()) {
+
+            mode = ":0";
+
+        } else {
+            mode = ":1";
+        }
+
+        ordre = ordre + mode;
+
+        System.out.println("Config: " + ordre);
+        connecteur.envoyerData(ordre);
+        return 0;
+
     }
 
 }

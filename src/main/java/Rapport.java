@@ -21,6 +21,7 @@ public class Rapport {
     private boolean sauvegarde = false;
     boolean marche = false;
     boolean pause = false;
+    boolean acquittement = false;
 
     public Color getColor() {
         return color;
@@ -174,6 +175,14 @@ public class Rapport {
 
     public void setPauses(boolean[] pauses) {
         this.pauses = pauses;
+    }
+
+    public boolean isAcquittement() {
+        return acquittement;
+    }
+
+    public void setAcquittement(boolean acquittement) {
+        this.acquittement = acquittement;
     }
     
     

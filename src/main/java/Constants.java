@@ -41,7 +41,10 @@ public class Constants {
     public static final String FIN = "@FIN";
     public static final String ACQUITTEMENT = "W:ACQ";
     public static final String FICHIER = "W:FICHIER";
-
+    public static final String CADENCE1 = "W:CADENCE:1";
+    public static final String CADENCE2 = "W:CADENCE:2";
+    public static final String CADENCE3 = "W:CADENCE:3";
+    public static final String CONFIG = "W:CONFIG";
 
     /*        
                PROTOCOLE RS-232
