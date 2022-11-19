@@ -443,9 +443,9 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="pause6" min="-2" max="-2" attributes="0"/>
-                          <Component id="pause7" min="-2" max="-2" attributes="0"/>
-                          <Component id="pause8" min="-2" max="-2" attributes="0"/>
+                          <Component id="arret1" min="-2" max="-2" attributes="0"/>
+                          <Component id="arret2" min="-2" max="-2" attributes="0"/>
+                          <Component id="arret3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="162" max="-2" attributes="0"/>
                   </Group>
@@ -512,7 +512,7 @@
                   <Component id="set1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="reset1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pause1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="pause6" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="arret1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -522,7 +522,7 @@
                   <Component id="set2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="reset2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pause2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="pause7" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="arret2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -532,7 +532,7 @@
                   <Component id="set5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="reset5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pause5" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="pause8" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="arret3" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="34" max="32767" attributes="0"/>
               <Component id="voyant" min="-2" pref="69" max="-2" attributes="0"/>
@@ -800,7 +800,7 @@
         <Property name="text" type="java.lang.String" value="REMOTE"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="pause6">
+    <Component class="javax.swing.JButton" name="arret1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="24" style="1"/>
@@ -815,10 +815,10 @@
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
       </AccessibilityProperties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pause6ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="arret1ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="pause7">
+    <Component class="javax.swing.JButton" name="arret2">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="24" style="1"/>
@@ -829,7 +829,7 @@
         <Property name="text" type="java.lang.String" value="STOP"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="pause8">
+    <Component class="javax.swing.JButton" name="arret3">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="24" style="1"/>

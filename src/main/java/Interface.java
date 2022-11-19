@@ -127,9 +127,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
         statutRemote = new javax.swing.JLabel();
         RS232 = new javax.swing.JLabel();
         Remote = new javax.swing.JLabel();
-        pause6 = new javax.swing.JButton();
-        pause7 = new javax.swing.JButton();
-        pause8 = new javax.swing.JButton();
+        arret1 = new javax.swing.JButton();
+        arret2 = new javax.swing.JButton();
+        arret3 = new javax.swing.JButton();
         start = new javax.swing.JButton();
         stop = new javax.swing.JButton();
         pause = new javax.swing.JButton();
@@ -273,23 +273,23 @@ public class Interface extends javax.swing.JFrame implements Observer {
         Remote.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         Remote.setText("REMOTE");
 
-        pause6.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        pause6.setForeground(new java.awt.Color(255, 0, 0));
-        pause6.setText("STOP");
-        pause6.setToolTipText("");
-        pause6.addActionListener(new java.awt.event.ActionListener() {
+        arret1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        arret1.setForeground(new java.awt.Color(255, 0, 0));
+        arret1.setText("STOP");
+        arret1.setToolTipText("");
+        arret1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pause6ActionPerformed(evt);
+                arret1ActionPerformed(evt);
             }
         });
 
-        pause7.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        pause7.setForeground(new java.awt.Color(255, 0, 0));
-        pause7.setText("STOP");
+        arret2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        arret2.setForeground(new java.awt.Color(255, 0, 0));
+        arret2.setText("STOP");
 
-        pause8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        pause8.setForeground(new java.awt.Color(255, 0, 0));
-        pause8.setText("STOP");
+        arret3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        arret3.setForeground(new java.awt.Color(255, 0, 0));
+        arret3.setText("STOP");
 
         start.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         start.setForeground(new java.awt.Color(0, 102, 0));
@@ -639,9 +639,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
                                         .addGap(188, 188, 188)))))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pause6)
-                            .addComponent(pause7)
-                            .addComponent(pause8))
+                            .addComponent(arret1)
+                            .addComponent(arret2)
+                            .addComponent(arret3))
                         .addGap(162, 162, 162))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(console, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -690,7 +690,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addComponent(set1)
                     .addComponent(reset1)
                     .addComponent(pause1)
-                    .addComponent(pause6))
+                    .addComponent(arret1))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selectEch2)
@@ -699,7 +699,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addComponent(set2)
                     .addComponent(reset2)
                     .addComponent(pause2)
-                    .addComponent(pause7))
+                    .addComponent(arret2))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selectEch5)
@@ -708,7 +708,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addComponent(set5)
                     .addComponent(reset5)
                     .addComponent(pause5)
-                    .addComponent(pause8))
+                    .addComponent(arret3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(voyant, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -723,7 +723,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 .addGap(16, 16, 16))
         );
 
-        pause6.getAccessibleContext().setAccessibleName("");
+        arret1.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -732,9 +732,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuNouveauActionPerformed
 
-    private void pause6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pause6ActionPerformed
+    private void arret1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_pause6ActionPerformed
+    }//GEN-LAST:event_arret1ActionPerformed
 
     private void btnConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnexionActionPerformed
 
@@ -1013,6 +1013,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel RS232;
     private javax.swing.JLabel Remote;
     private javax.swing.JMenuItem ajouterRemote;
+    private javax.swing.JButton arret1;
+    private javax.swing.JButton arret2;
+    private javax.swing.JButton arret3;
     private javax.swing.JRadioButtonMenuItem baud115200;
     private javax.swing.JRadioButtonMenuItem baud19200;
     private javax.swing.JRadioButtonMenuItem baud38400;
@@ -1062,9 +1065,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton pause1;
     private javax.swing.JButton pause2;
     private javax.swing.JButton pause5;
-    private javax.swing.JButton pause6;
-    private javax.swing.JButton pause7;
-    private javax.swing.JButton pause8;
     private javax.swing.JMenuItem remoteSelect;
     private javax.swing.JButton reset1;
     private javax.swing.JButton reset2;
