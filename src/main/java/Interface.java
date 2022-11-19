@@ -1142,12 +1142,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
         String inputLine = (String) arg;
         console.setText(inputLine);
         Rapport rapport = controller.parser(inputLine);
-        gestionRapport(rapport);
-        controller.parser("W:ACQ");
+        traiterRapport(rapport);     // Analyse du rapport pour mise à jour de l'interface
+        controller.parser(Constants.ACQUITTEMENT);  // demande de sauvegarde du rapport
 
     }
 
-    private void gestionRapport(Rapport rapport) {
+    private void traiterRapport(Rapport rapport) {
 
     }
 

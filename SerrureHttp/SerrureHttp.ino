@@ -7,21 +7,21 @@ Description du protocole
  
 */
 
-const int R1=22;  // Cablâge: Sortie Digital 22
-const int R2=23;  // Cablâge: Sortie Digital 23
-const int R3=29;  // Cablâge: Sortie Digital 29
+const int R1=22;  // Cablâge: Sortie Digital 22 - relais 1
+const int R2=23;  // Cablâge: Sortie Digital 23 - relais 2
+const int R3=29;  // Cablâge: Sortie Digital 29 - relais 3
 const int R4=39;  // Cablâge: Sortie Digital 39
 const int R5=49;  // Cablâge: Sortie Digital 49
-const int R6=51;  // Cablâge: Sortie Digital 51
+const int R6=51;  // Cablâge: Sortie Digital 51 - Led temoin marche / arrêt
 const int R7=52;  // Cablâge: Sortie Digital 52
 const int R8=53;  // Cablâge: Sortie Digital 53
 
-const int I1 = 9;
-const int I2 = 8;
-const int I3 = 7;
-const int I4 = 6;
-const int I5 = 5;
-const int I6 = 4;
+const int I1 = 9; // Entrée sensor 1
+const int I2 = 8; // Entrée contact 1
+const int I3 = 7; // Entrée sensor 2
+const int I4 = 6; // Entrée contact 2
+const int I5 = 5; // Entrée sensor 3
+const int I6 = 4; // Entrée contact 3
 const int I7 = 3;
 const int I8 = 2;
 
@@ -40,7 +40,8 @@ boolean pause = false;
 
 // Variables de test
 
-int ECHANTILLONS = 3;
+int ECHANTILLONS = 3;  // Nombre d'emplacement d'échantillon sur le banc de test
+
 boolean echantillons[3] = {false, false, false};
 boolean erreurs[3] = {false, false, false};
 boolean actifs[3] =  {false, false, false};
@@ -98,17 +99,11 @@ void lecture(){
   
   String reception;
   
- 
         reception = Serial.readString();
-       // Serial.print(reception);
         reception.trim();
-       // Serial.print(reception.substring(1,3));
-
 
 if (reception == "W:0"){   // Demande lancement de test
             
-            //Serial.print("Ordre de mise en marche");
-
              digitalWrite(R6, HIGH);  
             if (!pause){
               
@@ -128,11 +123,8 @@ if (reception == "W:0"){   // Demande lancement de test
 
  if (reception == "W:1"){   // Demande de mise à l'arrêt
             
-           //Serial.print("Ordre de mise en stop");
-
-
            digitalWrite(R6, LOW);  
-           Serial.println(String("@ARRET du test"));
+           Serial.print(String("@ARRET du test"));
            test = false;
            pause = false;
            
@@ -154,7 +146,7 @@ if (reception == "W:0"){   // Demande lancement de test
             // Serial.print("Ordre de mise en pause");
 
            digitalWrite(R6, HIGH);  
-           Serial.println(String("@:Test mis en pause"));
+           Serial.print(String("@:Test mis en pause"));
            test = true;
            pause = true;
  } 
@@ -162,28 +154,28 @@ if (reception == "W:0"){   // Demande lancement de test
 
 if (reception == "W:RAZ1"){  // Demande de mettre en pause le test
         
-           Serial.println(String("@:Reset compteur échantillon 1"));
+           Serial.print(String("@:Reset compteur échantillon 1"));
            totaux[0] = 0;
            
                   }   
 
 if (reception == "W:RAZ2"){  // Demande de mettre en pause le test
   
-           Serial.println(String("@:Reset compteur échantillon 2"));
+           Serial.print(String("@:Reset compteur échantillon 2"));
            totaux[1] = 0;
            
                   }   
 
 if (reception == "W:RAZ3"){  // Demande de mettre en pause le test
   
-           Serial.println(String("@:Reset compteur échantillon 3"));
+           Serial.print(String("@:Reset compteur échantillon 3"));
            totaux[2] = 0;
            
                   }   
 
 if (reception.substring(0,3) == "w:!"){
 
-    Serial.println(String("@:Configuration reçue: ") + String(mot));
+    Serial.print(String("@:Configuration reçue: ") + String(mot));
 
     int j=0;
     for (int i=1; i<6; i=i+2){
@@ -217,9 +209,7 @@ if (reception.substring(0,3) == "w:!"){
       if (mot[1] == '1'){
 
           String compteur1 = String(mot).substring(3); 
-          //Serial.println(compteur1);
           long val = compteur1.toInt();
-          //Serial.println(val);
           totaux[0] = val;
            
         }
@@ -257,9 +247,6 @@ if (reception.substring(0,3) == "w:!"){
 
 void cycle(){
 
- //Serial.println("test: " + String(test)+ "; pause: " + String(pause) );
-
- 
      if (!pause){
       
         for(int i=0; i<ECHANTILLONS; i++){
@@ -278,11 +265,10 @@ void cycle(){
                       actifs[i] = false;
                       //ERREUR0++;
                       //erreurEnCours = true;
-                      Serial.println("@:ERREUR:SR:" + String(i+1) + " ");
+                      Serial.print("@:ERREUR:SR:" + String(i+1));
                       //start = false;
                       sonorite = true;
-                      //sortieERREUR();
-        
+                   
                    }
         
                 e2 = digitalRead(contacts[i]);    // Lecture entrée I2
@@ -293,30 +279,23 @@ void cycle(){
                       actifs[i] = false;
                       //if(!erreurEnCours){ERREUR0++;}
                       
-                      Serial.println("@:ERREUR:CP:" + String(i+1) + " ");
+                      Serial.print("@:ERREUR:CP:" + String(i+1));
                       //start = false;
                       sonorite = true;
-                      //sortieERREUR();
-        
+                    
                   }
                 delay(5000); 
                 
                 totaux[i]++;
-                String info = "@TOTAL ECH #" + String(i+1) + ": "  + String(totaux[i]) + " ";
-                Serial.println(info);
-                //Serial.println(TOTAUX[i]);
-                //erreurEnCours = false;
-        
+                String info = "@TOTAL ECH #" + String(i+1) + ": "  + String(totaux[i]);
+                Serial.print(info);         
             }
      
-    
             }
             delay(3000);
             transfertActifs();
-            Serial.println("@SEQ");
+            Serial.print("@SEQ");
             delay(1000); 
-            //transfertActifs();
-      
       }
 
   }
@@ -341,7 +320,7 @@ void cycle(){
      
       }
   
-    Serial.println(listeActifs);
+    Serial.print(listeActifs);
     delay(5000); 
   
   }

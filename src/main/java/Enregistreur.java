@@ -9,5 +9,14 @@
  * @author Michel
  */
 public class Enregistreur {
+
+    void sauvegarder(Rapport rapport) {
+      
+    }
+
+    void creerFichier(String inputLine) {
+        
+        
+    }
     
 }

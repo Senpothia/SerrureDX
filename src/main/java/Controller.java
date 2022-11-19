@@ -10,29 +10,29 @@
  */
 public class Controller {
 
-    private String actifs = "@ACTIFS";
-    private String total = "@TOTAL";
-    private String arret = "@ARRET";
-    private String sequence = "@SEQ";
-    private String erreur = "@ERREUR";
-    private String message = "W:";
-
     private boolean isCompteur;
     private boolean isActifs;
     private boolean isArret;
     private boolean isErreur;
     private boolean isSequence;
     private boolean isOrdre;
+    private boolean isAcquittement;
+     private boolean isFichier;
+    
     private Rapport rapport = new Rapport();
+    private Enregistreur enregistreur = new Enregistreur();
 
     public Rapport parser(String inputLine) {
 
+        inputLine = inputLine.trim();
         isCompteur = inputLine.startsWith(Constants.TOTAL);
         isActifs = inputLine.startsWith(Constants.ACTIFS);
         isArret = inputLine.startsWith(Constants.ARRET);
         isErreur = inputLine.startsWith(Constants.ERREUR);
         isOrdre = inputLine.startsWith(Constants.ORDRE);
         isSequence = inputLine.startsWith(Constants.SEQUENCE);
+        isAcquittement = inputLine.startsWith(Constants.ACQUITTEMENT);
+        isFichier = inputLine.startsWith(Constants.FICHIER);
 
         System.out.println("isCompteur: " + isCompteur);
         System.out.println("isActif: " + isActifs);
@@ -43,6 +43,7 @@ public class Controller {
 
         if (isCompteur) {
 
+            System.out.println("inputLine: " + inputLine);
             gestionCompteurs(inputLine);
 
         }
@@ -75,32 +76,63 @@ public class Controller {
             gestionOrdres(inputLine);
 
         }
+        
+        if (isAcquittement){
+        
+            gestionSauvegarde(inputLine);
+        }
+        
+         if (isAcquittement){
+        
+            creationFichier(inputLine);
+        }
+        
         return rapport;
 
     }
 
     private void gestionCompteurs(String inputLine) {
 
-        String[] recept = inputLine.split(" ");
-        String compteur = recept[3];
-        String ech = recept[2];
+        // @TOTAL:#0:111:222:333 remonte la valeur des compteurs. 111, valeur compteur 1, ...Transmis en fin de séquence pour l'enregsitrement
+        // @TOTAL:#1:1233:na:na indique que le total pour l'échantillon 1 est 1233 cycles.
+        String[] recept = inputLine.split(":");
+        // recept[0] = @TOTAL 
+        String ech = recept[1];
+        String compteur1 = recept[2];
+        String compteur2 = recept[3];
+        String compteur3 = recept[4];
+
         //  System.out.println("num echantillon: " + recept[2]);
         //  System.out.println("Compteur: " + recept[3]);
+        if (ech.equals("#1")) {
 
-        if (ech.equals("#1:")) {
+            System.out.println("Réception total pour ech 1: " + compteur1);
+            rapport.setTotal1(Long.parseLong(compteur1));
+            return;
+        }
 
-            rapport.setTotal1(Long.parseLong(compteur));
+        if (ech.equals("#2")) {
+
+            System.out.println("Réception total pour ech 2: " + compteur1);
+            rapport.setTotal2(Long.parseLong(compteur1));
+            return;
+        }
+
+        if (ech.equals("#3")) {
+
+            System.out.println("Réception total pour ech 3: " + compteur1);
+            rapport.setTotal3(Long.parseLong(compteur1));
+            return;
 
         }
 
-        if (ech.equals("#2:")) {
+        if (ech.equals("#0")) {
 
-            rapport.setTotal2(Long.parseLong(compteur));
-        }
-
-        if (ech.equals("#3:")) {
-
-            rapport.setTotal3(Long.parseLong(compteur));
+            System.out.println("Réception total des 3 échantillons: " + compteur1 + ";" + compteur2 + ";" + compteur3);
+            rapport.setTotal1(Long.parseLong(compteur1));
+            rapport.setTotal2(Long.parseLong(compteur2));
+            rapport.setTotal3(Long.parseLong(compteur3));
+            return;
 
         }
 
@@ -174,6 +206,16 @@ public class Controller {
             rapport.setSauvegarde(false);
 
         }
+    }
+
+    private void gestionSauvegarde(String inputLine) {
+       
+        enregistreur.sauvegarder(rapport);
+    }
+
+    private void creationFichier(String inputLine) {
+        
+        enregistreur.creerFichier(inputLine);
     }
 
 }
