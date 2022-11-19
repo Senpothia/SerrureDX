@@ -6,7 +6,6 @@ import java.awt.Color;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Michel
@@ -22,6 +21,7 @@ public class Rapport {
     boolean marche = false;
     boolean pause = false;
     boolean acquittement = false;
+    boolean fermeture = false;
 
     public Color getColor() {
         return color;
@@ -183,6 +183,14 @@ public class Rapport {
 
     public void setAcquittement(boolean acquittement) {
         this.acquittement = acquittement;
+    }
+
+    public boolean isFermeture() {
+        return fermeture;
+    }
+
+    public void setFermeture(boolean fermeture) {
+        this.fermeture = fermeture;
     }
     
     

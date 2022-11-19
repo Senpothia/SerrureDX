@@ -38,13 +38,15 @@ public class Constants {
     public static final String ERREUR = "@ERREURS";
     public static final String ORDRE = "W:";
     public static final String SEQUENCE = "@SEQ";
+    public static final String ACQ_FERMER = "@FERMER";
     public static final String FIN = "@FIN";
-    public static final String ACQUITTEMENT = "W:ACQ";
+    public static final String ACQUITTEMENT = "@:ACQ";
     public static final String FICHIER = "W:FICHIER";
     public static final String CADENCE1 = "W:CADENCE:1";
     public static final String CADENCE2 = "W:CADENCE:2";
     public static final String CADENCE3 = "W:CADENCE:3";
     public static final String CONFIG = "W:CONFIG";
+    public static final String FERMETURE = "W:FERMER";
 
     /*        
                PROTOCOLE RS-232

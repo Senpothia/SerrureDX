@@ -473,6 +473,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         MenuFichier.add(jSeparator1);
 
         menuQuitter.setText("Quitter");
+        menuQuitter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuQuitterActionPerformed(evt);
+            }
+        });
         MenuFichier.add(menuQuitter);
 
         jMenuBar1.add(MenuFichier);
@@ -1060,10 +1065,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_stopActionPerformed
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-        if (nomDeFichier == null) {
 
-            // TODO
-        }
         if (!connexionActive) {
 
             montrerError("Vous devez activer la connexion série!", "Défaut de connexion");
@@ -1125,6 +1127,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void menuSauvegardesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSauvegardesActionPerformed
 
         nomDeFichier = JOptionPane.showInputDialog("Entrez un nom pour le fichier de sauvegarde!");
+        if (nomDeFichier == null || nomDeFichier.equals("")) {
+            montrerError("Vous devez indiquer un nom de fichier valide!", "Nom de fichier incorrect");
+            return;
+        }
         int showOpenDialog = selectionFichier.showOpenDialog(this);
         repertoire = selectionFichier.getSelectedFile();
         nomDeFichier = repertoire + "\\" + nomDeFichier + ".csv";
@@ -1211,6 +1217,24 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void cad_1_par_5minsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cad_1_par_5minsActionPerformed
         envoyerOdreCadence(3);
     }//GEN-LAST:event_cad_1_par_5minsActionPerformed
+
+    private void menuQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuQuitterActionPerformed
+
+        int result = JOptionPane.showConfirmDialog(this, "Voulez-vous arrêter le test?", "Demande de fermeture",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (result == JOptionPane.YES_OPTION) {
+
+            System.out.println("Fermeture du programme");
+            fermeture();
+
+        } else if (result == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+
+    }//GEN-LAST:event_menuQuitterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1369,10 +1393,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
         traiterRapport(rapport);                    // Analyse du rapport pour mise à jour de l'interface
         console.setForeground(rapport.color);
         console.setText(rapport.getLog());
-        if (rapport.acquittement) {
-            connecteur.envoyerData(Constants.ORDRE_MARCHE);
-        }
-        startRequested();
 
     }
 
@@ -1420,6 +1440,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
             lab2.setForeground(color);
             lab2.setBackground(color);
 
+        }
+
+        if (rapport.acquittement) {
+            connecteur.envoyerData(Constants.ORDRE_MARCHE);
+            startRequested();
+        }
+
+        if (rapport.fermeture) {
+
+            System.exit(0);
         }
 
     }
@@ -1732,6 +1762,19 @@ public class Interface extends javax.swing.JFrame implements Observer {
         System.out.println("Config: " + ordre);
         connecteur.envoyerData(ordre);
         return 0;
+
+    }
+
+    private void fermeture() {
+
+        if (connexionActive) {
+
+            connecteur.envoyerData(Constants.FERMETURE);
+
+        } else {
+
+            System.exit(0);
+        }
 
     }
 
