@@ -1,3 +1,6 @@
+
+import java.awt.Color;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,7 +21,16 @@ public class Rapport {
     private boolean sauvegarde = false;
     boolean marche = false;
     boolean pause = false;
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
     String log = "";
+    Color color = null;
 
     public boolean[] getActifs() {
         return actifs;

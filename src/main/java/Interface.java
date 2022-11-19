@@ -1177,6 +1177,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         console.setText(inputLine);
         Rapport rapport = controller.parser(inputLine);
         traiterRapport(rapport);                    // Analyse du rapport pour mise à jour de l'interface
+        console.setForeground(rapport.color);
+        console.setText(rapport.getLog());
 
     }
 
@@ -1223,6 +1225,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             JLabel lab2 = statutsEchs.get(i);
             lab2.setForeground(color);
             lab2.setBackground(color);
+           
            
 
         }

@@ -1,3 +1,8 @@
+
+import java.awt.Color;
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -19,6 +24,7 @@ public class Controller {
     private boolean isOrdre;
     private boolean isAcquittement;
     private boolean isFichier;
+    private boolean isFin;
 
     private Rapport rapport = new Rapport();
     private Enregistreur enregistreur = new Enregistreur();
@@ -35,6 +41,7 @@ public class Controller {
         isSequence = inputLine.startsWith(Constants.SEQUENCE);
         isAcquittement = inputLine.startsWith(Constants.ACQUITTEMENT);
         isFichier = inputLine.startsWith(Constants.FICHIER);
+        isFin = inputLine.startsWith(Constants.FIN);
 
         System.out.println("isCompteur: " + isCompteur);
         System.out.println("isActif: " + isActifs);
@@ -43,6 +50,7 @@ public class Controller {
         System.out.println("isErreur: " + isErreur);
         System.out.println("isOrdre: " + isOrdre);
         System.out.println("isSequence: " + isSequence);
+        System.out.println("isFin: " + isFin);
 
         if (isCompteur) {
 
@@ -67,8 +75,8 @@ public class Controller {
             gestionArrets(inputLine);
 
         }
-        
-          if (isPause) {
+
+        if (isPause) {
 
             gestionPauses(inputLine);
 
@@ -93,6 +101,11 @@ public class Controller {
 
         if (isFichier) {
 
+        }
+
+        if (isFin) {
+
+            gestionFin(inputLine);
         }
 
         return rapport;
@@ -142,12 +155,17 @@ public class Controller {
 
         }
 
+        rapport.setLog("Test en cours");
+        rapport.setColor(Color.BLUE);
+
     }
 
     private void gestionSequence(String inputLine) {
 
-        rapport.setLog("Fin de séquence");
+        rapport.setLog("FIN DE SEQUENCE");
+        rapport.setColor(Color.RED);
         rapport.setSauvegarde(true);
+        enregistreur.sauvegarder(rapport);
 
     }
 
@@ -169,12 +187,23 @@ public class Controller {
             System.out.println("actif n°: " + i + " = " + rapport.getActifs()[i - 1]);
         }
 
+        String log = "RAPPORT ACTIFS: Ech1: ";
+        String s = rapport.getActif1() ? "actif - " : "inactif - ";
+        log = log + s;
+        s = rapport.getActif2() ? "actif - " : "inactif - ";
+        log = log + "Ech2: " + s;
+        s = rapport.getActif3() ? "actif" : "inactif";
+        log = log + "Ech3: " + s;
+
+        rapport.setLog(log);
+        rapport.setColor(Color.BLUE);
+
     }
 
     private void gestionArrets(String inputLine) {
 
         // @ARRETS:1:0:1 notification de l'arrêt de la scéance de test sur tous les échantillons
-         String[] extraction = extraire(inputLine);
+        String[] extraction = extraire(inputLine);
 
         System.out.println("traitement arrêts");
         for (int i = 0; i < 4; i++) {
@@ -186,16 +215,26 @@ public class Controller {
         for (int i = 1; i < 4; i++) {
 
             rapport.getArrets()[i - 1] = extraction[i].equals("0") ? false : true;
-            System.out.println("actif n°: " + i + " = " + rapport.getArrets()[i - 1]);
+            System.out.println("arrêt n°: " + i + " = " + rapport.getArrets()[i - 1]);
         }
 
+        String log = "RAPPORT ARRETS: Ech1: ";
+        String s = rapport.getArrets()[0] ? "actif - " : "arrêté - ";
+        log = log + s;
+        s = rapport.getArrets()[1] ? "actif - " : "arrêté - ";
+        log = log + "Ech2: " + s;
+        s = rapport.getArrets()[2] ? "actif" : "arrêté";
+        log = log + "Ech3: " + s;
+
+        rapport.setLog(log);
+        rapport.setColor(Color.RED);
+
     }
-    
-    
+
     private void gestionPauses(String inputLine) {
-        
-         // @PAUSES:1:0:1 notification de l'arrêt de la scéance de test sur tous les échantillons
-          String[] extraction = extraire(inputLine);
+
+        // @PAUSES:1:0:1 notification de l'arrêt de la scéance de test sur tous les échantillons
+        String[] extraction = extraire(inputLine);
 
         System.out.println("traitement pauses");
         for (int i = 0; i < 4; i++) {
@@ -209,13 +248,23 @@ public class Controller {
             rapport.getPauses()[i - 1] = extraction[i].equals("0") ? false : true;
             System.out.println("actif n°: " + i + " = " + rapport.getPauses()[i - 1]);
         }
-         
-        
+
+        String log = "RAPPORT PAUSES: Ech1: ";
+        String s = rapport.getPauses()[0] ? "actif - " : "en pause - ";
+        log = log + s;
+        s = rapport.getPauses()[1] ? "actif - " : "en pause - ";
+        log = log + "Ech2: " + s;
+        s = rapport.getPauses()[2] ? "actif" : "en pause";
+        log = log + "Ech3: " + s;
+
+        rapport.setLog(log);
+        rapport.setColor(Color.ORANGE);
+
     }
 
     private void gestionErreurs(String inputLine) {
 
-        // @ERREUR:#0:1:0:1 remonte les cas d'erreur sur les échantillons 1=erreur, 0=aucune erreur
+        // @ERREURS:#0:1:0:1 remonte les cas d'erreur sur les échantillons 1=erreur, 0=aucune erreur
         String[] extraction = extraire(inputLine);
 
         System.out.println("traitement actifs");
@@ -230,6 +279,17 @@ public class Controller {
             rapport.getErreurs()[i - 2] = extraction[i].equals("0") ? false : true;
             System.out.println("erreur n°: " + i + " = " + rapport.getErreurs()[i - 2]);
         }
+
+        String log = "RAPPORT ERREURS: Ech1: ";
+        String s = rapport.getErreur1() ? "actif - " : "en erreur - ";
+        log = log + s;
+        s = rapport.getErreur2() ? "actif - " : "en erreur - ";
+        log = log + "Ech2: " + s;
+        s = rapport.getErreur3() ? "actif" : "en erreur";
+        log = log + "Ech3: " + s;
+
+        rapport.setLog(log);
+        rapport.setColor(Color.RED);
 
     }
 
@@ -262,5 +322,12 @@ public class Controller {
 
     }
 
-    
+    private void gestionFin(String inputLine) {
+
+        rapport.setLog("Fin de test");
+        rapport.setSauvegarde(true);
+        enregistreur.sauvegarder(rapport);
+
+    }
+
 }

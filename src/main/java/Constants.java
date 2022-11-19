@@ -38,6 +38,7 @@ public class Constants {
     public static final String ERREUR = "@ERREURS";
     public static final String ORDRE = "W:";
     public static final String SEQUENCE = "@SEQ";
+    public static final String FIN = "@FIN";
     public static final String ACQUITTEMENT = "W:ACQ";
     public static final String FICHIER = "W:FICHIER";
 
