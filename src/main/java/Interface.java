@@ -48,7 +48,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private List<JLabel> statutsEchs = new ArrayList<>();
     private List<JTextField> setCompteurs = new ArrayList<>();
 
-    private List<String> ordreSETS = new ArrayList<>();
+    private List<String> ordresSETS = new ArrayList<>();
+    private List<String> ordresRAZ = new ArrayList<>();
+    private List<String> ordresPAUSES = new ArrayList<>();
+    private List<String> ordresSTOP = new ArrayList<>();
 
     /*
      * Creates new form Interface
@@ -95,9 +98,21 @@ public class Interface extends javax.swing.JFrame implements Observer {
         setCompteurs.add(setCompteur2);
         setCompteurs.add(setCompteur3);
 
-        ordreSETS.add(Constants.SET1);
-        ordreSETS.add(Constants.SET2);
-        ordreSETS.add(Constants.SET3);
+        ordresSETS.add(Constants.SET1);
+        ordresSETS.add(Constants.SET2);
+        ordresSETS.add(Constants.SET3);
+
+        ordresRAZ.add(Constants.RAZ1);
+        ordresRAZ.add(Constants.RAZ2);
+        ordresRAZ.add(Constants.RAZ3);
+
+        ordresPAUSES.add(Constants.PAUSE1);
+        ordresPAUSES.add(Constants.PAUSE2);
+        ordresPAUSES.add(Constants.PAUSE3);
+
+        ordresSTOP.add(Constants.STOP1);
+        ordresSTOP.add(Constants.STOP2);
+        ordresSTOP.add(Constants.STOP3);
 
         this.getContentPane().setBackground(new Color(128, 193, 255));
 
@@ -239,14 +254,29 @@ public class Interface extends javax.swing.JFrame implements Observer {
         reset1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         reset1.setForeground(new java.awt.Color(255, 51, 0));
         reset1.setText("Reset");
+        reset1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reset1ActionPerformed(evt);
+            }
+        });
 
         pause1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         pause1.setForeground(new java.awt.Color(255, 102, 51));
         pause1.setText("Pause");
+        pause1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pause1ActionPerformed(evt);
+            }
+        });
 
         reset2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         reset2.setForeground(new java.awt.Color(255, 51, 0));
         reset2.setText("Reset");
+        reset2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reset2ActionPerformed(evt);
+            }
+        });
 
         compteur2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         compteur2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -255,6 +285,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         pause2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         pause2.setForeground(new java.awt.Color(255, 102, 51));
         pause2.setText("Pause");
+        pause2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pause2ActionPerformed(evt);
+            }
+        });
 
         selectEch2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         selectEch2.setText("Echantillon 2");
@@ -273,6 +308,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         reset5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         reset5.setForeground(new java.awt.Color(255, 51, 0));
         reset5.setText("Reset");
+        reset5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reset5ActionPerformed(evt);
+            }
+        });
 
         compteur3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         compteur3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -281,6 +321,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         pause5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         pause5.setForeground(new java.awt.Color(255, 102, 51));
         pause5.setText("Pause");
+        pause5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pause5ActionPerformed(evt);
+            }
+        });
 
         selectEch5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         selectEch5.setText("Echantillon 3");
@@ -334,10 +379,20 @@ public class Interface extends javax.swing.JFrame implements Observer {
         arret2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         arret2.setForeground(new java.awt.Color(255, 0, 0));
         arret2.setText("STOP");
+        arret2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                arret2ActionPerformed(evt);
+            }
+        });
 
         arret3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         arret3.setForeground(new java.awt.Color(255, 0, 0));
         arret3.setText("STOP");
+        arret3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                arret3ActionPerformed(evt);
+            }
+        });
 
         start.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         start.setForeground(new java.awt.Color(0, 102, 0));
@@ -811,7 +866,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_menuNouveauActionPerformed
 
     private void arret1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret1ActionPerformed
-        // TODO add your handling code here:
+
+        envoyerOrdreStop(1);
     }//GEN-LAST:event_arret1ActionPerformed
 
     private void btnConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnexionActionPerformed
@@ -1065,6 +1121,48 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void set3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_set3ActionPerformed
         envoyerInitCompteur(3);
     }//GEN-LAST:event_set3ActionPerformed
+
+    private void reset1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset1ActionPerformed
+
+        envoyerResetCompteur(1);
+    }//GEN-LAST:event_reset1ActionPerformed
+
+    private void reset2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset2ActionPerformed
+
+        envoyerResetCompteur(2);
+    }//GEN-LAST:event_reset2ActionPerformed
+
+    private void reset5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset5ActionPerformed
+
+        envoyerResetCompteur(3);
+    }//GEN-LAST:event_reset5ActionPerformed
+
+    private void pause1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pause1ActionPerformed
+
+        envoyerOrdrePause(1);
+
+    }//GEN-LAST:event_pause1ActionPerformed
+
+    private void pause2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pause2ActionPerformed
+
+        envoyerOrdrePause(2);
+
+    }//GEN-LAST:event_pause2ActionPerformed
+
+    private void pause5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pause5ActionPerformed
+
+        envoyerOrdrePause(3);
+    }//GEN-LAST:event_pause5ActionPerformed
+
+    private void arret2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret2ActionPerformed
+        
+        envoyerOrdreStop(2);
+    }//GEN-LAST:event_arret2ActionPerformed
+
+    private void arret3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret3ActionPerformed
+      
+        envoyerOrdreStop(3);
+    }//GEN-LAST:event_arret3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1484,7 +1582,28 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void envoyerInitCompteur(int i) {
 
         String compteur = setCompteurs.get(i - 1).getText();
-        String ordre = ordreSETS.get(i - 1) + ":" + compteur;
+        String ordre = ordresSETS.get(i - 1) + ":" + compteur;
+        System.out.println("Ordre:" + ordre);
+        connecteur.envoyerData(ordre);
+    }
+
+    private void envoyerResetCompteur(int i) {
+
+        String ordre = ordresRAZ.get(i - 1);
+        System.out.println("Ordre:" + ordre);
+        connecteur.envoyerData(ordre);
+    }
+
+    private void envoyerOrdrePause(int i) {
+
+        String ordre = ordresPAUSES.get(i - 1);
+        System.out.println("Ordre:" + ordre);
+        connecteur.envoyerData(ordre);
+    }
+
+    private void envoyerOrdreStop(int i) {
+
+        String ordre = ordresSTOP.get(i - 1);
         System.out.println("Ordre:" + ordre);
         connecteur.envoyerData(ordre);
     }
