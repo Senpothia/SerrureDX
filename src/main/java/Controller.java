@@ -39,6 +39,7 @@ public class Controller {
         isFichier = inputLine.startsWith(Constants.FICHIER);
         isFin = inputLine.startsWith(Constants.FIN);
         isFermeture = inputLine.startsWith(Constants.ACQ_FERMER);
+        rapport.setAcquittement(false);
 
         System.out.println("isCompteur: " + isCompteur);
         System.out.println("isActif: " + isActifs);
@@ -88,7 +89,6 @@ public class Controller {
         if (isAcquittement) {
 
             gestionAcquittement(inputLine);
-            rapport.setAcquittement(false);
 
         }
 

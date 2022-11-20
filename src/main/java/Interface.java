@@ -10,6 +10,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -49,6 +50,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private List<JLabel> statutsEchs = new ArrayList<>();
     private List<JTextField> setCompteurs = new ArrayList<>();
     private List<JRadioButton> echantillonsActifs = new ArrayList<>();
+    private List<JButton> btnSets = new ArrayList<>();
+    private List<JButton> btnPauses = new ArrayList<>();
+    private List<JButton> btnStops = new ArrayList<>();
+    private List<JButton> btnResets = new ArrayList<>();
 
     private List<String> ordresSETS = new ArrayList<>();
     private List<String> ordresRAZ = new ArrayList<>();
@@ -125,6 +130,22 @@ public class Interface extends javax.swing.JFrame implements Observer {
         echantillonsActifs.add(selectEch2);
         echantillonsActifs.add(selectEch3);
 
+        btnSets.add(set1);
+        btnSets.add(set2);
+        btnSets.add(set3);
+
+        btnPauses.add(pause1);
+        btnPauses.add(pause2);
+        btnPauses.add(pause3);
+
+        btnStops.add(arret1);
+        btnStops.add(arret2);
+        btnStops.add(arret3);
+
+        btnResets.add(reset1);
+        btnResets.add(reset2);
+        btnResets.add(reset3);
+
         this.getContentPane().setBackground(new Color(128, 193, 255));
 
         List<JRadioButtonMenuItem> listePorts = new ArrayList<JRadioButtonMenuItem>();
@@ -170,7 +191,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         selectEch2 = new javax.swing.JRadioButton();
         setCompteur2 = new javax.swing.JTextField();
         set2 = new javax.swing.JButton();
-        reset5 = new javax.swing.JButton();
+        reset3 = new javax.swing.JButton();
         compteur3 = new javax.swing.JLabel();
         pause3 = new javax.swing.JButton();
         selectEch3 = new javax.swing.JRadioButton();
@@ -317,12 +338,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
         });
 
-        reset5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        reset5.setForeground(new java.awt.Color(255, 51, 0));
-        reset5.setText("Reset");
-        reset5.addActionListener(new java.awt.event.ActionListener() {
+        reset3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        reset3.setForeground(new java.awt.Color(255, 51, 0));
+        reset3.setText("Reset");
+        reset3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reset5ActionPerformed(evt);
+                reset3ActionPerformed(evt);
             }
         });
 
@@ -806,7 +827,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                                         .addGap(18, 18, 18)
                                         .addComponent(set3)
                                         .addGap(34, 34, 34)
-                                        .addComponent(reset5)
+                                        .addComponent(reset3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(pause3)))))
                         .addGap(18, 18, 18)
@@ -871,7 +892,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addComponent(compteur3)
                     .addComponent(setCompteur3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(set3)
-                    .addComponent(reset5)
+                    .addComponent(reset3)
                     .addComponent(pause3)
                     .addComponent(arret3)
                     .addGroup(layout.createSequentialGroup()
@@ -1072,11 +1093,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
             return;
         }
 
-        int i = envoyerConfiguration();
-        console.setForeground(Color.RED);
-        console.setText("En attente de démarrage!");
-        if (i == -1) {
-            return;
+        if (auto) {
+
+            int i = envoyerConfiguration();
+            console.setForeground(Color.RED);
+            console.setText("En attente de démarrage!");
+            if (i == -1) {
+                return;
+            } else {
+            }
+
         }
 
 
@@ -1106,6 +1132,26 @@ public class Interface extends javax.swing.JFrame implements Observer {
         pause.setEnabled(true);
         menuAuto.setEnabled(true);
         menuManuel.setEnabled(false);
+        for (int i = 0; i < 3; i++) {
+
+            btnStops.get(i).setText("Activer");
+        }
+
+        for (int i = 0; i < 3; i++) {
+
+            btnSets.get(i).setEnabled(false);
+        }
+
+        for (int i = 0; i < 3; i++) {
+
+            btnPauses.get(i).setEnabled(false);
+        }
+
+        for (int i = 0; i < 3; i++) {
+
+            btnResets.get(i).setEnabled(false);
+        }
+
         console.setText("");
     }//GEN-LAST:event_menuManuelActionPerformed
 
@@ -1120,6 +1166,25 @@ public class Interface extends javax.swing.JFrame implements Observer {
         pause.setText("PAUSE");
         menuAuto.setEnabled(false);
         menuManuel.setEnabled(true);
+        for (int i = 0; i < 3; i++) {
+
+            btnStops.get(i).setText("STOP");
+        }
+
+        for (int i = 0; i < 3; i++) {
+
+            btnSets.get(i).setEnabled(false);
+        }
+
+        for (int i = 0; i < 3; i++) {
+
+            btnPauses.get(i).setEnabled(false);
+        }
+
+        for (int i = 0; i < 3; i++) {
+
+            btnResets.get(i).setEnabled(false);
+        }
         startWaiting(true);
 
     }//GEN-LAST:event_menuAutoActionPerformed
@@ -1172,10 +1237,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
         envoyerResetCompteur(2);
     }//GEN-LAST:event_reset2ActionPerformed
 
-    private void reset5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset5ActionPerformed
+    private void reset3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset3ActionPerformed
 
         envoyerResetCompteur(3);
-    }//GEN-LAST:event_reset5ActionPerformed
+    }//GEN-LAST:event_reset3ActionPerformed
 
     private void pause1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pause1ActionPerformed
 
@@ -1332,7 +1397,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem remoteSelect;
     private javax.swing.JButton reset1;
     private javax.swing.JButton reset2;
-    private javax.swing.JButton reset5;
+    private javax.swing.JButton reset3;
     private javax.swing.JRadioButton selectEch1;
     private javax.swing.JRadioButton selectEch2;
     private javax.swing.JRadioButton selectEch3;
@@ -1443,8 +1508,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
 
         if (rapport.acquittement) {
-            connecteur.envoyerData(Constants.ORDRE_MARCHE);
+            
             startRequested();
+            connecteur.envoyerData(Constants.ORDRE_MARCHE);
         }
 
         if (rapport.fermeture) {

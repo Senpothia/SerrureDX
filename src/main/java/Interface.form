@@ -489,7 +489,7 @@
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="set3" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                                      <Component id="reset5" min="-2" max="-2" attributes="0"/>
+                                      <Component id="reset3" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="pause3" min="-2" max="-2" attributes="0"/>
                                   </Group>
@@ -576,7 +576,7 @@
                   <Component id="compteur3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="setCompteur3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="set3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="reset5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="reset3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pause3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="arret3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -748,7 +748,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="set2ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="reset5">
+    <Component class="javax.swing.JButton" name="reset3">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="24" style="1"/>
@@ -759,7 +759,7 @@
         <Property name="text" type="java.lang.String" value="Reset"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reset5ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reset3ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="compteur3">

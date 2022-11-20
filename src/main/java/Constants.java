@@ -40,7 +40,7 @@ public class Constants {
     public static final String SEQUENCE = "@SEQ";
     public static final String ACQ_FERMER = "@FERMER";
     public static final String FIN = "@FIN";
-    public static final String ACQUITTEMENT = "@:ACQ";
+    public static final String ACQUITTEMENT = "@:ACQ";  // ex: utilisé pour attester de la reception de configuration
     public static final String FICHIER = "W:FICHIER";
     public static final String CADENCE1 = "W:CADENCE:1";
     public static final String CADENCE2 = "W:CADENCE:2";
