@@ -18,6 +18,7 @@ import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -25,8 +26,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 
 public class Interface extends javax.swing.JFrame implements Observer {
-    
-    private Initializer initializer = new Initializer(); 
+
+    private Initializer initializer = new Initializer();
     public static Initialisation initialisation;
     private boolean buzzer = false;
     private boolean test_off = true;            // le test est arrêté
@@ -62,6 +63,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private List<JButton> btnPauses = new ArrayList<>();
     private List<JButton> btnStops = new ArrayList<>();
     private List<JButton> btnResets = new ArrayList<>();
+    private List<JMenu> menusRemote = new ArrayList<>();
 
     private List<String> ordresSETS = new ArrayList<>();
     private List<String> ordresRAZ = new ArrayList<>();
@@ -154,6 +156,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         btnResets.add(reset2);
         btnResets.add(reset3);
 
+        menusRemote.add(SelectionRemote);
+        menusRemote.add(changeRemote);
+        menusRemote.add(deleteRemote);
+      
+
         this.getContentPane().setBackground(new Color(128, 193, 255));
 
         List<JRadioButtonMenuItem> listePorts = new ArrayList<JRadioButtonMenuItem>();
@@ -168,17 +175,20 @@ public class Interface extends javax.swing.JFrame implements Observer {
             menuPort.add(m);
         }
 
-       
         initialisation = initializer.getInit();
 
         List<String> remotes = initialisation.getRemoteNames();
 
-        for (String r : remotes) {
+        for (JMenu mn : menusRemote) {
 
-            JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
-            groupRemotes.add(m);
-            m.addActionListener(new RemoteSupplier());
-            SelectionRemote.add(m);
+            for (String r : remotes) {
+
+                JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
+                groupRemotes.add(m);
+                m.addActionListener(new RemoteSupplier());
+                mn.add(m);
+            }
+
         }
 
         //  this.setDefaultCloseOperation(this.closeWindow());
@@ -267,10 +277,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menuRemote = new javax.swing.JMenu();
         SelectionRemote = new javax.swing.JMenu();
         changeRemote = new javax.swing.JMenu();
-        addRemote = new javax.swing.JMenu();
         deleteRemote = new javax.swing.JMenu();
-        connectRemote = new javax.swing.JMenu();
-        disconnectRemote = new javax.swing.JMenu();
+        addRemote = new javax.swing.JMenuItem();
+        connectRemote = new javax.swing.JMenuItem();
+        deconnectRemote = new javax.swing.JMenuItem();
         menuConfig = new javax.swing.JMenu();
         cadence = new javax.swing.JMenu();
         cad_2_min = new javax.swing.JRadioButtonMenuItem();
@@ -701,17 +711,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
         changeRemote.setText("Changer");
         menuRemote.add(changeRemote);
 
-        addRemote.setText("Ajouter");
-        menuRemote.add(addRemote);
-
         deleteRemote.setText("Supprimer");
         menuRemote.add(deleteRemote);
 
+        addRemote.setText("Ajouter");
+        menuRemote.add(addRemote);
+
         connectRemote.setText("Connexion");
+        connectRemote.setEnabled(false);
         menuRemote.add(connectRemote);
 
-        disconnectRemote.setText("Déconnecter");
-        menuRemote.add(disconnectRemote);
+        deconnectRemote.setText("Déconnexion");
+        menuRemote.add(deconnectRemote);
 
         jMenuBar1.add(menuRemote);
 
@@ -1373,7 +1384,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel RS232;
     private javax.swing.JLabel Remote;
     private javax.swing.JMenu SelectionRemote;
-    private javax.swing.JMenu addRemote;
+    private javax.swing.JMenuItem addRemote;
     private javax.swing.JButton arret1;
     private javax.swing.JButton arret2;
     private javax.swing.JButton arret3;
@@ -1395,10 +1406,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel compteur1;
     private javax.swing.JLabel compteur2;
     private javax.swing.JLabel compteur3;
-    private javax.swing.JMenu connectRemote;
+    private javax.swing.JMenuItem connectRemote;
     private javax.swing.JTextField console;
+    private javax.swing.JMenuItem deconnectRemote;
     private javax.swing.JMenu deleteRemote;
-    private javax.swing.JMenu disconnectRemote;
     private javax.swing.ButtonGroup groupBaud;
     private javax.swing.ButtonGroup groupBits;
     private javax.swing.ButtonGroup groupCadence;
