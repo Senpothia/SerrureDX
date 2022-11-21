@@ -25,7 +25,9 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 
 public class Interface extends javax.swing.JFrame implements Observer {
-
+    
+    private Initializer initializer = new Initializer(); 
+    public static Initialisation initialisation;
     private boolean buzzer = false;
     private boolean test_off = true;            // le test est arrêté
     private boolean test_on = false;            // le test est en cours
@@ -166,10 +168,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
             menuPort.add(m);
         }
 
-        Initializer initializer = new Initializer();
-        Initialisation initialisation = initializer.getInit();
+       
+        initialisation = initializer.getInit();
 
-        List<String> remotes = initialisation.getRemotes();
+        List<String> remotes = initialisation.getRemoteNames();
 
         for (String r : remotes) {
 

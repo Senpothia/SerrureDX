@@ -19,8 +19,10 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
 public class RemoteController {
+     
     
-     public static String remoteUrl = null;
+    
+     
 
     /*
     public static void main(String[] args) throws IOException {

@@ -26,37 +26,53 @@ public class Initializer {
 
         String username = cloudProperpies.getProperty("username");
         String password = cloudProperpies.getProperty("password");
-        String remotes = cloudProperpies.getProperty("remotes");
+        String remoteUrls = cloudProperpies.getProperty("remoteUrls");
+        String remoteNames = cloudProperpies.getProperty("remoteNames");
 
-        List<String> listeRemotes = getRemotes(remotes);
-        Initialisation init = new Initialisation(username, password, listeRemotes);
+        List<String> listeRemotesUrls = getRemoteUrls(remoteUrls);
+        List<String> listeRemotesNames = getRemoteUrls(remoteNames);
+        Initialisation init = new Initialisation(username, password, listeRemotesUrls,listeRemotesNames);
 
         init.setUsername(username);
         init.setPassword(password);
 
         System.out.println("username: " + username);
         System.out.println("password: " + password);
-        System.out.println("Nombre de remotes: " + listeRemotes.size());
-        for(String r: listeRemotes){
-            
+        System.out.println("Nombre de remotes: " + listeRemotesUrls.size());
+        for (String r : listeRemotesUrls) {
+
             System.out.println("remote:" + r);
         }
 
         return init;
     }
 
-    private List<String> getRemotes(String remotes) {
+    private List<String> getRemoteUrls(String remoteUrls) {
 
-        List<String> listeRemotes = new ArrayList<String>();
+        List<String> listeRemoteUrls = new ArrayList<String>();
 
-        String[] extraction = extraire(remotes);
+        String[] extraction = extraire(remoteUrls);
 
         for (int i = 0; i < extraction.length; i++) {
 
-            listeRemotes.add(extraction[i]);
+            listeRemoteUrls.add(extraction[i]);
         }
 
-        return listeRemotes;
+        return listeRemoteUrls;
+    }
+
+    private List<String> getRemoteNames(String remoteNames) {
+
+        List<String> listeRemoteNames = new ArrayList<String>();
+
+        String[] extraction = extraire(remoteNames);
+
+        for (int i = 0; i < extraction.length; i++) {
+
+            listeRemoteNames.add(extraction[i]);
+        }
+
+        return listeRemoteNames;
     }
 
     private String[] extraire(String remotes) {
