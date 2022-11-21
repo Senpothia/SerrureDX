@@ -3,11 +3,17 @@ import com.fazecast.jSerialComm.SerialPort;
 import java.awt.Color;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
@@ -64,7 +70,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     /*
      * Creates new form Interface
      */
-    public Interface() {
+    public Interface() throws FileNotFoundException, IOException {
 
         initComponents();
         statutRemote.setBackground(Color.red);
@@ -160,6 +166,20 @@ public class Interface extends javax.swing.JFrame implements Observer {
             menuPort.add(m);
         }
 
+        Initializer initializer = new Initializer();
+        Initialisation initialisation = initializer.getInit();
+
+        List<String> remotes = initialisation.getRemotes();
+
+        for (String r : remotes) {
+
+            JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
+            groupRemotes.add(m);
+            m.addActionListener(new RemoteSupplier());
+            SelectionRemote.add(m);
+        }
+
+        //  this.setDefaultCloseOperation(this.closeWindow());
     }
 
     /**
@@ -178,6 +198,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         groupParity = new javax.swing.ButtonGroup();
         selectionFichier = new javax.swing.JFileChooser();
         groupCadence = new javax.swing.ButtonGroup();
+        groupRemotes = new javax.swing.ButtonGroup();
         titre = new javax.swing.JLabel();
         compteur1 = new javax.swing.JLabel();
         selectEch1 = new javax.swing.JRadioButton();
@@ -242,11 +263,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
         btnConnexion = new javax.swing.JMenuItem();
         btnDeconnexion = new javax.swing.JMenuItem();
         menuRemote = new javax.swing.JMenu();
-        ajouterRemote = new javax.swing.JMenuItem();
-        remoteSelect = new javax.swing.JMenuItem();
-        changerRemote = new javax.swing.JMenuItem();
-        connexionRemote = new javax.swing.JMenuItem();
-        deconnexionRemote = new javax.swing.JMenuItem();
+        SelectionRemote = new javax.swing.JMenu();
+        changeRemote = new javax.swing.JMenu();
+        addRemote = new javax.swing.JMenu();
+        deleteRemote = new javax.swing.JMenu();
+        connectRemote = new javax.swing.JMenu();
+        disconnectRemote = new javax.swing.JMenu();
         menuConfig = new javax.swing.JMenu();
         cadence = new javax.swing.JMenu();
         cad_2_min = new javax.swing.JRadioButtonMenuItem();
@@ -257,7 +279,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         selectionFichier.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Test d'endurance DX200I");
         setBackground(new java.awt.Color(153, 153, 255));
 
@@ -671,21 +693,23 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         menuRemote.setText("Remote");
 
-        ajouterRemote.setText("Ajouter");
-        menuRemote.add(ajouterRemote);
+        SelectionRemote.setText("Choisir");
+        menuRemote.add(SelectionRemote);
 
-        remoteSelect.setText("Choisir");
-        menuRemote.add(remoteSelect);
+        changeRemote.setText("Changer");
+        menuRemote.add(changeRemote);
 
-        changerRemote.setText("Changer");
-        menuRemote.add(changerRemote);
+        addRemote.setText("Ajouter");
+        menuRemote.add(addRemote);
 
-        connexionRemote.setText("Connexion");
-        menuRemote.add(connexionRemote);
+        deleteRemote.setText("Supprimer");
+        menuRemote.add(deleteRemote);
 
-        deconnexionRemote.setText("Déconnexion");
-        deconnexionRemote.setEnabled(false);
-        menuRemote.add(deconnexionRemote);
+        connectRemote.setText("Connexion");
+        menuRemote.add(connectRemote);
+
+        disconnectRemote.setText("Déconnecter");
+        menuRemote.add(disconnectRemote);
 
         jMenuBar1.add(menuRemote);
 
@@ -1331,7 +1355,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Interface().setVisible(true);
+                try {
+                    new Interface().setVisible(true);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -1340,7 +1370,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenu MenuFichier;
     private javax.swing.JLabel RS232;
     private javax.swing.JLabel Remote;
-    private javax.swing.JMenuItem ajouterRemote;
+    private javax.swing.JMenu SelectionRemote;
+    private javax.swing.JMenu addRemote;
     private javax.swing.JButton arret1;
     private javax.swing.JButton arret2;
     private javax.swing.JButton arret3;
@@ -1358,18 +1389,20 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JRadioButtonMenuItem cad_1_par_5mins;
     private javax.swing.JRadioButtonMenuItem cad_2_min;
     private javax.swing.JMenu cadence;
-    private javax.swing.JMenuItem changerRemote;
+    private javax.swing.JMenu changeRemote;
     private javax.swing.JLabel compteur1;
     private javax.swing.JLabel compteur2;
     private javax.swing.JLabel compteur3;
-    private javax.swing.JMenuItem connexionRemote;
+    private javax.swing.JMenu connectRemote;
     private javax.swing.JTextField console;
-    private javax.swing.JMenuItem deconnexionRemote;
+    private javax.swing.JMenu deleteRemote;
+    private javax.swing.JMenu disconnectRemote;
     private javax.swing.ButtonGroup groupBaud;
     private javax.swing.ButtonGroup groupBits;
     private javax.swing.ButtonGroup groupCadence;
     private javax.swing.ButtonGroup groupParity;
     private javax.swing.ButtonGroup groupPorts;
+    private javax.swing.ButtonGroup groupRemotes;
     private javax.swing.ButtonGroup groupStop;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -1394,7 +1427,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton pause1;
     private javax.swing.JButton pause2;
     private javax.swing.JButton pause3;
-    private javax.swing.JMenuItem remoteSelect;
     private javax.swing.JButton reset1;
     private javax.swing.JButton reset2;
     private javax.swing.JButton reset3;
@@ -1508,7 +1540,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
 
         if (rapport.acquittement) {
-            
+
             startRequested();
             connecteur.envoyerData(Constants.ORDRE_MARCHE);
         }
@@ -1842,6 +1874,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
             System.exit(0);
         }
 
+    }
+
+    private int closeWindow() {
+
+        System.out.println("Fermeture programme");
+        // montrerError("Utiliser le menu Fichier pour fermer!", "Fermeture programme");
+        return 0;
     }
 
 }

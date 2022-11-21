@@ -81,8 +81,14 @@ public class Constants {
                                                                         // @ERREUR:#1:na:na:na notifie une erreur sur l'échantillon 1
                public static final String ORDRE = "W:";                 // préfixe d'un ordre envoyer depuis l'interface
                public static final String SEQUENCE = "@SEQ";            // notification d'une fin de cycle, demande de sauvegarde du rapport dans fichier csv
+               public static final String ACQ_FERMER = "@FERMER";       // Acquittement de l'ordre d'arrêt du programme. Transmis pour autoriser la fermeture de IHM
                public static final String ACQUITTEMENT = "W:ACQ";       // Acquittement des commande transmises en mode manuel. Mode debug
                public static final String FICHIER = "W:FICHIER";        // demande de création du fichier de sauvegarde. W:FICHIER:<nom du fichier>:<repertoire de sauvegarde>
+               public static final String CADENCE1 = "W:CADENCE:1";
+               public static final String CADENCE2 = "W:CADENCE:2";
+               public static final String CADENCE3 = "W:CADENCE:3";
+               public static final String CONFIG = "W:CONFIG";
+               public static final String FERMETURE = "W:FERMER";       // Ordre d'arrêt du programme arduino
     
      */
 }

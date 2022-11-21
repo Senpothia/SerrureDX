@@ -19,6 +19,8 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="groupCadence">
     </Component>
+    <Component class="javax.swing.ButtonGroup" name="groupRemotes">
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="MenuFichier">
@@ -274,32 +276,36 @@
             <Property name="text" type="java.lang.String" value="Remote"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="ajouterRemote">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ajouter"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="remoteSelect">
+            <Menu class="javax.swing.JMenu" name="SelectionRemote">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Choisir"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="changerRemote">
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="changeRemote">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Changer"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="connexionRemote">
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="addRemote">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ajouter"/>
+              </Properties>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="deleteRemote">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Supprimer"/>
+              </Properties>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="connectRemote">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Connexion"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="deconnexionRemote">
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="disconnectRemote">
               <Properties>
-                <Property name="text" type="java.lang.String" value="D&#xe9;connexion"/>
-                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="D&#xe9;connecter"/>
               </Properties>
-            </MenuItem>
+            </Menu>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuConfig">
@@ -374,7 +380,7 @@
     </Menu>
   </NonVisualComponents>
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="0"/>
     <Property name="title" type="java.lang.String" value="Test d&apos;endurance DX200I"/>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="99" red="99" type="rgb"/>

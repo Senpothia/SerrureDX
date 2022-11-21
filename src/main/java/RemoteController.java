@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.michel.maventesthttprequest;
+
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.michel.maventesthttprequest.model.Utilisateur;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,7 +18,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
-public class JavaPostRequest {
+public class RemoteController {
+    
+     public static String remoteUrl = null;
 
     /*
     public static void main(String[] args) throws IOException {
