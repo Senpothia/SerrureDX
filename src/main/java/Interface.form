@@ -463,6 +463,11 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuFichierActionPerformed"/>
           </Events>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="ouvrir">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ouvrir"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuNouveau">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Nouveau"/>
@@ -475,6 +480,9 @@
               <Properties>
                 <Property name="label" type="java.lang.String" value="Modifier"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuModifierActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuSauvegardes">
               <Properties>

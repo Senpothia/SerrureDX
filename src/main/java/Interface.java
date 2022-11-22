@@ -286,6 +286,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         statutEch3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuFichier = new javax.swing.JMenu();
+        ouvrir = new javax.swing.JMenuItem();
         menuNouveau = new javax.swing.JMenuItem();
         menuModifier = new javax.swing.JMenuItem();
         menuSauvegardes = new javax.swing.JMenuItem();
@@ -801,6 +802,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
         });
 
+        ouvrir.setText("Ouvrir");
+        MenuFichier.add(ouvrir);
+
         menuNouveau.setText("Nouveau");
         menuNouveau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -810,6 +814,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         MenuFichier.add(menuNouveau);
 
         menuModifier.setLabel("Modifier");
+        menuModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModifierActionPerformed(evt);
+            }
+        });
         MenuFichier.add(menuModifier);
 
         menuSauvegardes.setLabel("Sauvegardes");
@@ -1755,6 +1764,15 @@ public class Interface extends javax.swing.JFrame implements Observer {
         montrerError("Vous êtes déconnecté du remote!", "Déconnexion remote demandée");
     }//GEN-LAST:event_deconnectRemoteActionPerformed
 
+    private void menuModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModifierActionPerformed
+           
+        try {
+            controller.getSceance();
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuModifierActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1865,6 +1883,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenu menuRemote;
     private javax.swing.JMenuItem menuSauvegardes;
     private javax.swing.JMenu menuStop;
+    private javax.swing.JMenuItem ouvrir;
     private javax.swing.JRadioButtonMenuItem parityEven;
     private javax.swing.JRadioButtonMenuItem parityNone;
     private javax.swing.JRadioButtonMenuItem parityOdd;

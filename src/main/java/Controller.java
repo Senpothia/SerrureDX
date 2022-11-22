@@ -392,6 +392,11 @@ public class Controller {
         
         
     }
+
+    void getSceance() throws IOException {
+       
+        remoteController.getSceance();
+    }
     
     
 

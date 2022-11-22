@@ -19,19 +19,19 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
 public class RemoteController {
-    
+
     private String token;
-    
+
     public String getToken() {
         return token;
     }
-    
+
     public void setToken(String token) {
         this.token = token;
     }
-    
+
     public boolean connexionRequest(Login login) throws MalformedURLException, IOException {
-        
+
         URL url = new URL(Interface.initialisation.getRemoteUrl() + "/connexion/apps");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
@@ -41,16 +41,16 @@ public class RemoteController {
 
         //  Login login = new Login("michel@gmail.com", "michel");
         String reponseServeur = null;
-        
+
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(login);
         System.out.println("Conversion Json = " + json);
-        
+
         try (OutputStream os = con.getOutputStream()) {
             byte[] input = json.getBytes("utf-8");
             os.write(input, 0, input.length);
         }
-        
+
         String responseLine = null;   // ligne déplacée
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(con.getInputStream(), "utf-8"))) {
@@ -61,12 +61,12 @@ public class RemoteController {
             }
             System.out.println(response.toString());
             reponseServeur = response.toString();
-            
+
         }
-        
+
         System.out.println("RemoteController.connexionRequest()");
         System.out.println(reponseServeur);
-        
+
         if (reponseServeur.equals("Authorised")) {
             return true;
         } else {
@@ -75,12 +75,12 @@ public class RemoteController {
         // System.out.println(responseLine);
 
     }
-    
+
     public boolean enregistrerSceance(FormSeance sceance, Login login) throws MalformedURLException, IOException {
-        
+
         boolean autorisation = connexionRequest(login);
         if (autorisation) {
-            
+
             System.out.println("RemoteController.enregistrerSceance()");
             //   URL url = new URL("http://127.0.0.1:8090/creer/sceance/windows");
             URL url = new URL(Interface.initialisation.getRemoteUrl() + "/creer/sceance/windows");
@@ -89,16 +89,16 @@ public class RemoteController {
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
             con.setDoOutput(true);
-            
+
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(sceance);
             System.out.println("Conversion Json = " + json);
-            
+
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = json.getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
-            
+
             try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
@@ -109,21 +109,21 @@ public class RemoteController {
                 System.out.println("réponse: " + response.toString());
                 Interface.initialisation.setIdSceance(response.toString());
                 return true;
-                
+
             }
         } else {
-            
+
             return false;
-            
+
         }
-        
+
     }
-    
+
     public boolean sauvegarderSequence(FormSeance sceance, Login login) throws MalformedURLException, IOException {
-        
+
         boolean autorisation = connexionRequest(login);
         if (autorisation) {
-            
+
             System.out.println("RemoteController.enregistrerSceance()");
             //   URL url = new URL("http://127.0.0.1:8090/creer/sceance/windows");
             URL url = new URL(Interface.initialisation.getRemoteUrl() + "/enregistrer/sequence/windows/" + Interface.initialisation.getIdSceance());
@@ -132,16 +132,16 @@ public class RemoteController {
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
             con.setDoOutput(true);
-            
+
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(sceance);
             System.out.println("Conversion Json = " + json);
-            
+
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = json.getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
-            
+
             try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
@@ -151,14 +151,44 @@ public class RemoteController {
                 }
                 System.out.println("réponse: " + response.toString());
                 return true;
-                
+
             }
         } else {
-            
+
             return false;
-            
+
         }
-        
+
     }
-    
+
+    public void getSceance() throws MalformedURLException, IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        URL url = new URL("http://127.0.0.1:8090/sceance/windows/1346");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        // optional default is GET
+        con.setRequestMethod("GET");
+        //add request header
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL ");
+        System.out.println("Response Code : " + responseCode);
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        //print in String
+        System.out.println(response.toString());
+        FormSeance f = objectMapper.readValue(response.toString(), FormSeance.class);
+
+        System.out.println("id: " + f.getId());
+        System.out.println("Description: " + f.getDescription());
+        System.out.println("Ech1, compteur: " + f.getCompteur1());
+
+    }
+
 }
