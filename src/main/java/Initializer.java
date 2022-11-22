@@ -28,20 +28,27 @@ public class Initializer {
         String password = cloudProperpies.getProperty("password");
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");
         String remoteNames = cloudProperpies.getProperty("remoteNames");
+        String sceance = cloudProperpies.getProperty("sceance");
 
         List<String> listeRemotesUrls = getRemoteUrls(remoteUrls);
         List<String> listeRemotesNames = getRemoteUrls(remoteNames);
-        Initialisation init = new Initialisation(username, password, listeRemotesUrls,listeRemotesNames);
+        Initialisation init = new Initialisation(username, password, listeRemotesUrls, listeRemotesNames, sceance);
 
         init.setUsername(username);
         init.setPassword(password);
+        init.setRemoteUrls(listeRemotesUrls);
+        init.setRemoteNames(listeRemotesNames);
+        init.setSceance(sceance);
 
         System.out.println("username: " + username);
         System.out.println("password: " + password);
-        System.out.println("Nombre de remotes: " + listeRemotesUrls.size());
+        System.out.println("Nombre de url remotes: " + listeRemotesUrls.size());
+        System.out.println("Nombre de noms remotes: " + listeRemotesNames.size());
+        
         for (String r : listeRemotesUrls) {
 
-            System.out.println("remote:" + r);
+            System.out.println("remote url:" + r);
+           
         }
 
         return init;

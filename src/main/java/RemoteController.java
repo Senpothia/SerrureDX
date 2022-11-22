@@ -39,7 +39,6 @@ public class RemoteController {
         con.setRequestProperty("Accept", "application/json");
         con.setDoOutput(true);
 
-        //  Login login = new Login("michel@gmail.com", "michel");
         String reponseServeur = null;
 
         ObjectMapper mapper = new ObjectMapper();
@@ -72,7 +71,6 @@ public class RemoteController {
         } else {
             return false;
         }
-        // System.out.println(responseLine);
 
     }
 
@@ -107,7 +105,7 @@ public class RemoteController {
                     response.append(responseLine.trim());
                 }
                 System.out.println("réponse: " + response.toString());
-                Interface.initialisation.setIdSceance(response.toString());
+                Interface.initialisation.setSceance(response.toString());
                 return true;
 
             }
@@ -126,7 +124,7 @@ public class RemoteController {
 
             System.out.println("RemoteController.enregistrerSceance()");
             //   URL url = new URL("http://127.0.0.1:8090/creer/sceance/windows");
-            URL url = new URL(Interface.initialisation.getRemoteUrl() + "/enregistrer/sequence/windows/" + Interface.initialisation.getIdSceance());
+            URL url = new URL(Interface.initialisation.getRemoteUrl() + "/enregistrer/sequence/windows/" + Interface.initialisation.getSceance());
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -161,10 +159,11 @@ public class RemoteController {
 
     }
 
-    public void getSceance() throws MalformedURLException, IOException {
+    public void getSceance(String idSceance, Login login) throws MalformedURLException, IOException {
 
+        boolean autorisation = connexionRequest(login);
         ObjectMapper objectMapper = new ObjectMapper();
-        URL url = new URL("http://127.0.0.1:8090/sceance/windows/1346");
+        URL url = new URL(Interface.initialisation.getRemoteUrl() + "/sceance/windows/" + idSceance);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         // optional default is GET
         con.setRequestMethod("GET");

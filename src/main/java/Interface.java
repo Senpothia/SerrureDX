@@ -1767,7 +1767,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void menuModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModifierActionPerformed
            
         try {
-            controller.getSceance();
+            controller.getSceance(initialisation.getSceance(), login);
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }

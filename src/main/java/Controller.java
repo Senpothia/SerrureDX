@@ -393,9 +393,9 @@ public class Controller {
         
     }
 
-    void getSceance() throws IOException {
+    void getSceance(String idSceance, Login login) throws IOException {
        
-        remoteController.getSceance();
+        remoteController.getSceance(idSceance, login);
     }
     
     
