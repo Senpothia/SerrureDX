@@ -18,6 +18,7 @@ public class Initialisation {
     private List<String> remoteNames;
     private String remoteName;
     private String remoteUrl;
+    private String idSceance;
 
     public Initialisation() {
     }
@@ -94,6 +95,14 @@ public class Initialisation {
         System.out.println("remote name: " + remoteNames.get(index));
         System.out.println("remote url: " + remoteUrls.get(index));
         return remoteUrls.get(index);
+    }
+
+    public String getIdSceance() {
+        return idSceance;
+    }
+
+    public void setIdSceance(String idSceance) {
+        this.idSceance = idSceance;
     }
 
 }

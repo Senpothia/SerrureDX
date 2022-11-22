@@ -1270,8 +1270,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             formulaire.setVisible(true);
             formulaire.setSize(900, 700);
-        }else{
-            
+        } else {
+
             montrerError("Vous devez vous connecter au remote!", "Défaut de connexion");
         }
 
@@ -1660,8 +1660,15 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void connectRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectRemoteActionPerformed
 
-        loginForm.setSize(400, 400);
-        loginForm.setVisible(true);
+        if (initialisation.getRemoteUrl() == null) {
+            montrerError("Vous devez choisir un remote!", "Remote inconnu");
+            return;
+        } else {
+
+            loginForm.setSize(400, 400);
+            loginForm.setVisible(true);
+
+        }
 
 
     }//GEN-LAST:event_connectRemoteActionPerformed
