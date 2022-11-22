@@ -1,5 +1,8 @@
 
 import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +28,7 @@ public class Controller {
 
     private Rapport rapport = new Rapport();
     private Enregistreur enregistreur = new Enregistreur();
+    private RemoteController remoteController = new RemoteController();
 
     public Rapport parser(String inputLine) {
 
@@ -164,6 +168,17 @@ public class Controller {
         rapport.setColor(Color.RED);
         rapport.setSauvegarde(true);
         enregistreur.sauvegarder(rapport);
+        
+        /*
+        
+           try {
+            remoteController.enregistrerSceance();
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        */
+
+      
 
     }
 
@@ -349,5 +364,35 @@ public class Controller {
         }
 
     }
+    
+    public boolean enregistrerSceance(FormSeance sceance, Login login){
+        
+        
+          try {
+            boolean result = remoteController.enregistrerSceance(sceance, login);
+            if (!result){
+            
+                return false;
+            }else{
+                
+                return true;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    
+    
+    }
+
+    public boolean connexionRemote(Login login) throws IOException {
+        
+        boolean autorisation = remoteController.connexionRequest(login);
+        return autorisation;
+        
+        
+    }
+    
+    
 
 }

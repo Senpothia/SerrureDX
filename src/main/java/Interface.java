@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -47,7 +48,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private int newReadTimeout = 1000;
     private int newWriteTimeout = 0;
 
-    private boolean connexionActive = false;    // état de la connexion
+    private boolean connexionRS232Active = false;    // état de la connexion RS-232
+    private boolean connexionRemoteActive = false;   // Connexion au serveur distant
 
     Connecteur connecteur = getConnecteur();
     Controller controller = new Controller();
@@ -70,6 +72,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private List<String> ordresPAUSES = new ArrayList<>();
     private List<String> ordresSTOP = new ArrayList<>();
     private List<String> ordresCadences = new ArrayList<>();
+
+    private FormSeance sceance = new FormSeance();
+    private Login login = new Login();
 
     /*
      * Creates new form Interface
@@ -159,7 +164,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menusRemote.add(SelectionRemote);
         menusRemote.add(changeRemote);
         menusRemote.add(deleteRemote);
-      
 
         this.getContentPane().setBackground(new Color(128, 193, 255));
 
@@ -211,6 +215,40 @@ public class Interface extends javax.swing.JFrame implements Observer {
         selectionFichier = new javax.swing.JFileChooser();
         groupCadence = new javax.swing.ButtonGroup();
         groupRemotes = new javax.swing.ButtonGroup();
+        formulaire = new javax.swing.JFrame();
+        descriptionField = new javax.swing.JTextField();
+        titre4 = new javax.swing.JLabel();
+        titre2 = new javax.swing.JLabel();
+        dateField = new javax.swing.JTextField();
+        titrePrincipal = new javax.swing.JLabel();
+        titre6 = new javax.swing.JLabel();
+        counter1 = new javax.swing.JTextField();
+        titre7 = new javax.swing.JLabel();
+        type1 = new javax.swing.JComboBox<>();
+        counter2 = new javax.swing.JTextField();
+        titre10 = new javax.swing.JLabel();
+        type2 = new javax.swing.JComboBox<>();
+        titre8 = new javax.swing.JLabel();
+        titre9 = new javax.swing.JLabel();
+        titre3 = new javax.swing.JLabel();
+        type3 = new javax.swing.JComboBox<>();
+        titre11 = new javax.swing.JLabel();
+        titre12 = new javax.swing.JLabel();
+        counter3 = new javax.swing.JTextField();
+        titre13 = new javax.swing.JLabel();
+        valideFormulaire = new javax.swing.JButton();
+        annulerFormulaire = new javax.swing.JButton();
+        actif1 = new javax.swing.JCheckBox();
+        actif2 = new javax.swing.JCheckBox();
+        actif3 = new javax.swing.JCheckBox();
+        loginForm = new javax.swing.JFrame();
+        titreLogin = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        usernameField = new javax.swing.JTextField();
+        passwordField = new javax.swing.JTextField();
+        annulerLogin = new javax.swing.JButton();
+        ValideLogin = new javax.swing.JButton();
         titre = new javax.swing.JLabel();
         compteur1 = new javax.swing.JLabel();
         selectEch1 = new javax.swing.JRadioButton();
@@ -290,6 +328,262 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menuManuel = new javax.swing.JMenuItem();
 
         selectionFichier.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
+
+        formulaire.setTitle("Test DX200I - Création de scéance");
+        formulaire.setMaximizedBounds(new java.awt.Rectangle(0, 0, 300, 200));
+
+        titre4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        titre4.setText("Echantillon 1");
+
+        titre2.setText("Description");
+
+        titrePrincipal.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        titrePrincipal.setText("Scéance");
+
+        titre6.setText("Type");
+
+        titre7.setText("Compteur");
+
+        type1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DX200I", "APX200" }));
+
+        titre10.setText("Compteur");
+
+        type2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DX200I", "APX200" }));
+        type2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                type2ActionPerformed(evt);
+            }
+        });
+
+        titre8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        titre8.setText("Echantillon 2");
+
+        titre9.setText("Type");
+
+        titre3.setText("Date");
+
+        type3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DX200I", "APX200" }));
+
+        titre11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        titre11.setText("Echantillon 3");
+
+        titre12.setText("Type");
+
+        titre13.setText("Compteur");
+
+        valideFormulaire.setText("Valider");
+        valideFormulaire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valideFormulaireActionPerformed(evt);
+            }
+        });
+
+        annulerFormulaire.setText("Annuler");
+        annulerFormulaire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                annulerFormulaireActionPerformed(evt);
+            }
+        });
+
+        actif1.setText("Actif");
+
+        actif2.setText("Actif");
+
+        actif3.setText("Actif");
+
+        javax.swing.GroupLayout formulaireLayout = new javax.swing.GroupLayout(formulaire.getContentPane());
+        formulaire.getContentPane().setLayout(formulaireLayout);
+        formulaireLayout.setHorizontalGroup(
+            formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formulaireLayout.createSequentialGroup()
+                .addGap(149, 149, 149)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, formulaireLayout.createSequentialGroup()
+                        .addComponent(titre8, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(actif2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, formulaireLayout.createSequentialGroup()
+                        .addComponent(titre4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(actif1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, formulaireLayout.createSequentialGroup()
+                        .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titre7)
+                            .addComponent(titre6))
+                        .addGap(18, 18, 18)
+                        .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(counter1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+                            .addComponent(type1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, formulaireLayout.createSequentialGroup()
+                        .addComponent(titre11, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(actif3))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(formulaireLayout.createSequentialGroup()
+                            .addComponent(annulerFormulaire)
+                            .addGap(18, 18, 18)
+                            .addComponent(valideFormulaire))
+                        .addGroup(formulaireLayout.createSequentialGroup()
+                            .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(titre13)
+                                .addComponent(titre12))
+                            .addGap(18, 18, 18)
+                            .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(counter3)
+                                .addComponent(type3, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, formulaireLayout.createSequentialGroup()
+                        .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titre2)
+                            .addGroup(formulaireLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(titre3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(descriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, formulaireLayout.createSequentialGroup()
+                        .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titre10)
+                            .addComponent(titre9))
+                        .addGap(18, 18, 18)
+                        .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(counter2, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(type2, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formulaireLayout.createSequentialGroup()
+                .addContainerGap(360, Short.MAX_VALUE)
+                .addComponent(titrePrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(355, 355, 355))
+        );
+        formulaireLayout.setVerticalGroup(
+            formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formulaireLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(titrePrincipal)
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(descriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titre2))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titre3))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(titre4)
+                    .addComponent(actif1))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titre6)
+                    .addComponent(type1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(counter1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titre7))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(titre8)
+                    .addComponent(actif2))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titre9)
+                    .addComponent(type2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(counter2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titre10))
+                .addGap(37, 37, 37)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(titre11)
+                    .addComponent(actif3))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titre12)
+                    .addComponent(type3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(counter3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titre13))
+                .addGap(18, 18, 18)
+                .addGroup(formulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(valideFormulaire)
+                    .addComponent(annulerFormulaire))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+
+        loginForm.setTitle("Test DX200I - Identification");
+
+        titreLogin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        titreLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titreLogin.setText("Entrez vos identifiants");
+
+        jLabel2.setText("Email");
+
+        jLabel3.setText("Password");
+
+        annulerLogin.setText("Annuler");
+        annulerLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                annulerLoginActionPerformed(evt);
+            }
+        });
+
+        ValideLogin.setText("Valider");
+        ValideLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ValideLoginActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout loginFormLayout = new javax.swing.GroupLayout(loginForm.getContentPane());
+        loginForm.getContentPane().setLayout(loginFormLayout);
+        loginFormLayout.setHorizontalGroup(
+            loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loginFormLayout.createSequentialGroup()
+                .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(loginFormLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(loginFormLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginFormLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(40, 40, 40)))
+                        .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(passwordField)
+                            .addComponent(usernameField)))
+                    .addGroup(loginFormLayout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(annulerLogin)
+                        .addGap(18, 18, 18)
+                        .addComponent(ValideLogin)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginFormLayout.createSequentialGroup()
+                .addGap(0, 109, Short.MAX_VALUE)
+                .addComponent(titreLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90))
+        );
+        loginFormLayout.setVerticalGroup(
+            loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loginFormLayout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(titreLogin)
+                .addGap(31, 31, 31)
+                .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
+                .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(annulerLogin)
+                    .addComponent(ValideLogin))
+                .addContainerGap(68, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Test d'endurance DX200I");
@@ -704,6 +998,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jMenuBar1.add(menuConnexion);
 
         menuRemote.setText("Remote");
+        menuRemote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRemoteActionPerformed(evt);
+            }
+        });
 
         SelectionRemote.setText("Choisir");
         menuRemote.add(SelectionRemote);
@@ -718,10 +1017,20 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menuRemote.add(addRemote);
 
         connectRemote.setText("Connexion");
-        connectRemote.setEnabled(false);
+        connectRemote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectRemoteActionPerformed(evt);
+            }
+        });
         menuRemote.add(connectRemote);
 
         deconnectRemote.setText("Déconnexion");
+        deconnectRemote.setEnabled(false);
+        deconnectRemote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deconnectRemoteActionPerformed(evt);
+            }
+        });
         menuRemote.add(deconnectRemote);
 
         jMenuBar1.add(menuRemote);
@@ -912,29 +1221,31 @@ public class Interface extends javax.swing.JFrame implements Observer {
                         .addComponent(statutEch1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(7, 7, 7)))
                 .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectEch2)
-                    .addComponent(compteur2)
-                    .addComponent(setCompteur2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(set2)
-                    .addComponent(reset2)
-                    .addComponent(pause2)
-                    .addComponent(arret2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(statutEch2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(statutEch2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(selectEch2)
+                        .addComponent(compteur2)
+                        .addComponent(setCompteur2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(set2)
+                        .addComponent(reset2)
+                        .addComponent(pause2)
+                        .addComponent(arret2)))
                 .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectEch3)
-                    .addComponent(compteur3)
-                    .addComponent(setCompteur3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(set3)
-                    .addComponent(reset3)
-                    .addComponent(pause3)
-                    .addComponent(arret3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addComponent(statutEch3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(statutEch3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(selectEch3)
+                        .addComponent(compteur3)
+                        .addComponent(setCompteur3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(set3)
+                        .addComponent(reset3)
+                        .addComponent(pause3)
+                        .addComponent(arret3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(voyant, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -955,7 +1266,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNouveauActionPerformed
-        // TODO add your handling code here:
+        if (connexionRemoteActive) {
+
+            formulaire.setVisible(true);
+            formulaire.setSize(900, 700);
+        }else{
+            
+            montrerError("Vous devez vous connecter au remote!", "Défaut de connexion");
+        }
+
+
     }//GEN-LAST:event_menuNouveauActionPerformed
 
     private void arret1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret1ActionPerformed
@@ -973,7 +1293,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             setStatusRS232(true);
             btnConnexion.setEnabled(false);
             btnDeconnexion.setEnabled(true);
-            connexionActive = true;
+            connexionRS232Active = true;
 
         } else {
 
@@ -995,7 +1315,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             setStatusRS232(false);
             btnConnexion.setEnabled(true);
             btnDeconnexion.setEnabled(false);
-            connexionActive = false;
+            connexionRS232Active = false;
 
         }
     }//GEN-LAST:event_btnDeconnexionActionPerformed
@@ -1124,7 +1444,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
 
-        if (!connexionActive) {
+        if (!connexionRS232Active) {
 
             montrerError("Vous devez activer la connexion série!", "Défaut de connexion");
             return;
@@ -1338,6 +1658,96 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     }//GEN-LAST:event_menuQuitterActionPerformed
 
+    private void connectRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectRemoteActionPerformed
+
+        loginForm.setSize(400, 400);
+        loginForm.setVisible(true);
+
+
+    }//GEN-LAST:event_connectRemoteActionPerformed
+
+    private void menuRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRemoteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuRemoteActionPerformed
+
+    private void valideFormulaireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valideFormulaireActionPerformed
+
+        System.out.println("description: " + descriptionField.getText());
+        sceance.setDescription(descriptionField.getText());
+        sceance.setDate(dateField.getText());
+        sceance.setActif1(actif1.isSelected());
+        sceance.setActif2(actif2.isSelected());
+        sceance.setActif3(actif3.isSelected());
+        sceance.setCompteur1(Long.parseLong(counter1.getText()));
+        sceance.setCompteur2(Long.parseLong(counter2.getText()));
+        sceance.setCompteur3(Long.parseLong(counter3.getText()));
+        sceance.setType1(type1.getSelectedItem().toString());
+        sceance.setType2(type2.getSelectedItem().toString());
+        sceance.setType3(type3.getSelectedItem().toString());
+        sceance.toString();
+        boolean result = controller.enregistrerSceance(sceance, login);
+        if (!result) {
+
+            montrerError("Accès remote refusé!", "Erreur authentification");
+        }
+        formulaire.setVisible(false);
+
+    }//GEN-LAST:event_valideFormulaireActionPerformed
+
+    private void annulerFormulaireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annulerFormulaireActionPerformed
+
+        formulaire.setVisible(false);
+    }//GEN-LAST:event_annulerFormulaireActionPerformed
+
+    private void type2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_type2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_type2ActionPerformed
+
+    private void annulerLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annulerLoginActionPerformed
+        loginForm.setVisible(false);        // TODO add your handling code here:
+    }//GEN-LAST:event_annulerLoginActionPerformed
+
+    private void ValideLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ValideLoginActionPerformed
+
+        login.setUser(usernameField.getText());
+        login.setPassword(passwordField.getText());
+
+        loginForm.setVisible(false);
+        try {
+            boolean autorisation = controller.connexionRemote(login);
+            if (autorisation) {
+
+                connexionRemoteActive = true;
+                statutRemote.setBackground(Color.GREEN);
+                statutRemote.setForeground(Color.GREEN);
+                deconnectRemote.setEnabled(true);
+                connectRemote.setEnabled(false);
+
+            } else {
+
+                montrerError("Connexion refusée!", "Erreur connexion remote");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_ValideLoginActionPerformed
+
+    private void deconnectRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deconnectRemoteActionPerformed
+
+        connexionRemoteActive = false;
+        login.setUser(null);
+        login.setPassword(null);
+        connectRemote.setEnabled(true);
+        deconnectRemote.setEnabled(false);
+        statutRemote.setForeground(Color.red);
+        statutRemote.setBackground(Color.red);
+        usernameField.setText("");
+        passwordField.setText("");
+
+        montrerError("Vous êtes déconnecté du remote!", "Déconnexion remote demandée");
+    }//GEN-LAST:event_deconnectRemoteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1384,7 +1794,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel RS232;
     private javax.swing.JLabel Remote;
     private javax.swing.JMenu SelectionRemote;
+    private javax.swing.JButton ValideLogin;
+    private javax.swing.JCheckBox actif1;
+    private javax.swing.JCheckBox actif2;
+    private javax.swing.JCheckBox actif3;
     private javax.swing.JMenuItem addRemote;
+    private javax.swing.JButton annulerFormulaire;
+    private javax.swing.JButton annulerLogin;
     private javax.swing.JButton arret1;
     private javax.swing.JButton arret2;
     private javax.swing.JButton arret3;
@@ -1408,8 +1824,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel compteur3;
     private javax.swing.JMenuItem connectRemote;
     private javax.swing.JTextField console;
+    private javax.swing.JTextField counter1;
+    private javax.swing.JTextField counter2;
+    private javax.swing.JTextField counter3;
+    private javax.swing.JTextField dateField;
     private javax.swing.JMenuItem deconnectRemote;
     private javax.swing.JMenu deleteRemote;
+    private javax.swing.JTextField descriptionField;
+    private javax.swing.JFrame formulaire;
     private javax.swing.ButtonGroup groupBaud;
     private javax.swing.ButtonGroup groupBits;
     private javax.swing.ButtonGroup groupCadence;
@@ -1417,8 +1839,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.ButtonGroup groupPorts;
     private javax.swing.ButtonGroup groupRemotes;
     private javax.swing.ButtonGroup groupStop;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JFrame loginForm;
     private javax.swing.JMenuItem menuAuto;
     private javax.swing.JMenu menuBaud;
     private javax.swing.JMenu menuBits;
@@ -1436,6 +1861,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JRadioButtonMenuItem parityEven;
     private javax.swing.JRadioButtonMenuItem parityNone;
     private javax.swing.JRadioButtonMenuItem parityOdd;
+    private javax.swing.JTextField passwordField;
     private javax.swing.JButton pause;
     private javax.swing.JButton pause1;
     private javax.swing.JButton pause2;
@@ -1463,6 +1889,24 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JRadioButtonMenuItem stop1;
     private javax.swing.JRadioButtonMenuItem stop2;
     private javax.swing.JLabel titre;
+    private javax.swing.JLabel titre10;
+    private javax.swing.JLabel titre11;
+    private javax.swing.JLabel titre12;
+    private javax.swing.JLabel titre13;
+    private javax.swing.JLabel titre2;
+    private javax.swing.JLabel titre3;
+    private javax.swing.JLabel titre4;
+    private javax.swing.JLabel titre6;
+    private javax.swing.JLabel titre7;
+    private javax.swing.JLabel titre8;
+    private javax.swing.JLabel titre9;
+    private javax.swing.JLabel titreLogin;
+    private javax.swing.JLabel titrePrincipal;
+    private javax.swing.JComboBox<String> type1;
+    private javax.swing.JComboBox<String> type2;
+    private javax.swing.JComboBox<String> type3;
+    private javax.swing.JTextField usernameField;
+    private javax.swing.JButton valideFormulaire;
     private javax.swing.JLabel version;
     private javax.swing.JLabel voyant;
     // End of variables declaration//GEN-END:variables
@@ -1878,7 +2322,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void fermeture() {
 
-        if (connexionActive) {
+        if (connexionRS232Active) {
 
             connecteur.envoyerData(Constants.FERMETURE);
 
