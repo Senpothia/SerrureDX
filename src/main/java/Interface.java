@@ -1684,8 +1684,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             loginForm.setSize(400, 400);
             loginForm.setVisible(true);
-            setEnabledMenusSceance(true);
-           
+            
 
         }
 
@@ -1748,7 +1747,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 statutRemote.setForeground(Color.GREEN);
                 deconnectRemote.setEnabled(true);
                 connectRemote.setEnabled(false);
-
+                setEnabledMenusSceance(true);
+                
+                
             } else {
 
                 montrerError("Connexion refusée!", "Erreur connexion remote");
@@ -1770,7 +1771,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         statutRemote.setBackground(Color.red);
         usernameField.setText("");
         passwordField.setText("");
-
+        setEnabledMenusSceance(false);
         montrerError("Vous êtes déconnecté du remote!", "Déconnexion remote demandée");
     }//GEN-LAST:event_deconnectRemoteActionPerformed
 
