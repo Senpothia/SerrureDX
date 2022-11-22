@@ -393,9 +393,10 @@ public class Controller {
         
     }
 
-    void getSceance(String idSceance, Login login) throws IOException {
+    public FormSeance getSceance(String idSceance, Login login) throws IOException {
        
-        remoteController.getSceance(idSceance, login);
+        FormSeance f = remoteController.getSceance(idSceance, login);
+        return f;
     }
     
     

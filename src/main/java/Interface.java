@@ -180,6 +180,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
 
         initialisation = initializer.getInit();
+        if (initialisation.getSceance().equals("na")) {
+
+            menuModifier.setEnabled(false);
+
+        } else {
+            menuModifier.setEnabled(true);
+        }
 
         List<String> remotes = initialisation.getRemoteNames();
 
@@ -194,6 +201,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
 
         }
+        setEnabledMenusSceance(false);
 
         //  this.setDefaultCloseOperation(this.closeWindow());
     }
@@ -286,7 +294,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         statutEch3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuFichier = new javax.swing.JMenu();
-        ouvrir = new javax.swing.JMenuItem();
+        menuOuvrir = new javax.swing.JMenuItem();
         menuNouveau = new javax.swing.JMenuItem();
         menuModifier = new javax.swing.JMenuItem();
         menuSauvegardes = new javax.swing.JMenuItem();
@@ -802,8 +810,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
         });
 
-        ouvrir.setText("Ouvrir");
-        MenuFichier.add(ouvrir);
+        menuOuvrir.setText("Ouvrir");
+        MenuFichier.add(menuOuvrir);
 
         menuNouveau.setText("Nouveau");
         menuNouveau.addActionListener(new java.awt.event.ActionListener() {
@@ -1676,6 +1684,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             loginForm.setSize(400, 400);
             loginForm.setVisible(true);
+            setEnabledMenusSceance(true);
+           
 
         }
 
@@ -1765,9 +1775,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_deconnectRemoteActionPerformed
 
     private void menuModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModifierActionPerformed
-           
+
         try {
-            controller.getSceance(initialisation.getSceance(), login);
+
+            FormSeance f = controller.getSceance(initialisation.getSceance(), login);
+            formulaire.setSize(900, 700);
+            formulaire.setVisible(true);
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1877,13 +1890,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem menuManuel;
     private javax.swing.JMenuItem menuModifier;
     private javax.swing.JMenuItem menuNouveau;
+    private javax.swing.JMenuItem menuOuvrir;
     private javax.swing.JMenu menuParity;
     private javax.swing.JMenu menuPort;
     private javax.swing.JMenuItem menuQuitter;
     private javax.swing.JMenu menuRemote;
     private javax.swing.JMenuItem menuSauvegardes;
     private javax.swing.JMenu menuStop;
-    private javax.swing.JMenuItem ouvrir;
     private javax.swing.JRadioButtonMenuItem parityEven;
     private javax.swing.JRadioButtonMenuItem parityNone;
     private javax.swing.JRadioButtonMenuItem parityOdd;
@@ -2364,6 +2377,24 @@ public class Interface extends javax.swing.JFrame implements Observer {
         System.out.println("Fermeture programme");
         // montrerError("Utiliser le menu Fichier pour fermer!", "Fermeture programme");
         return 0;
+    }
+
+    private void resetSceance() {
+
+        initializer.update("sceance", "na");
+        menuModifier.setEnabled(false);
+    }
+
+    void setEnabledMenusSceance(boolean actif) {
+
+        menuNouveau.setEnabled(actif);
+        if (initialisation.getSceance().equals("na")) {
+            menuModifier.setEnabled(false);
+        } else {
+            menuModifier.setEnabled(actif);
+        }
+
+        menuOuvrir.setEnabled(actif);
     }
 
 }

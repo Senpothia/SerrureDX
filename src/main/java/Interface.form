@@ -463,7 +463,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuFichierActionPerformed"/>
           </Events>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="ouvrir">
+            <MenuItem class="javax.swing.JMenuItem" name="menuOuvrir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ouvrir"/>
               </Properties>

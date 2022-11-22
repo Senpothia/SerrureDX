@@ -159,7 +159,7 @@ public class RemoteController {
 
     }
 
-    public void getSceance(String idSceance, Login login) throws MalformedURLException, IOException {
+    public FormSeance getSceance(String idSceance, Login login) throws MalformedURLException, IOException {
 
         boolean autorisation = connexionRequest(login);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -187,7 +187,8 @@ public class RemoteController {
         System.out.println("id: " + f.getId());
         System.out.println("Description: " + f.getDescription());
         System.out.println("Ech1, compteur: " + f.getCompteur1());
-
+        
+        return f;
     }
 
 }

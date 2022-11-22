@@ -1,5 +1,7 @@
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,11 +46,12 @@ public class Initializer {
         System.out.println("password: " + password);
         System.out.println("Nombre de url remotes: " + listeRemotesUrls.size());
         System.out.println("Nombre de noms remotes: " + listeRemotesNames.size());
-        
+        System.out.println("sceance id: " + sceance);
+
         for (String r : listeRemotesUrls) {
 
             System.out.println("remote url:" + r);
-           
+
         }
 
         return init;
@@ -87,6 +90,30 @@ public class Initializer {
         String[] extraction = remotes.split(";");
 
         return extraction;
+
+    }
+
+    public void update(String key, String value) {
+
+        try {
+
+            Properties cloudProperpies = new Properties();
+            //first load old one:
+            FileInputStream configStream = new FileInputStream("src\\main\\java\\remote.properties");
+            cloudProperpies.load(configStream);
+            configStream.close();
+
+            //modifies existing or adds new property
+            cloudProperpies.setProperty(key, value);
+
+            //save modified property file
+            FileOutputStream output = new FileOutputStream("src\\main\\java\\remote.properties");
+            cloudProperpies.store(output, "DX200I tester - Properties");
+            output.close();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
     }
 
