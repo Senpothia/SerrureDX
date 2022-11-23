@@ -16,12 +16,25 @@ public class FormSeance {
     private String type1;
     private String type2;
     private String type3;
-    private Boolean actif1 = false;
-    private Boolean actif2 = false;
-    private Boolean actif3 = false;
-    private Long compteur1 = 0L;
-    private Long compteur2 = 0L;
-    private Long compteur3 = 0L;
+    private Boolean actif;
+    private Boolean actif1;
+    private Boolean actif2;
+    private Boolean actif3;
+    private Boolean erreur1;
+    private Boolean erreur2;
+    private Boolean erreur3;
+    private Integer position1;
+    private Integer position2;
+    private Integer position3;
+    private Boolean interrompu1;
+    private Boolean interrompu2;
+    private Boolean interrompu3;
+    private Boolean pause1;
+    private Boolean pause2;
+    private Boolean pause3;
+    private Long compteur1;
+    private Long compteur2;
+    private Long compteur3;
 
     public FormSeance() {
         super();
@@ -141,9 +154,110 @@ public class FormSeance {
         this.compteur3 = compteur3;
     }
 
-    @Override
-    public String toString() {
-        return "FormSeance{" + "id=" + id + ", Description=" + Description + ", date=" + date + ", type1=" + type1 + ", type2=" + type2 + ", type3=" + type3 + ", actif1=" + actif1 + ", actif2=" + actif2 + ", actif3=" + actif3 + ", compteur1=" + compteur1 + ", compteur2=" + compteur2 + ", compteur3=" + compteur3 + '}';
+    public Boolean getErreur1() {
+        return erreur1;
     }
+
+    public void setErreur1(Boolean erreur1) {
+        this.erreur1 = erreur1;
+    }
+
+    public Boolean getErreur2() {
+        return erreur2;
+    }
+
+    public void setErreur2(Boolean erreur2) {
+        this.erreur2 = erreur2;
+    }
+
+    public Boolean getErreur3() {
+        return erreur3;
+    }
+
+    public void setErreur3(Boolean erreur3) {
+        this.erreur3 = erreur3;
+    }
+
+    public Boolean getInterrompu1() {
+        return interrompu1;
+    }
+
+    public void setInterrompu1(Boolean interrompu1) {
+        this.interrompu1 = interrompu1;
+    }
+
+    public Boolean getInterrompu2() {
+        return interrompu2;
+    }
+
+    public void setInterrompu2(Boolean interrompu2) {
+        this.interrompu2 = interrompu2;
+    }
+
+    public Boolean getInterrompu3() {
+        return interrompu3;
+    }
+
+    public void setInterrompu3(Boolean interrompu3) {
+        this.interrompu3 = interrompu3;
+    }
+
+    public Boolean getPause1() {
+        return pause1;
+    }
+
+    public void setPause1(Boolean pause1) {
+        this.pause1 = pause1;
+    }
+
+    public Boolean getPause2() {
+        return pause2;
+    }
+
+    public void setPause2(Boolean pause2) {
+        this.pause2 = pause2;
+    }
+
+    public Boolean getPause3() {
+        return pause3;
+    }
+
+    public void setPause3(Boolean pause3) {
+        this.pause3 = pause3;
+    }
+
+    public void setPosition1(Integer position1) {
+        this.position1 = position1;
+    }
+
+    public void setPosition2(Integer position2) {
+        this.position2 = position2;
+    }
+
+    public void setPosition3(Integer position3) {
+        this.position3 = position3;
+    }
+
+    public Integer getPosition1() {
+        return position1;
+    }
+
+    public Integer getPosition2() {
+        return position2;
+    }
+
+    public Integer getPosition3() {
+        return position3;
+    }
+
+    public Boolean getActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
+    
+    
 
 }

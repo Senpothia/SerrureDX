@@ -25,12 +25,14 @@ public class Controller {
     private boolean isFichier;
     private boolean isFin;
     private boolean isFermeture;
+    private Context context = new Context();
 
     private Rapport rapport = new Rapport();
+    private FormSeance formSceance = new FormSeance();
     private Enregistreur enregistreur = new Enregistreur();
     private RemoteController remoteController = new RemoteController();
 
-    public Rapport parser(String inputLine) {
+    public Rapport parser(String inputLine) throws IOException {
 
         inputLine = inputLine.trim();
         isCompteur = inputLine.startsWith(Constants.TOTAL);
@@ -109,7 +111,8 @@ public class Controller {
             gestionFermeture(inputLine);
 
         }
-
+        
+        rapport.setFormSeance(formSceance);
         return rapport;
 
     }
@@ -128,21 +131,21 @@ public class Controller {
         if (ech.equals("#1")) {
 
             System.out.println("Réception total pour ech 1: " + compteur1);
-            rapport.setTotal1(Long.parseLong(compteur1));
+            formSceance.setCompteur1(Long.parseLong(compteur1));
             return;
         }
 
         if (ech.equals("#2")) {
 
             System.out.println("Réception total pour ech 2: " + compteur1);
-            rapport.setTotal2(Long.parseLong(compteur1));
+            formSceance.setCompteur2(Long.parseLong(compteur2));
             return;
         }
 
         if (ech.equals("#3")) {
 
             System.out.println("Réception total pour ech 3: " + compteur1);
-            rapport.setTotal3(Long.parseLong(compteur1));
+            formSceance.setCompteur3(Long.parseLong(compteur3));
             return;
 
         }
@@ -150,9 +153,10 @@ public class Controller {
         if (ech.equals("#0")) {
 
             System.out.println("Réception total des 3 échantillons: " + compteur1 + ";" + compteur2 + ";" + compteur3);
-            rapport.setTotal1(Long.parseLong(compteur1));
-            rapport.setTotal2(Long.parseLong(compteur2));
-            rapport.setTotal3(Long.parseLong(compteur3));
+
+            formSceance.setCompteur1(Long.parseLong(compteur1));
+            formSceance.setCompteur2(Long.parseLong(compteur2));
+            formSceance.setCompteur3(Long.parseLong(compteur3));
             return;
 
         }
@@ -162,23 +166,17 @@ public class Controller {
 
     }
 
-    private void gestionSequence(String inputLine) {
+    private void gestionSequence(String inputLine) throws IOException {
 
         rapport.setLog("FIN DE SEQUENCE");
         rapport.setColor(Color.RED);
         rapport.setSauvegarde(true);
-        enregistreur.sauvegarder(rapport);
-        
-        /*
-        
-           try {
-            remoteController.enregistrerSceance();
-        } catch (IOException ex) {
-            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        */
+        enregistreur.sauvegarder(rapport);   //  sauvegardes en locale
+        if (context.isConnexionRemoteActive()) {
 
-      
+            remoteController.sauvegarderSequence(context.getFormSceance(), context.getLogin());
+
+        }
 
     }
 
@@ -199,6 +197,10 @@ public class Controller {
             rapport.getActifs()[i - 1] = extraction[i].equals("0") ? false : true;
             System.out.println("actif n°: " + i + " = " + rapport.getActifs()[i - 1]);
         }
+
+        formSceance.setActif1(rapport.getActif1());
+        formSceance.setActif2(rapport.getActif2());
+        formSceance.setActif3(rapport.getActif3());
 
         String log = "RAPPORT ACTIFS: Ech1: ";
         String s = rapport.getActif1() ? "actif - " : "inactif - ";
@@ -231,6 +233,10 @@ public class Controller {
             System.out.println("arrêt n°: " + i + " = " + rapport.getArrets()[i - 1]);
         }
 
+        formSceance.setInterrompu1(rapport.getArrets()[0]);
+        formSceance.setInterrompu2(rapport.getArrets()[1]);
+        formSceance.setInterrompu3(rapport.getArrets()[2]);
+
         String log = "RAPPORT ARRETS: Ech1: ";
         String s = rapport.getArrets()[0] ? "actif - " : "arrêté - ";
         log = log + s;
@@ -262,6 +268,10 @@ public class Controller {
             System.out.println("actif n°: " + i + " = " + rapport.getPauses()[i - 1]);
         }
 
+        formSceance.setPause1(rapport.getPauses()[0]);
+        formSceance.setPause2(rapport.getPauses()[1]);
+        formSceance.setPause3(rapport.getPauses()[2]);
+
         String log = "RAPPORT PAUSES: Ech1: ";
         String s = rapport.getPauses()[0] ? "actif - " : "en pause - ";
         log = log + s;
@@ -292,6 +302,10 @@ public class Controller {
             rapport.getErreurs()[i - 2] = extraction[i].equals("0") ? false : true;
             System.out.println("erreur n°: " + i + " = " + rapport.getErreurs()[i - 2]);
         }
+
+        formSceance.setErreur1(rapport.getErreurs()[0]);
+        formSceance.setErreur2(rapport.getErreurs()[1]);
+        formSceance.setErreur3(rapport.getErreurs()[2]);
 
         String log = "RAPPORT ERREURS: Ech1: ";
         String s = rapport.getErreur1() ? "actif - " : "en erreur - ";
@@ -364,41 +378,68 @@ public class Controller {
         }
 
     }
-    
-    public boolean enregistrerSceance(FormSeance sceance, Login login){
-        
-        
-          try {
+
+    public boolean enregistrerSceance(FormSeance sceance, Login login) {
+
+        try {
             boolean result = remoteController.enregistrerSceance(sceance, login);
-            if (!result){
-            
+            if (!result) {
+
                 return false;
-            }else{
-                
+            } else {
+
                 return true;
             }
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-    
-    
+
     }
 
     public boolean connexionRemote(Login login) throws IOException {
-        
+
         boolean autorisation = remoteController.connexionRequest(login);
         return autorisation;
-        
-        
+
     }
 
     public FormSeance getSceance(String idSceance, Login login) throws IOException {
-       
+
         FormSeance f = remoteController.getSceance(idSceance, login);
         return f;
     }
-    
-    
+
+    boolean modifierSceance(FormSeance sceance, Login login) {
+
+        try {
+            boolean result = remoteController.modifierSceance(sceance, login);
+            if (!result) {
+
+                return false;
+            } else {
+
+                return true;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    void actualiserSceance(FormSeance formSeance, Login login) throws IOException {
+      
+        boolean reponse  = remoteController.actualiserSceance(formSeance, login);
+        
+    }
 
 }

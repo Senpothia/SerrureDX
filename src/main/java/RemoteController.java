@@ -187,8 +187,91 @@ public class RemoteController {
         System.out.println("id: " + f.getId());
         System.out.println("Description: " + f.getDescription());
         System.out.println("Ech1, compteur: " + f.getCompteur1());
-        
+
         return f;
+    }
+
+    boolean modifierSceance(FormSeance sceance, Login login) throws IOException {
+
+        boolean autorisation = connexionRequest(login);
+        if (autorisation) {
+
+            System.out.println("RemoteController.enregistrerSceance()");
+            //   URL url = new URL("http://127.0.0.1:8090/creer/sceance/windows");
+            URL url = new URL(Interface.initialisation.getRemoteUrl() + "/modifier/sequence/windows/" + Interface.initialisation.getSceance());
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(sceance);
+            System.out.println("Conversion Json = " + json);
+
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = json.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                System.out.println("réponse: " + response.toString());
+                return true;
+
+            }
+        } else {
+
+            return false;
+
+        }
+
+    }
+
+    public boolean actualiserSceance(FormSeance formSeance, Login login) throws IOException {
+
+        boolean autorisation = connexionRequest(login);
+        if (autorisation) {
+
+            System.out.println("RemoteController.actualiserSceance()");
+            //   URL url = new URL("http://127.0.0.1:8090/creer/sceance/windows");
+            URL url = new URL(Interface.initialisation.getRemoteUrl() + "/actualiser/sequence/windows/" + Interface.initialisation.getSceance());
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(formSeance);
+            System.out.println("Conversion Json = " + json);
+
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = json.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                System.out.println("réponse: " + response.toString());
+                return true;
+
+            }
+        } else {
+
+            return false;
+
+        }
     }
 
 }

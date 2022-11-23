@@ -28,14 +28,16 @@ import javax.swing.JTextField;
 
 public class Interface extends javax.swing.JFrame implements Observer {
 
-    private Initializer initializer = new Initializer();
-    public static Initialisation initialisation;
+    private Initializer initializer = new Initializer();  // Charge les propriétés du fichier properties contenant les données liées au cloud(remote)
+    public static Initialisation initialisation;          // Centralise les données rapportées par l'initializez
     private boolean buzzer = false;
     private boolean test_off = true;            // le test est arrêté
     private boolean test_on = false;            // le test est en cours
     private boolean test_pause = false;         // le test est en pause
     private boolean arret_valide = false;       // le test est arrêté et la séquence/cycle est terminé
     private boolean auto = true;                // le mode de marche: auto ou manuel
+    private boolean modification = false;       // indique si une modification de scéance est en cours. Pilote la fonctionnalité du btn de validation du formulaire
+    // S'il n'y a pas modification alors il s'agit d'une ouverture (création de scéance)
 
     private boolean[] actifs = {false, false, false};
     private boolean[] erreurs = {false, false, false};
@@ -50,12 +52,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private boolean connexionRS232Active = false;    // état de la connexion RS-232
     private boolean connexionRemoteActive = false;   // Connexion au serveur distant
+    private boolean withoutRemote = false;   // Connexion au serveur distant
 
-    Connecteur connecteur = getConnecteur();
-    Controller controller = new Controller();
+    Connecteur connecteur = getConnecteur();         // gére la conexion RS232
+    Controller controller = new Controller();        // gére le déroulement du test - logique métier
 
-    private String nomDeFichier = null;
-    private File repertoire;
+    private String nomDeFichier = null;              // fichier de sauvegarde locale
+    private File repertoire = null;                    // repertoire du ficheir de sauvegarde
 
     private List<JLabel> compteurs = new ArrayList<>();
     private List<JLabel> statutsEchs = new ArrayList<>();
@@ -73,8 +76,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private List<String> ordresSTOP = new ArrayList<>();
     private List<String> ordresCadences = new ArrayList<>();
 
-    private FormSeance sceance = new FormSeance();
-    private Login login = new Login();
+    private FormSeance sceance = new FormSeance();              // contient les éléments de définition / résultats de la scéance en cours à transmettre au cloud
+    private Login login = new Login();                          // contient les identifiant de connexion au cloud
 
     /*
      * Creates new form Interface
@@ -340,6 +343,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         formulaire.setTitle("Test DX200I - Création de scéance");
         formulaire.setMaximizedBounds(new java.awt.Rectangle(0, 0, 300, 200));
+
+        descriptionField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                descriptionFieldActionPerformed(evt);
+            }
+        });
 
         titre4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         titre4.setText("Echantillon 1");
@@ -811,6 +820,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
 
         menuOuvrir.setText("Ouvrir");
+        menuOuvrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuOuvrirActionPerformed(evt);
+            }
+        });
         MenuFichier.add(menuOuvrir);
 
         menuNouveau.setText("Nouveau");
@@ -1461,10 +1475,31 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
 
-        if (!connexionRS232Active) {
+        if (!connexionRS232Active && !withoutRemote) {
 
             montrerError("Vous devez activer la connexion série!", "Défaut de connexion");
             return;
+        }
+
+        if (nomDeFichier == null || repertoire == null) {
+
+            montrerError("Vous devez définir un fichier de sauvegarde!", "Défaut fichier de sauvegarde");
+            return;
+        }
+
+        if (!connexionRemoteActive && !withoutRemote) {
+
+            int result = JOptionPane.showConfirmDialog(this, "Voulez-vous continbuez sans remote?", "Défaut de connexion remote",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (result == JOptionPane.YES_OPTION) {
+
+                withoutRemote = true;
+
+            } else if (result == JOptionPane.NO_OPTION) {
+                return;
+            }
         }
 
         if (auto) {
@@ -1684,7 +1719,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             loginForm.setSize(400, 400);
             loginForm.setVisible(true);
-            
 
         }
 
@@ -1710,13 +1744,34 @@ public class Interface extends javax.swing.JFrame implements Observer {
         sceance.setType2(type2.getSelectedItem().toString());
         sceance.setType3(type3.getSelectedItem().toString());
         sceance.toString();
-        boolean result = controller.enregistrerSceance(sceance, login);
-        if (!result) {
 
-            montrerError("Accès remote refusé!", "Erreur authentification");
+        if (!modification) {  // Création de scéance 
+
+            boolean result = controller.enregistrerSceance(sceance, login);
+            if (!result) {
+
+                montrerError("Accès remote refusé!", "Erreur authentification");
+            } else {
+
+                console.setText("La séquence a été enregistrée sur le remote");
+            }
+            formulaire.setVisible(false);
+
+        } else {  // Modification d'une scéance existante récupérée sur le cloud
+
+            boolean result = controller.modifierSceance(sceance, login);
+            if (!result) {
+
+                montrerError("Accès remote refusé!", "Erreur authentification");
+            } else {
+
+                console.setText("La séquence a été enregistrée sur le remote");
+            }
+            formulaire.setVisible(false);
+
         }
-        formulaire.setVisible(false);
 
+        modification = false;
     }//GEN-LAST:event_valideFormulaireActionPerformed
 
     private void annulerFormulaireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annulerFormulaireActionPerformed
@@ -1748,8 +1803,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 deconnectRemote.setEnabled(true);
                 connectRemote.setEnabled(false);
                 setEnabledMenusSceance(true);
-                
-                
+
             } else {
 
                 montrerError("Connexion refusée!", "Erreur connexion remote");
@@ -1779,13 +1833,41 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         try {
 
+            modification = true;
             FormSeance f = controller.getSceance(initialisation.getSceance(), login);
             formulaire.setSize(900, 700);
             formulaire.setVisible(true);
+            descriptionField.setText(f.getDescription());
+            dateField.setText(f.getDate());
+            counter1.setText(String.valueOf(f.getCompteur1()));
+            counter2.setText(String.valueOf(f.getCompteur2()));
+            counter3.setText(String.valueOf(f.getCompteur3()));
+            type1.setSelectedItem(f.getType1());
+            type2.setSelectedItem(f.getType2());
+            type3.setSelectedItem(f.getType3());
+            actif1.setSelected(f.getActif1());
+            actif2.setSelected(f.getActif2());
+            actif2.setSelected(f.getActif2());
+
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            modification = false;
+        }
+    }//GEN-LAST:event_menuModifierActionPerformed
+
+    private void descriptionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_descriptionFieldActionPerformed
+
+    private void menuOuvrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOuvrirActionPerformed
+
+        try {
+            sceance = controller.getSceance(initialisation.getSceance(), login);
+
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_menuModifierActionPerformed
+    }//GEN-LAST:event_menuOuvrirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1983,14 +2065,25 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         String inputLine = (String) arg;
         console.setText(inputLine);
-        Rapport rapport = controller.parser(inputLine);
-        traiterRapport(rapport);                    // Analyse du rapport pour mise à jour de l'interface
-        console.setForeground(rapport.color);
+        Context context = buildContext();
+        controller.setContext(context);
+        Rapport rapport = new Rapport();
+        try {
+            rapport = controller.parser(inputLine);
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            traiterRapport(rapport);                    // Analyse du rapport pour mise à jour de l'interface
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        console.setForeground(rapport.getColor());
         console.setText(rapport.getLog());
 
     }
 
-    private void traiterRapport(Rapport rapport) {  // Gestion des affichages en fonction des résultats remontés par Arduino
+    private void traiterRapport(Rapport rapport) throws IOException {  // Gestion des affichages en fonction des résultats remontés par Arduino
 
         Color color = null;
         for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
@@ -2036,13 +2129,17 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         }
 
-        if (rapport.acquittement) {
+        if (rapport.isSauvegarde()) {
+            
+           controller.actualiserSceance(rapport.getFormSeance(), login);
+        }
+        if (rapport.isAcquittement()) {
 
             startRequested();
             connecteur.envoyerData(Constants.ORDRE_MARCHE);
         }
 
-        if (rapport.fermeture) {
+        if (rapport.isFermeture()) {
 
             System.exit(0);
         }
@@ -2391,11 +2488,23 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menuNouveau.setEnabled(actif);
         if (initialisation.getSceance().equals("na")) {
             menuModifier.setEnabled(false);
+            menuOuvrir.setEnabled(false);
         } else {
             menuModifier.setEnabled(actif);
+            menuOuvrir.setEnabled(actif);
         }
 
-        menuOuvrir.setEnabled(actif);
+    }
+
+    private Context buildContext() {
+
+        Context context = new Context();
+        context.setConnexionRS232Active(connexionRS232Active);
+        context.setConnexionRemoteActive(connexionRemoteActive);
+        context.setFormSceance(sceance);
+        context.setLogin(login);
+        context.setWithoutRemote(withoutRemote);
+        return context;
     }
 
 }

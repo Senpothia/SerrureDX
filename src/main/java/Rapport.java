@@ -18,10 +18,11 @@ public class Rapport {
     private boolean[] pauses = {false, false, false};
     private long[] totaux = {0, 0, 0};
     private boolean sauvegarde = false;
-    boolean marche = false;
-    boolean pause = false;
-    boolean acquittement = false;
-    boolean fermeture = false;
+    private boolean marche = false;
+    private boolean pause = false;
+    private boolean acquittement = false;
+    private boolean fermeture = false;
+    private FormSeance formSeance = new FormSeance();
 
     public Color getColor() {
         return color;
@@ -192,6 +193,15 @@ public class Rapport {
     public void setFermeture(boolean fermeture) {
         this.fermeture = fermeture;
     }
+
+    public FormSeance getFormSeance() {
+        return formSeance;
+    }
+
+    public void setFormSeance(FormSeance formSeance) {
+        this.formSeance = formSeance;
+    }
+    
     
     
 

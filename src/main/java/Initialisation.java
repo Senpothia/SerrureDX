@@ -19,7 +19,7 @@ public class Initialisation {
     private List<String> remoteNames = new ArrayList<>();;
     private String remoteName;
     private String remoteUrl;
-    private String sceance;
+    private String sceance;     // id de la scéance en cours
 
     public Initialisation() {
     }
