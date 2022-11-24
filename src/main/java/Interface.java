@@ -1516,6 +1516,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             if (i == -1) {
                 return;
             } else {
+
+                // TODO mode manuel
             }
 
         }
@@ -2068,6 +2070,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         Rapport rapport = new Rapport();
         try {
             rapport = controller.parser(inputLine);
+            System.out.println("rapport reçu");
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2083,55 +2086,29 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void traiterRapport(Rapport rapport) throws IOException {  // Gestion des affichages en fonction des résultats remontés par Arduino
 
-        // Color color = null;
-        /*
-        for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
+        System.out.println("Interface.traiterRapport");
 
-            boolean erreur = rapport.getErreurs()[i];
-            boolean actif = rapport.getActifs()[i];
-            boolean pause = rapport.getPauses()[i];
-            boolean arret = rapport.getArrets()[i];
-
-            String total = Long.toString(rapport.getTotaux()[i]);
-
-            if (erreur) {
-
-                color = Color.RED;
-
-            } else {
-
-                color = Color.BLUE;
-            }
-
-            if (!actif) {
-
-                color = Color.GRAY;
-            }
-
-            if (pause) {
-
-                color = Color.ORANGE;
-            }
-
-            if (arret) {
-
-                color = Color.YELLOW;
-            }
-
-            JLabel lab1 = compteurs.get(i);
-            lab1.setForeground(color);
-            lab1.setText(total);
-
-            JLabel lab2 = statutsEchs.get(i);
-            lab2.setForeground(color);
-            lab2.setBackground(color);
-
+        if (rapport.isFermeture()) {
+            
+            controller.actualiserSceance(rapport.getFormSeance(), login);
+            System.exit(0);
         }
-        
-         */
+
+        if (rapport.isSauvegarde()) {
+
+            controller.actualiserSceance(rapport.getFormSeance(), login);
+            return;
+        }
+        if (rapport.isAcquittement()) {
+
+            startRequested();
+            connecteur.envoyerData(Constants.ORDRE_MARCHE);
+            return;
+        }
+
         List<String> totaux = new ArrayList<>();
         totaux.add(Long.toString(rapport.getFormSeance().getCompteur1()));
-        System.out.println("total1 côté parser interface: " + totaux.get(0));
+        // System.out.println("total1 côté parser interface: " + totaux.get(0));
         totaux.add(Long.toString(rapport.getFormSeance().getCompteur2()));
         totaux.add(Long.toString(rapport.getFormSeance().getCompteur3()));
         List<Boolean> erreurs = convertArrayToList(rapport.getErreurs());
@@ -2140,21 +2117,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
         List<Boolean> arrets = convertArrayToList(rapport.getArrets());
 
         proccessStatusLists(totaux, erreurs, actifs, pauses, arrets);
-
-        if (rapport.isSauvegarde()) {
-
-            controller.actualiserSceance(rapport.getFormSeance(), login);
-        }
-        if (rapport.isAcquittement()) {
-
-            startRequested();
-            connecteur.envoyerData(Constants.ORDRE_MARCHE);
-        }
-
-        if (rapport.isFermeture()) {
-
-            System.exit(0);
-        }
 
     }
 
@@ -2538,7 +2500,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void updateDisplayInterface(FormSeance sceance) {
 
-        //Color color = null;
         List<String> totaux = new ArrayList<>();
         List<Boolean> erreurs = new ArrayList<>();
         List<Boolean> actifs = new ArrayList<>();
@@ -2567,56 +2528,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         proccessStatusLists(totaux, erreurs, actifs, pauses, arrets);
 
-        /*
-        for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
-
-            Boolean erreur = erreurs.get(i);
-            Boolean actif = actifs.get(i);
-            Boolean pause = pauses.get(i);
-            Boolean arret = arrets.get(i);
-
-            String total = totaux.get(i);
-
-            if (erreur) {
-
-                color = Color.RED;
-
-            } else {
-
-                color = Color.BLUE;
-            }
-
-            if (!actif) {
-
-                echantillonsActifs.get(i).setSelected(false);
-                color = Color.GRAY;
-
-            } else {
-
-                echantillonsActifs.get(i).setSelected(true);
-
-            }
-
-            if (pause) {
-
-                color = Color.ORANGE;
-            }
-
-            if (arret) {
-
-                color = Color.YELLOW;
-            }
-
-            JLabel lab1 = compteurs.get(i);
-            lab1.setForeground(color);
-            lab1.setText(total);
-
-            JLabel lab2 = statutsEchs.get(i);
-            lab2.setForeground(color);
-            lab2.setBackground(color);
-
-        }
-         */
     }
 
     private List<Boolean> convertArrayToList(boolean[] array) {
@@ -2633,7 +2544,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void proccessStatusLists(List<String> totaux, List<Boolean> erreurs, List<Boolean> actifs, List<Boolean> pauses, List<Boolean> arrets) {
 
-        Color color;
+        Color color = null;
         for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
 
             Boolean erreur = erreurs.get(i);

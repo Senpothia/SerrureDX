@@ -23,6 +23,8 @@ public class Rapport {
     private boolean acquittement = false;
     private boolean fermeture = false;
     private FormSeance formSeance = new FormSeance();
+    String log = "";
+    Color color = Color.BLACK;
 
     public Color getColor() {
         return color;
@@ -31,8 +33,6 @@ public class Rapport {
     public void setColor(Color color) {
         this.color = color;
     }
-    String log = "";
-    Color color = null;
 
     public boolean[] getActifs() {
         return actifs;
@@ -201,8 +201,5 @@ public class Rapport {
     public void setFormSeance(FormSeance formSeance) {
         this.formSeance = formSeance;
     }
-    
-    
-    
 
 }

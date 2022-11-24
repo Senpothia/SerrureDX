@@ -40,7 +40,7 @@ public class Constants {
     public static final String SEQUENCE = "@SEQ";
     public static final String ACQ_FERMER = "@FERMER";
     public static final String FIN = "@FIN";
-    public static final String ACQUITTEMENT = "@:ACQ";  // ex: utilisé pour attester de la reception de configuration
+    public static final String ACQUITTEMENT = "@ACQ";  // ex: utilisé pour attester de la reception de configuration
     public static final String FICHIER = "W:FICHIER";
     public static final String CADENCE1 = "W:CADENCE:1";
     public static final String CADENCE2 = "W:CADENCE:2";
@@ -75,7 +75,7 @@ public class Constants {
                                                                         // pour l'enregsitrement
                                                                         // @TOTAL:#1:1233:na:na indique que le total pour l'échantillon 1 est 1233 cycles.
                public static final String ACTIFS = "@ACTIFS";           // @ACTIFS:1:0:1 remonte l'état d'activation des échantillons 1=actif, 0=inactif
-               public static final String ARRET = "@ARRETS";            // @ARRETs:1:0:1 notification de l'arrêt de la scéance de test les échantillons
+               public static final String ARRET = "@ARRETS";            // @ARRETS:1:0:1 notification de l'arrêt de la scéance de test les échantillons
                public static final String PAUSES = "@PAUSES";           // @PAUSES:1:0:1 notification des pause de la scéance de test sur les échantillons
                public static final String ERREUR = "@ERREUR";           // @ERREURS:#0:1:0:1 remonte les cas d'erreur sur les échantillons 1=erreur, 0=aucune erreur
                                                                         // @ERREUR:#1:na:na:na notifie une erreur sur l'échantillon 1
@@ -89,6 +89,7 @@ public class Constants {
                public static final String CADENCE3 = "W:CADENCE:3";
                public static final String CONFIG = "W:CONFIG";
                public static final String FERMETURE = "W:FERMER";       // Ordre d'arrêt du programme arduino
+               public static final String ACQUITTEMENT = "@:ACQ";       // ex: utilisé pour attester de la reception de configuration
     
      */
 }

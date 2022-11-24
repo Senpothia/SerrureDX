@@ -55,6 +55,7 @@ public class Controller {
         System.out.println("isSequence: " + isSequence);
         System.out.println("isFin: " + isFin);
         System.out.println("isFermeture: " + isFermeture);
+        System.out.println("isAcquittement: " + isAcquittement);
 
         if (isCompteur) {
 
@@ -132,7 +133,6 @@ public class Controller {
 
             System.out.println("Réception total pour ech 1: " + compteur1);
             formSceance.setCompteur1(Long.parseLong(compteur1));
-           
 
         }
 
@@ -174,7 +174,7 @@ public class Controller {
         rapport.setColor(Color.RED);
         rapport.setSauvegarde(true);
         enregistreur.sauvegarder(rapport);   //  sauvegardes en locale
-        if (context.isConnexionRemoteActive()) {
+        if (context.isWithoutRemote()) {
 
             remoteController.sauvegarderSequence(context.getFormSceance(), context.getLogin());
 
