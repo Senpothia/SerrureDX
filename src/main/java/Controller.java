@@ -174,7 +174,7 @@ public class Controller {
         rapport.setColor(Color.RED);
         rapport.setSauvegarde(true);
         enregistreur.sauvegarder(rapport);   //  sauvegardes en locale
-        if (context.isWithoutRemote()) {
+        if (!context.isWithoutRemote()) {
 
             remoteController.sauvegarderSequence(context.getFormSceance(), context.getLogin());
 
@@ -467,4 +467,5 @@ public class Controller {
 
     }
 
+  
 }

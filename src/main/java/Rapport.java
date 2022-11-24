@@ -12,11 +12,13 @@ import java.awt.Color;
  */
 public class Rapport {
 
+    
     private boolean[] actifs = {false, false, false};
     private boolean[] erreurs = {false, false, false};
     private boolean[] arrets = {false, false, false};
     private boolean[] pauses = {false, false, false};
     private long[] totaux = {0, 0, 0};
+     
     private boolean sauvegarde = false;
     private boolean marche = false;
     private boolean pause = false;
@@ -82,6 +84,7 @@ public class Rapport {
         this.log = log;
     }
 
+    
     public void setTotal1(long total1) {
         this.totaux[0] = total1;
     }

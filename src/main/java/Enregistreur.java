@@ -84,7 +84,7 @@ public class Enregistreur {
         String heure = dateActuelle.format(formatterHeure);
 
         initFichier();
-        String ligneEnCours = date + ";" + heure + ";" + rapport.getTotal1() + ";" + rapport.getTotal2() + ";" + rapport.getTotal3();
+        String ligneEnCours = date + ";" + heure + ";" + rapport.getFormSeance().getCompteur1() + ";" + rapport.getFormSeance().getCompteur2() + ";" + rapport.getFormSeance().getCompteur3();
         sauvegarder(ligneEnCours);
 
         return 0;
