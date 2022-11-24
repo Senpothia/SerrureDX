@@ -76,7 +76,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private List<String> ordresSTOP = new ArrayList<>();
     private List<String> ordresCadences = new ArrayList<>();
 
-    private FormSeance sceance = new FormSeance();              // contient les éléments de définition / résultats de la scéance en cours à transmettre au cloud
+    private FormSeance sceance = null;                          // contient les éléments de définition / résultats de la scéance en cours à transmettre au cloud
     private Login login = new Login();                          // contient les identifiant de connexion au cloud
 
     /*
@@ -1502,6 +1502,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
         }
 
+        if (sceance == null) {
+
+            montrerError("Vous devez définir une scéance!", "Scéance indéfinie");
+            return;
+        }
+
         if (auto) {
 
             int i = envoyerConfiguration();
@@ -1732,21 +1738,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void valideFormulaireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valideFormulaireActionPerformed
 
         System.out.println("description: " + descriptionField.getText());
-        sceance.setDescription(descriptionField.getText());
-        sceance.setDate(dateField.getText());
-        sceance.setActif1(actif1.isSelected());
-        sceance.setActif2(actif2.isSelected());
-        sceance.setActif3(actif3.isSelected());
-        sceance.setCompteur1(Long.parseLong(counter1.getText()));
-        sceance.setCompteur2(Long.parseLong(counter2.getText()));
-        sceance.setCompteur3(Long.parseLong(counter3.getText()));
-        sceance.setType1(type1.getSelectedItem().toString());
-        sceance.setType2(type2.getSelectedItem().toString());
-        sceance.setType3(type3.getSelectedItem().toString());
-        sceance.toString();
 
         if (!modification) {  // Création de scéance 
 
+            buildSceance();
             boolean result = controller.enregistrerSceance(sceance, login);
             if (!result) {
 
@@ -1759,6 +1754,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         } else {  // Modification d'une scéance existante récupérée sur le cloud
 
+            buildSceance();
             boolean result = controller.modifierSceance(sceance, login);
             if (!result) {
 
@@ -1863,7 +1859,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         try {
             sceance = controller.getSceance(initialisation.getSceance(), login);
-
+            console.setForeground(Color.red);
+            console.setText("La scéance a été initialisée à partir du cloud");
+            updateDisplayInterface(sceance);
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2130,8 +2128,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
 
         if (rapport.isSauvegarde()) {
-            
-           controller.actualiserSceance(rapport.getFormSeance(), login);
+
+            controller.actualiserSceance(rapport.getFormSeance(), login);
         }
         if (rapport.isAcquittement()) {
 
@@ -2505,6 +2503,112 @@ public class Interface extends javax.swing.JFrame implements Observer {
         context.setLogin(login);
         context.setWithoutRemote(withoutRemote);
         return context;
+    }
+
+    private void buildSceance() {
+
+        sceance = new FormSeance();
+        sceance.setDescription(descriptionField.getText());
+        sceance.setDate(dateField.getText());
+        sceance.setActif1(actif1.isSelected());
+        sceance.setActif2(actif2.isSelected());
+        sceance.setActif3(actif3.isSelected());
+        sceance.setCompteur1(Long.parseLong(counter1.getText()));
+        sceance.setCompteur2(Long.parseLong(counter2.getText()));
+        sceance.setCompteur3(Long.parseLong(counter3.getText()));
+        sceance.setType1(type1.getSelectedItem().toString());
+        sceance.setType2(type2.getSelectedItem().toString());
+        sceance.setType3(type3.getSelectedItem().toString());
+        sceance.toString();
+    }
+
+    private void updateDisplayInterface(FormSeance sceance) {
+
+        Color color = null;
+        /*
+        compteur1.setText(String.valueOf(sceance.getCompteur1()));
+        selectEch1.setSelected(sceance.getActif1());
+        compteur2.setText(String.valueOf(sceance.getCompteur2()));
+        selectEch2.setSelected(sceance.getActif2());
+        compteur3.setText(String.valueOf(sceance.getCompteur3()));
+        selectEch3.setSelected(sceance.getActif3());
+         */
+
+        List<String> totaux = new ArrayList<>();
+        List<Boolean> erreurs = new ArrayList<>();
+        List<Boolean> actifs = new ArrayList<>();
+        List<Boolean> pauses = new ArrayList<>();
+        List<Boolean> arrets = new ArrayList<>();
+
+        erreurs.add(sceance.getErreur1());
+        erreurs.add(sceance.getErreur2());
+        erreurs.add(sceance.getErreur3());
+
+        totaux.add(Long.toString(sceance.getCompteur1()));
+        totaux.add(Long.toString(sceance.getCompteur2()));
+        totaux.add(Long.toString(sceance.getCompteur3()));
+
+        actifs.add(sceance.getActif1());
+        actifs.add(sceance.getActif2());
+        actifs.add(sceance.getActif3());
+
+        pauses.add(sceance.getPause1());
+        pauses.add(sceance.getPause2());
+        pauses.add(sceance.getPause3());
+
+        arrets.add(sceance.getInterrompu1());
+        arrets.add(sceance.getInterrompu2());
+        arrets.add(sceance.getInterrompu3());
+
+        for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
+
+            Boolean erreur = erreurs.get(i);
+            Boolean actif = actifs.get(i);
+            Boolean pause = pauses.get(i);
+            Boolean arret = arrets.get(i);
+
+            String total = totaux.get(i);
+
+            if (erreur) {
+
+                color = Color.RED;
+
+            } else {
+
+                color = Color.BLUE;
+            }
+
+            if (!actif) {
+
+                echantillonsActifs.get(i).setSelected(false);
+                color = Color.GRAY;
+                
+            } else {
+
+                echantillonsActifs.get(i).setSelected(true);
+                
+            }
+
+            if (pause) {
+
+                color = Color.ORANGE;
+            }
+
+            if (arret) {
+
+                color = Color.YELLOW;
+            }
+
+            JLabel lab1 = compteurs.get(i);
+            lab1.setForeground(color);
+            lab1.setText(total);
+
+            JLabel lab2 = statutsEchs.get(i);
+            lab2.setForeground(color);
+            lab2.setBackground(color);
+
+        }
+
     }
 
 }

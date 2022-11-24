@@ -7,7 +7,6 @@ import java.util.List;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Michel
@@ -21,11 +20,6 @@ public class Sceance {
     private String etat;  // marche, arret, pause
     private Boolean actif; // en cours, terminée
 
-    public Sceance() {
-    }
-    
-    
-
     public Sceance(Integer id, List<Echantillon> echantillons, String description, LocalDateTime date, String etat, Boolean actif) {
         this.id = id;
         this.echantillons = echantillons;
@@ -34,8 +28,11 @@ public class Sceance {
         this.etat = etat;
         this.actif = actif;
     }
-    
-    
+
+    public Sceance() {
+
+  
+    }
 
     public Integer getId() {
         return id;
@@ -84,7 +81,5 @@ public class Sceance {
     public void setActif(Boolean actif) {
         this.actif = actif;
     }
-    
-    
 
 }
