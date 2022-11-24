@@ -111,7 +111,7 @@ public class Controller {
             gestionFermeture(inputLine);
 
         }
-        
+
         rapport.setFormSeance(formSceance);
         return rapport;
 
@@ -132,21 +132,21 @@ public class Controller {
 
             System.out.println("Réception total pour ech 1: " + compteur1);
             formSceance.setCompteur1(Long.parseLong(compteur1));
-            return;
+           
+
         }
 
         if (ech.equals("#2")) {
 
             System.out.println("Réception total pour ech 2: " + compteur1);
             formSceance.setCompteur2(Long.parseLong(compteur2));
-            return;
+
         }
 
         if (ech.equals("#3")) {
 
             System.out.println("Réception total pour ech 3: " + compteur1);
             formSceance.setCompteur3(Long.parseLong(compteur3));
-            return;
 
         }
 
@@ -155,9 +155,11 @@ public class Controller {
             System.out.println("Réception total des 3 échantillons: " + compteur1 + ";" + compteur2 + ";" + compteur3);
 
             formSceance.setCompteur1(Long.parseLong(compteur1));
+            System.out.println("formSceance: compteur1: " + formSceance.getCompteur1());
             formSceance.setCompteur2(Long.parseLong(compteur2));
+            System.out.println("formSceance: compteur2: " + formSceance.getCompteur2());
             formSceance.setCompteur3(Long.parseLong(compteur3));
-            return;
+            System.out.println("formSceance: compteur3: " + formSceance.getCompteur3());
 
         }
 
@@ -381,50 +383,70 @@ public class Controller {
 
     public boolean enregistrerSceance(FormSeance sceance, Login login) {
 
-        try {
-            boolean result = remoteController.enregistrerSceance(sceance, login);
-            if (!result) {
+        if (context.isConnexionRemoteActive()) {
 
+            try {
+                boolean result = remoteController.enregistrerSceance(sceance, login);
+                if (!result) {
+
+                    return false;
+                } else {
+
+                    return true;
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
-            } else {
-
-                return true;
             }
-        } catch (IOException ex) {
-            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+
         }
+        return false;
 
     }
 
     public boolean connexionRemote(Login login) throws IOException {
 
-        boolean autorisation = remoteController.connexionRequest(login);
-        return autorisation;
+        if (!context.isWithoutRemote()) {
+
+            boolean autorisation = remoteController.connexionRequest(login);
+            return autorisation;
+        }
+        return false;
 
     }
 
     public FormSeance getSceance(String idSceance, Login login) throws IOException {
 
-        FormSeance f = remoteController.getSceance(idSceance, login);
-        return f;
+        if (!context.isWithoutRemote()) {
+
+            FormSeance f = remoteController.getSceance(idSceance, login);
+            return f;
+
+        }
+        return null;
+
     }
 
     boolean modifierSceance(FormSeance sceance, Login login) {
 
-        try {
-            boolean result = remoteController.modifierSceance(sceance, login);
-            if (!result) {
+        if (!context.isWithoutRemote()) {
 
+            try {
+                boolean result = remoteController.modifierSceance(sceance, login);
+                if (!result) {
+
+                    return false;
+                } else {
+
+                    return true;
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
-            } else {
-
-                return true;
             }
-        } catch (IOException ex) {
-            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+
         }
+        return false;
 
     }
 
@@ -437,9 +459,12 @@ public class Controller {
     }
 
     void actualiserSceance(FormSeance formSeance, Login login) throws IOException {
-      
-        boolean reponse  = remoteController.actualiserSceance(formSeance, login);
-        
+
+        if (!context.isWithoutRemote()) {
+
+            boolean reponse = remoteController.actualiserSceance(formSeance, login);
+        }
+
     }
 
 }

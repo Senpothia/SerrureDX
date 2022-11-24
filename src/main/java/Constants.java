@@ -77,7 +77,7 @@ public class Constants {
                public static final String ACTIFS = "@ACTIFS";           // @ACTIFS:1:0:1 remonte l'état d'activation des échantillons 1=actif, 0=inactif
                public static final String ARRET = "@ARRETS";            // @ARRETs:1:0:1 notification de l'arrêt de la scéance de test les échantillons
                public static final String PAUSES = "@PAUSES";           // @PAUSES:1:0:1 notification des pause de la scéance de test sur les échantillons
-               public static final String ERREUR = "@ERREUR";           // @ERREUR:#0:1:0:1 remonte les cas d'erreur sur les échantillons 1=erreur, 0=aucune erreur
+               public static final String ERREUR = "@ERREUR";           // @ERREURS:#0:1:0:1 remonte les cas d'erreur sur les échantillons 1=erreur, 0=aucune erreur
                                                                         // @ERREUR:#1:na:na:na notifie une erreur sur l'échantillon 1
                public static final String ORDRE = "W:";                 // préfixe d'un ordre envoyer depuis l'interface
                public static final String SEQUENCE = "@SEQ";            // notification d'une fin de cycle, demande de sauvegarde du rapport dans fichier csv
