@@ -50,7 +50,7 @@ public class Enregistreur {
             fluxSortie = new FileWriter(nomDeFichier);
             Sortie = new BufferedWriter(fluxSortie);
 
-            Sortie.write("Date;Heure;Echantillon1;Echantillon2;Echantillon3");
+            Sortie.write("Date;Heure;Echantillon1;Echantillon2;Echantillon3;Actif1;Actif2;Actif3;Pause1;Pause2;Pause3;Erreur1;Erreur2;Erreur3");
             Sortie.newLine();
             return 0;
 
@@ -82,9 +82,8 @@ public class Enregistreur {
         DateTimeFormatter formatterHeure = DateTimeFormatter.ofPattern("HH:mm:ss");
         String date = dateActuelle.format(formatterDate);
         String heure = dateActuelle.format(formatterHeure);
-
         initFichier();
-        String ligneEnCours = date + ";" + heure + ";" + rapport.getFormSeance().getCompteur1() + ";" + rapport.getFormSeance().getCompteur2() + ";" + rapport.getFormSeance().getCompteur3();
+        String ligneEnCours = date + ";" + heure + ";" + rapport.getFormSeance().getCompteur1() + ";" + rapport.getFormSeance().getCompteur2() + ";" + rapport.getFormSeance().getCompteur3() + ";" + rapport.getFormSeance().getActif1() + ";" + rapport.getFormSeance().getActif2() + ";" + rapport.getFormSeance().getActif3();
         sauvegarder(ligneEnCours);
 
         return 0;

@@ -2089,7 +2089,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         System.out.println("Interface.traiterRapport");
 
         if (rapport.isFermeture()) {
-            
+
             controller.actualiserSceance(rapport.getFormSeance(), login);
             System.exit(0);
         }
@@ -2475,7 +2475,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         Context context = new Context();
         context.setConnexionRS232Active(connexionRS232Active);
         context.setConnexionRemoteActive(connexionRemoteActive);
-        context.setFormSceance(sceance);
+        //context.setFormSceance(sceance);
         context.setLogin(login);
         context.setWithoutRemote(withoutRemote);
         return context;

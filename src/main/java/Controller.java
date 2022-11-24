@@ -66,7 +66,7 @@ public class Controller {
 
         if (isSequence) {
 
-            gestionSequence(inputLine);
+            gestionSequence(inputLine, formSceance);
 
         }
 
@@ -114,6 +114,7 @@ public class Controller {
         }
 
         rapport.setFormSeance(formSceance);
+       // context.setFormSceance(formSceance);
         return rapport;
 
     }
@@ -168,7 +169,7 @@ public class Controller {
 
     }
 
-    private void gestionSequence(String inputLine) throws IOException {
+    private void gestionSequence(String inputLine, FormSeance formSceance) throws IOException {
 
         rapport.setLog("FIN DE SEQUENCE");
         rapport.setColor(Color.RED);
@@ -176,7 +177,7 @@ public class Controller {
         enregistreur.sauvegarder(rapport);   //  sauvegardes en locale
         if (!context.isWithoutRemote()) {
 
-            remoteController.sauvegarderSequence(context.getFormSceance(), context.getLogin());
+            remoteController.sauvegarderSequence(formSceance, context.getLogin());
 
         }
 
@@ -467,5 +468,4 @@ public class Controller {
 
     }
 
-  
 }

@@ -13,7 +13,7 @@ public class Context {
     private boolean connexionRS232Active = false;    // état de la connexion RS-232
     private boolean connexionRemoteActive = false;   // Connexion au serveur distant
     private boolean withoutRemote = false;
-    private FormSeance formSceance ;
+   // private FormSeance formSceance ;
     private Login login;
 
     public Context() {
@@ -35,7 +35,7 @@ public class Context {
     public void setConnexionRemoteActive(boolean connexionRemoteActive) {
         this.connexionRemoteActive = connexionRemoteActive;
     }
-
+/*
     public FormSeance getFormSceance() {
         return formSceance;
     }
@@ -43,7 +43,7 @@ public class Context {
     public void setFormSceance(FormSeance formSceance) {
         this.formSceance = formSceance;
     }
-
+*/
     public Login getLogin() {
         return login;
     }
