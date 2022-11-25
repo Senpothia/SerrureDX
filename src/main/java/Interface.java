@@ -209,6 +209,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
         setEnabledMenusSceance(false);
         setEnabledMenusConfiguration();
+        setEnabledSelecteurEchantillons(true);
 
         //  this.setDefaultCloseOperation(this.closeWindow());
     }
@@ -1516,6 +1517,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             stopRequested();
             connecteur.envoyerData(Constants.ORDRE_ARRET);
+            setEnabledSelecteurEchantillons(true);
 
         } else {
         }
@@ -1563,6 +1565,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             int i = envoyerConfiguration();
             console.setForeground(Color.RED);
             console.setText("En attente de démarrage!");
+            setEnabledSelecteurEchantillons(false);
+
             if (i == -1) {
                 return;
             } else {
@@ -1803,7 +1807,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
                 console.setText("La séquence a été enregistrée sur le remote");
                 loadedSceance = true;
-               
+
             }
             formulaire.setVisible(false);
 
@@ -1820,7 +1824,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 console.setText("La séquence a été modifiée sur le remote");
                 updateDisplayInterface(0, sceance);
                 loadedSceance = true;
-              
+
             }
             formulaire.setVisible(false);
 
@@ -1935,7 +1939,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         sceance = null;
         sceance = new FormSeance();
         updateDisplayInterface(0, sceance);
-        setEnabledSelecteurEchantillons();
+
 
     }//GEN-LAST:event_menuEffacerActionPerformed
 
@@ -2620,22 +2624,15 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
     }
 
-    void setEnabledSelecteurEchantillons() {
+    void setEnabledSelecteurEchantillons(boolean actifs) {
 
-        if (sceance.getActif()) {
+        selectEch1.setEnabled(actifs);
+        selectEch1.setForeground(Color.BLACK);
+        selectEch2.setEnabled(actifs);
+        selectEch2.setForeground(Color.BLACK);
+        selectEch3.setEnabled(actifs);
+        selectEch3.setForeground(Color.BLACK);
 
-            selectEch1.isEnabled();
-        }
-
-        if (sceance.getActif2()) {
-
-            selectEch2.isEnabled();
-        }
-
-        if (sceance.getActif3()) {
-
-            selectEch3.isEnabled();
-        }
     }
 
     private Context buildContext() {
