@@ -14,6 +14,7 @@ public class Context {
     private boolean connexionRemoteActive = false;   // Connexion au serveur distant
     private boolean withoutRemote = false;
     private Login login;
+    private int cadence;
 
     public Context() {
         
@@ -49,6 +50,14 @@ public class Context {
 
     public void setWithoutRemote(boolean withoutRemote) {
         this.withoutRemote = withoutRemote;
+    }
+
+    public int getCadence() {
+        return cadence;
+    }
+
+    public void setCadence(int cadence) {
+        this.cadence = cadence;
     }
     
     

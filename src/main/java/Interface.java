@@ -43,6 +43,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private boolean[] erreurs = {false, false, false};
     private long[] totaux = {0, 0, 0};
 
+    private int cadence = 1;
+
     private int baudeRate = 9600;
     private int numDatabits = 8;
     private int parity = 0;
@@ -206,6 +208,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         }
         setEnabledMenusSceance(false);
+        setEnabledMenusConfiguration();
 
         //  this.setDefaultCloseOperation(this.closeWindow());
     }
@@ -335,8 +338,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         connectRemote = new javax.swing.JMenuItem();
         deconnectRemote = new javax.swing.JMenuItem();
         menuConfig = new javax.swing.JMenu();
-        cadence = new javax.swing.JMenu();
-        cad_2_min = new javax.swing.JRadioButtonMenuItem();
+        menuCadence = new javax.swing.JMenu();
+        cad_2_par_1min = new javax.swing.JRadioButtonMenuItem();
         cad_1_par_2mins = new javax.swing.JRadioButtonMenuItem();
         cad_1_par_5mins = new javax.swing.JRadioButtonMenuItem();
         menuAuto = new javax.swing.JMenuItem();
@@ -1090,37 +1093,52 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
         });
 
-        cadence.setText("Cadence");
+        menuCadence.setText("Cadence");
 
-        groupCadence.add(cad_2_min);
-        cad_2_min.setSelected(true);
-        cad_2_min.setText("2x1min");
-        cad_2_min.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cad_2_minActionPerformed(evt);
+        groupCadence.add(cad_2_par_1min);
+        cad_2_par_1min.setSelected(true);
+        cad_2_par_1min.setText("2x1min");
+        cad_2_par_1min.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                cad_2_par_1minStateChanged(evt);
             }
         });
-        cadence.add(cad_2_min);
+        cad_2_par_1min.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cad_2_par_1minActionPerformed(evt);
+            }
+        });
+        menuCadence.add(cad_2_par_1min);
 
         groupCadence.add(cad_1_par_2mins);
         cad_1_par_2mins.setText("1x2mins");
+        cad_1_par_2mins.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                cad_1_par_2minsStateChanged(evt);
+            }
+        });
         cad_1_par_2mins.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cad_1_par_2minsActionPerformed(evt);
             }
         });
-        cadence.add(cad_1_par_2mins);
+        menuCadence.add(cad_1_par_2mins);
 
         groupCadence.add(cad_1_par_5mins);
         cad_1_par_5mins.setText("1x5mins");
+        cad_1_par_5mins.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                cad_1_par_5minsStateChanged(evt);
+            }
+        });
         cad_1_par_5mins.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cad_1_par_5minsActionPerformed(evt);
             }
         });
-        cadence.add(cad_1_par_5mins);
+        menuCadence.add(cad_1_par_5mins);
 
-        menuConfig.add(cadence);
+        menuConfig.add(menuCadence);
 
         menuAuto.setText("Auto");
         menuAuto.setEnabled(false);
@@ -1362,6 +1380,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             setStatusRS232(false);
 
         }
+        
+        setEnabledMenusConfiguration();
 
 
     }//GEN-LAST:event_btnConnexionActionPerformed
@@ -1376,6 +1396,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             btnConnexion.setEnabled(true);
             btnDeconnexion.setEnabled(false);
             connexionRS232Active = false;
+            setEnabledMenusConfiguration();
 
         }
     }//GEN-LAST:event_btnDeconnexionActionPerformed
@@ -1715,10 +1736,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
         envoyerOrdreStop(3);
     }//GEN-LAST:event_arret3ActionPerformed
 
-    private void cad_2_minActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cad_2_minActionPerformed
+    private void cad_2_par_1minActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cad_2_par_1minActionPerformed
 
         envoyerOdreCadence(1);
-    }//GEN-LAST:event_cad_2_minActionPerformed
+    }//GEN-LAST:event_cad_2_par_1minActionPerformed
 
     private void cad_1_par_2minsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cad_1_par_2minsActionPerformed
 
@@ -1773,7 +1794,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (!modification) {  // Création de scéance 
 
             buildSceance();
-           
+
             boolean result = controller.enregistrerSceance(sceance, login);
             if (!result) {
 
@@ -1919,6 +1940,34 @@ public class Interface extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuPortActionPerformed
 
+    private void cad_2_par_1minStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cad_2_par_1minStateChanged
+
+        if (cad_2_par_1min.isSelected()) {
+
+            cadence = 1;
+            buildContext();
+
+        }
+    }//GEN-LAST:event_cad_2_par_1minStateChanged
+
+    private void cad_1_par_2minsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cad_1_par_2minsStateChanged
+
+        if (cad_1_par_2mins.isSelected()) {
+
+            cadence = 2;
+            buildContext();
+        }
+    }//GEN-LAST:event_cad_1_par_2minsStateChanged
+
+    private void cad_1_par_5minsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cad_1_par_5minsStateChanged
+
+        if (cad_1_par_5mins.isSelected()) {
+
+            cadence = 3;
+            buildContext();
+        }
+    }//GEN-LAST:event_cad_1_par_5minsStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -1987,8 +2036,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem btnDeconnexion;
     private javax.swing.JRadioButtonMenuItem cad_1_par_2mins;
     private javax.swing.JRadioButtonMenuItem cad_1_par_5mins;
-    private javax.swing.JRadioButtonMenuItem cad_2_min;
-    private javax.swing.JMenu cadence;
+    private javax.swing.JRadioButtonMenuItem cad_2_par_1min;
     private javax.swing.JMenu changeRemote;
     private javax.swing.JLabel compteur1;
     private javax.swing.JLabel compteur2;
@@ -2019,6 +2067,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem menuAuto;
     private javax.swing.JMenu menuBaud;
     private javax.swing.JMenu menuBits;
+    private javax.swing.JMenu menuCadence;
     private javax.swing.JMenu menuConfig;
     private javax.swing.JMenu menuConnexion;
     private javax.swing.JMenuItem menuEffacer;
@@ -2481,7 +2530,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             cadence = ":3";
         }
 
-        if (cad_2_min.isSelected()) {
+        if (cad_2_par_1min.isSelected()) {
             cadence = ":1";
         }
 
@@ -2551,12 +2600,29 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     }
 
+    void setEnabledMenusConfiguration() {
+
+        if (connexionRS232Active) {
+
+            cad_1_par_2mins.setEnabled(true);
+            cad_1_par_5mins.setEnabled(true);
+            cad_2_par_1min.setEnabled(true);
+
+        } else {
+
+            cad_1_par_2mins.setEnabled(false);
+            cad_1_par_5mins.setEnabled(false);
+            cad_2_par_1min.setEnabled(false);
+
+        }
+    }
+
     private Context buildContext() {
 
         Context context = new Context();
         context.setConnexionRS232Active(connexionRS232Active);
         context.setConnexionRemoteActive(connexionRemoteActive);
-        //context.setFormSceance(sceance);
+        context.setCadence(cadence);
         context.setLogin(login);
         context.setWithoutRemote(withoutRemote);
         return context;
@@ -2719,6 +2785,26 @@ public class Interface extends javax.swing.JFrame implements Observer {
             lab2.setBackground(color);
 
         }
+    }
+
+    private void getCadence() {
+
+        if (cad_2_par_1min.isSelected()) {
+
+            cadence = 1;
+        }
+
+        if (cad_1_par_2mins.isSelected()) {
+
+            cadence = 2;
+        }
+
+        if (cad_1_par_5mins.isSelected()) {
+
+            cadence = 3;
+
+        }
+
     }
 
 }
