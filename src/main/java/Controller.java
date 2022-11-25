@@ -414,7 +414,7 @@ public class Controller {
 
     public boolean connexionRemote(Login login) throws IOException {
 
-        if (!context.isWithoutRemote() && context.isConnexionRemoteActive()) {
+        if (!context.isWithoutRemote()) {
 
             boolean autorisation = remoteController.connexionRequest(login);
             return autorisation;
@@ -425,7 +425,7 @@ public class Controller {
 
     public FormSeance getSceance(String idSceance, Login login) throws IOException {
 
-        if (!context.isWithoutRemote() && context.isConnexionRemoteActive()) {
+        if (!context.isWithoutRemote()) {
 
             FormSeance f = remoteController.getSceance(idSceance, login);
             return f;
@@ -437,7 +437,7 @@ public class Controller {
 
     boolean modifierSceance(FormSeance sceance, Login login) {
 
-        if (!context.isWithoutRemote() && context.isConnexionRemoteActive()) {
+        if (!context.isWithoutRemote()) {
 
             try {
                 boolean result = remoteController.modifierSceance(sceance, login);
@@ -445,7 +445,8 @@ public class Controller {
 
                     return false;
                 } else {
-
+                    
+                   // getSceance(Interface.initialisation.getSceance(), login);
                     return true;
                 }
             } catch (IOException ex) {

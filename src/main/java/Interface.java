@@ -50,15 +50,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private int newReadTimeout = 1000;
     private int newWriteTimeout = 0;
 
-    private boolean connexionRS232Active = false;    // état de la connexion RS-232
-    private boolean connexionRemoteActive = false;   // Connexion au serveur distant
-    private boolean withoutRemote = false;   // Connexion au serveur distant
+    private boolean connexionRS232Active = false;       // état de la connexion RS-232
+    private boolean connexionRemoteActive = false;      // Connexion au serveur distant
+    private boolean withoutRemote = false;              // Connexion au serveur distant
 
-    Connecteur connecteur = getConnecteur();         // gére la conexion RS232
-    Controller controller = new Controller();        // gére le déroulement du test - logique métier
+    Connecteur connecteur = getConnecteur();            // gére la conexion RS232
+    Controller controller = new Controller();           // gére le déroulement du test - logique métier
 
-    private String nomDeFichier = null;              // fichier de sauvegarde locale
-    private File repertoire = null;                    // repertoire du ficheir de sauvegarde
+    private String nomDeFichier = null;                 // fichier de sauvegarde locale
+    private File repertoire = null;                     // repertoire du ficheir de sauvegarde
+    private boolean loadedSceance = false;
 
     private List<JLabel> compteurs = new ArrayList<>();
     private List<JLabel> statutsEchs = new ArrayList<>();
@@ -1751,6 +1752,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             } else {
 
                 console.setText("La séquence a été enregistrée sur le remote");
+                loadedSceance = true;
             }
             formulaire.setVisible(false);
 
@@ -1763,7 +1765,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 montrerError("Accès remote refusé!", "Erreur authentification");
             } else {
 
-                console.setText("La séquence a été enregistrée sur le remote");
+                console.setText("La séquence a été modifiée sur le remote");
+                updateDisplayInterface(0, sceance);
+                loadedSceance = true;
             }
             formulaire.setVisible(false);
 
@@ -1864,6 +1868,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             console.setForeground(Color.red);
             console.setText("La scéance a été initialisée à partir du cloud");
             updateDisplayInterface(0, sceance);
+            loadedSceance = true;
+            setEnabledMenusSceance(true);
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2090,7 +2096,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         if (rapport.isFermeture()) {
 
-            controller.actualiserSceance(rapport.getFormSeance(), login);
+            if (loadedSceance) {
+
+                controller.actualiserSceance(rapport.getFormSeance(), login);
+            }
+
             System.exit(0);
         }
 
@@ -2486,6 +2496,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
             menuOuvrir.setEnabled(actif);
         }
 
+        if (!loadedSceance) {
+            menuModifier.setEnabled(false);
+        }
+
     }
 
     private Context buildContext() {
@@ -2645,7 +2659,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
                 color = Color.RED;
 
-            } 
+            }
 
             JLabel lab1 = compteurs.get(i);
             lab1.setForeground(color);
