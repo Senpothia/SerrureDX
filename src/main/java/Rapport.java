@@ -27,6 +27,7 @@ public class Rapport {
     private FormSeance formSeance = new FormSeance();
     String log = "";
     Color color = Color.BLACK;
+    private int message = 0;
 
     public Color getColor() {
         return color;
@@ -204,5 +205,15 @@ public class Rapport {
     public void setFormSeance(FormSeance formSeance) {
         this.formSeance = formSeance;
     }
+
+    public int getMessage() {
+        return message;
+    }
+
+    public void setMessage(int message) {
+        this.message = message;
+    }
+    
+    
 
 }

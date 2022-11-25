@@ -1863,7 +1863,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             sceance = controller.getSceance(initialisation.getSceance(), login);
             console.setForeground(Color.red);
             console.setText("La scéance a été initialisée à partir du cloud");
-            updateDisplayInterface(sceance);
+            updateDisplayInterface(0, sceance);
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2134,7 +2134,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         arrets.add(rapport.getFormSeance().getInterrompu2());
         arrets.add(rapport.getFormSeance().getInterrompu3());
 
-        proccessStatusLists(totaux, erreurs, actifs, pauses, arrets);
+        proccessStatusLists(rapport.getMessage(), totaux, erreurs, actifs, pauses, arrets);
 
     }
 
@@ -2516,7 +2516,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         sceance.toString();
     }
 
-    private void updateDisplayInterface(FormSeance sceance) {
+    private void updateDisplayInterface(int message, FormSeance sceance) {
 
         List<String> totaux = new ArrayList<>();
         List<Boolean> erreurs = new ArrayList<>();
@@ -2544,7 +2544,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         arrets.add(sceance.getInterrompu2());
         arrets.add(sceance.getInterrompu3());
 
-        proccessStatusLists(totaux, erreurs, actifs, pauses, arrets);
+        proccessStatusLists(message, totaux, erreurs, actifs, pauses, arrets);
 
     }
 
@@ -2560,7 +2560,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     }
 
-    private void proccessStatusLists(List<String> totaux, List<Boolean> erreurs, List<Boolean> actifs, List<Boolean> pauses, List<Boolean> arrets) {
+    private void proccessStatusLists(int message, List<String> totaux, List<Boolean> erreurs, List<Boolean> actifs, List<Boolean> pauses, List<Boolean> arrets) {
 
         Color color = null;
         for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
@@ -2571,6 +2571,54 @@ public class Interface extends javax.swing.JFrame implements Observer {
             Boolean arret = arrets.get(i);
 
             String total = totaux.get(i);
+            /*
+            switch (message) {
+
+ 
+                case 1:
+
+                    if (!actif) {
+
+                        echantillonsActifs.get(i).setSelected(false);
+                        color = Color.GRAY;
+
+                    } else {
+
+                        echantillonsActifs.get(i).setSelected(true);
+
+                    }
+                    break;
+                case 2:
+                    if (pause) {
+
+                        color = Color.ORANGE;
+                    }
+
+                    break;
+
+                case 3:
+
+                    if (erreur) {
+
+                        color = Color.RED;
+
+                    } else {
+
+                        color = Color.BLUE;
+                    }
+                    break;
+
+                case 4:
+
+                    if (arret) {
+
+                        color = Color.YELLOW;
+                    }
+                    break;
+
+            }
+            
+             */
 
             if (!actif) {
 
@@ -2580,27 +2628,24 @@ public class Interface extends javax.swing.JFrame implements Observer {
             } else {
 
                 echantillonsActifs.get(i).setSelected(true);
-
+                color = Color.BLUE;
             }
 
-            if (pause) {
+            if (pause && actif) {
 
-                color = Color.ORANGE;
+                color = Color.MAGENTA;
             }
 
-            if (arret) {
+            if (arret && actif) {
 
                 color = Color.YELLOW;
             }
 
-            if (erreur) {
+            if (erreur && actif) {
 
                 color = Color.RED;
 
-            } else {
-
-                color = Color.BLUE;
-            }
+            } 
 
             JLabel lab1 = compteurs.get(i);
             lab1.setForeground(color);

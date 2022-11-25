@@ -114,7 +114,7 @@ public class Controller {
         }
 
         rapport.setFormSeance(formSceance);
-       // context.setFormSceance(formSceance);
+        // context.setFormSceance(formSceance);
         return rapport;
 
     }
@@ -164,6 +164,7 @@ public class Controller {
 
         }
 
+        rapport.setMessage(0);
         rapport.setLog("Test en cours");
         rapport.setColor(Color.BLUE);
 
@@ -173,6 +174,7 @@ public class Controller {
 
         rapport.setLog("FIN DE SEQUENCE");
         rapport.setColor(Color.RED);
+        rapport.setMessage(0);
         rapport.setSauvegarde(true);
         enregistreur.sauvegarder(rapport);   //  sauvegardes en locale
         if (!context.isWithoutRemote()) {
@@ -215,6 +217,7 @@ public class Controller {
 
         rapport.setLog(log);
         rapport.setColor(Color.BLUE);
+        rapport.setMessage(1);
 
     }
 
@@ -250,6 +253,7 @@ public class Controller {
 
         rapport.setLog(log);
         rapport.setColor(Color.RED);
+        rapport.setMessage(4);
 
     }
 
@@ -276,15 +280,16 @@ public class Controller {
         formSceance.setPause3(rapport.getPauses()[2]);
 
         String log = "RAPPORT PAUSES: Ech1: ";
-        String s = rapport.getPauses()[0] ? "actif - " : "en pause - ";
+        String s = rapport.getPauses()[0] ? "en pause - " : "actif - ";
         log = log + s;
-        s = rapport.getPauses()[1] ? "actif - " : "en pause - ";
+        s = rapport.getPauses()[1] ? "en pause - " : "actif - ";
         log = log + "Ech2: " + s;
-        s = rapport.getPauses()[2] ? "actif" : "en pause";
+        s = rapport.getPauses()[2] ? "en pause" : "actif";
         log = log + "Ech3: " + s;
 
         rapport.setLog(log);
-        rapport.setColor(Color.ORANGE);
+        rapport.setColor(Color.MAGENTA);
+        rapport.setMessage(2);
 
     }
 
@@ -320,6 +325,7 @@ public class Controller {
 
         rapport.setLog(log);
         rapport.setColor(Color.RED);
+        rapport.setMessage(3);
 
     }
 
@@ -329,6 +335,7 @@ public class Controller {
         if (recept[1].equals("ACQ")) {
 
             rapport.setSauvegarde(false);
+            rapport.setMessage(0);
 
         }
     }
@@ -372,9 +379,9 @@ public class Controller {
         rapport.setLog("Fermeture en cours!");
         rapport.setColor(Color.RED);
         rapport.setSauvegarde(true);
+        rapport.setFermeture(true);
         try {
 
-            rapport.setFermeture(true);
             enregistreur.sauvegarder(rapport);
 
         } catch (Exception e) {
@@ -384,7 +391,7 @@ public class Controller {
 
     public boolean enregistrerSceance(FormSeance sceance, Login login) {
 
-        if (context.isConnexionRemoteActive()) {
+        if (context.isConnexionRemoteActive() && context.isConnexionRemoteActive()) {
 
             try {
                 boolean result = remoteController.enregistrerSceance(sceance, login);
@@ -407,7 +414,7 @@ public class Controller {
 
     public boolean connexionRemote(Login login) throws IOException {
 
-        if (!context.isWithoutRemote()) {
+        if (!context.isWithoutRemote() && context.isConnexionRemoteActive()) {
 
             boolean autorisation = remoteController.connexionRequest(login);
             return autorisation;
@@ -418,7 +425,7 @@ public class Controller {
 
     public FormSeance getSceance(String idSceance, Login login) throws IOException {
 
-        if (!context.isWithoutRemote()) {
+        if (!context.isWithoutRemote() && context.isConnexionRemoteActive()) {
 
             FormSeance f = remoteController.getSceance(idSceance, login);
             return f;
@@ -430,7 +437,7 @@ public class Controller {
 
     boolean modifierSceance(FormSeance sceance, Login login) {
 
-        if (!context.isWithoutRemote()) {
+        if (!context.isWithoutRemote() && context.isConnexionRemoteActive()) {
 
             try {
                 boolean result = remoteController.modifierSceance(sceance, login);
@@ -461,7 +468,7 @@ public class Controller {
 
     void actualiserSceance(FormSeance formSeance, Login login) throws IOException {
 
-        if (!context.isWithoutRemote()) {
+        if (!context.isWithoutRemote() && context.isConnexionRemoteActive()) {
 
             boolean reponse = remoteController.actualiserSceance(formSeance, login);
         }
