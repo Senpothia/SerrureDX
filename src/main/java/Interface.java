@@ -301,6 +301,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menuOuvrir = new javax.swing.JMenuItem();
         menuNouveau = new javax.swing.JMenuItem();
         menuModifier = new javax.swing.JMenuItem();
+        menuEffacer = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         menuSauvegardes = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuQuitter = new javax.swing.JMenuItem();
@@ -844,6 +846,15 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
         MenuFichier.add(menuModifier);
 
+        menuEffacer.setText("Effacer");
+        menuEffacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEffacerActionPerformed(evt);
+            }
+        });
+        MenuFichier.add(menuEffacer);
+        MenuFichier.add(jSeparator2);
+
         menuSauvegardes.setLabel("Sauvegardes");
         menuSauvegardes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -871,6 +882,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
 
         menuPort.setText("Port");
+        menuPort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPortActionPerformed(evt);
+            }
+        });
         menuConnexion.add(menuPort);
 
         menuBaud.setText("Baud");
@@ -1302,6 +1318,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             formulaire.setVisible(true);
             formulaire.setSize(900, 700);
+            descriptionField.setText(null);
+            dateField.setText(null);
+            counter1.setText(null);
+            counter2.setText(null);
+            counter3.setText(null);
+            actif1.setEnabled(false);
+            actif2.setEnabled(false);
+            actif3.setEnabled(false);
+            type1.setSelectedIndex(0);
+            type2.setSelectedIndex(0);
+            type3.setSelectedIndex(0);
+
         } else {
 
             montrerError("Vous devez vous connecter au remote!", "Défaut de connexion");
@@ -1745,6 +1773,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (!modification) {  // Création de scéance 
 
             buildSceance();
+           
             boolean result = controller.enregistrerSceance(sceance, login);
             if (!result) {
 
@@ -1759,6 +1788,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         } else {  // Modification d'une scéance existante récupérée sur le cloud
 
             buildSceance();
+
             boolean result = controller.modifierSceance(sceance, login);
             if (!result) {
 
@@ -1837,6 +1867,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             modification = true;
             FormSeance f = controller.getSceance(initialisation.getSceance(), login);
+            f.formaterDate();
             formulaire.setSize(900, 700);
             formulaire.setVisible(true);
             descriptionField.setText(f.getDescription());
@@ -1874,6 +1905,19 @@ public class Interface extends javax.swing.JFrame implements Observer {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_menuOuvrirActionPerformed
+
+    private void menuEffacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEffacerActionPerformed
+
+        loadedSceance = false;
+        sceance = null;
+        sceance = new FormSeance();
+        updateDisplayInterface(0, sceance);
+
+    }//GEN-LAST:event_menuEffacerActionPerformed
+
+    private void menuPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPortActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuPortActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1970,12 +2014,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JFrame loginForm;
     private javax.swing.JMenuItem menuAuto;
     private javax.swing.JMenu menuBaud;
     private javax.swing.JMenu menuBits;
     private javax.swing.JMenu menuConfig;
     private javax.swing.JMenu menuConnexion;
+    private javax.swing.JMenuItem menuEffacer;
     private javax.swing.JMenuItem menuManuel;
     private javax.swing.JMenuItem menuModifier;
     private javax.swing.JMenuItem menuNouveau;
@@ -2491,13 +2537,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (initialisation.getSceance().equals("na")) {
             menuModifier.setEnabled(false);
             menuOuvrir.setEnabled(false);
+            menuEffacer.setEnabled(false);
         } else {
             menuModifier.setEnabled(actif);
             menuOuvrir.setEnabled(actif);
+            menuEffacer.setEnabled(actif);
         }
 
         if (!loadedSceance) {
             menuModifier.setEnabled(false);
+            menuEffacer.setEnabled(false);
         }
 
     }

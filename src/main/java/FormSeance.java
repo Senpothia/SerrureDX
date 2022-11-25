@@ -258,4 +258,10 @@ public class FormSeance {
         this.actif = actif;
     }
 
+    public void formaterDate() {
+
+        String[] extraction = this.date.split("-");
+        this.date = extraction[2] + "-" + extraction[1] + "-" + extraction[0];
+    }
+
 }

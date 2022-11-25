@@ -490,6 +490,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuModifierActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuEffacer">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Effacer"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuEffacerActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuSauvegardes">
               <Properties>
                 <Property name="label" type="java.lang.String" value="Sauvegardes"/>
@@ -522,6 +532,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Port"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPortActionPerformed"/>
+              </Events>
             </Menu>
             <Menu class="javax.swing.JMenu" name="menuBaud">
               <Properties>
