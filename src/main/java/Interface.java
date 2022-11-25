@@ -1066,6 +1066,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menuRemote.add(deleteRemote);
 
         addRemote.setText("Ajouter");
+        addRemote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRemoteActionPerformed(evt);
+            }
+        });
         menuRemote.add(addRemote);
 
         connectRemote.setText("Connexion");
@@ -1974,6 +1979,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
             buildContext();
         }
     }//GEN-LAST:event_cad_1_par_5minsStateChanged
+
+    private void addRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRemoteActionPerformed
+       
+        String nomRemote = JOptionPane.showInputDialog("Entrez d'adresse IP du nouveau remote.", "Ajouter remote");
+        try {
+            initializer.addRemte(nomRemote);
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+    }//GEN-LAST:event_addRemoteActionPerformed
 
     /**
      * @param args the command line arguments
