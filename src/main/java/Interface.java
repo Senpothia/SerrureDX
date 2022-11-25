@@ -1341,9 +1341,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
             counter1.setText(null);
             counter2.setText(null);
             counter3.setText(null);
-            actif1.setEnabled(false);
-            actif2.setEnabled(false);
-            actif3.setEnabled(false);
+            actif1.setSelected(false);
+            actif2.setSelected(false);
+            actif3.setSelected(false);
             type1.setSelectedIndex(0);
             type2.setSelectedIndex(0);
             type3.setSelectedIndex(0);
@@ -1380,7 +1380,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             setStatusRS232(false);
 
         }
-        
+
         setEnabledMenusConfiguration();
 
 
@@ -1803,6 +1803,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
                 console.setText("La séquence a été enregistrée sur le remote");
                 loadedSceance = true;
+               
             }
             formulaire.setVisible(false);
 
@@ -1819,6 +1820,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 console.setText("La séquence a été modifiée sur le remote");
                 updateDisplayInterface(0, sceance);
                 loadedSceance = true;
+              
             }
             formulaire.setVisible(false);
 
@@ -1933,6 +1935,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         sceance = null;
         sceance = new FormSeance();
         updateDisplayInterface(0, sceance);
+        setEnabledSelecteurEchantillons();
 
     }//GEN-LAST:event_menuEffacerActionPerformed
 
@@ -2617,6 +2620,24 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
     }
 
+    void setEnabledSelecteurEchantillons() {
+
+        if (sceance.getActif()) {
+
+            selectEch1.isEnabled();
+        }
+
+        if (sceance.getActif2()) {
+
+            selectEch2.isEnabled();
+        }
+
+        if (sceance.getActif3()) {
+
+            selectEch3.isEnabled();
+        }
+    }
+
     private Context buildContext() {
 
         Context context = new Context();
@@ -2700,54 +2721,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
             Boolean arret = arrets.get(i);
 
             String total = totaux.get(i);
-            /*
-            switch (message) {
-
- 
-                case 1:
-
-                    if (!actif) {
-
-                        echantillonsActifs.get(i).setSelected(false);
-                        color = Color.GRAY;
-
-                    } else {
-
-                        echantillonsActifs.get(i).setSelected(true);
-
-                    }
-                    break;
-                case 2:
-                    if (pause) {
-
-                        color = Color.ORANGE;
-                    }
-
-                    break;
-
-                case 3:
-
-                    if (erreur) {
-
-                        color = Color.RED;
-
-                    } else {
-
-                        color = Color.BLUE;
-                    }
-                    break;
-
-                case 4:
-
-                    if (arret) {
-
-                        color = Color.YELLOW;
-                    }
-                    break;
-
-            }
-            
-             */
 
             if (!actif) {
 
