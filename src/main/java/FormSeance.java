@@ -10,31 +10,31 @@
  */
 public class FormSeance {
 
-    private Integer id;
-    private String Description;
-    private String date;
-    private String type1;
-    private String type2;
-    private String type3;
-    private Boolean actif;
-    private Boolean actif1;
-    private Boolean actif2;
-    private Boolean actif3;
-    private Boolean erreur1;
-    private Boolean erreur2;
-    private Boolean erreur3;
-    private Integer position1;
-    private Integer position2;
-    private Integer position3;
-    private Boolean interrompu1;
-    private Boolean interrompu2;
-    private Boolean interrompu3;
-    private Boolean pause1;
-    private Boolean pause2;
-    private Boolean pause3;
-    private Long compteur1;
-    private Long compteur2;
-    private Long compteur3;
+    private Integer id = 0;
+    private String Description = "";
+    private String date = "";
+    private String type1 = "";
+    private String type2 = "";
+    private String type3 = "";
+    private Boolean actif = false;
+    private Boolean actif1 = false;
+    private Boolean actif2 = false;
+    private Boolean actif3 = false;
+    private Boolean erreur1 = false;
+    private Boolean erreur2 = false;
+    private Boolean erreur3 = false;
+    private Integer position1 = 1;
+    private Integer position2 = 2;
+    private Integer position3 = 3;
+    private Boolean interrompu1 = false;
+    private Boolean interrompu2 = false;
+    private Boolean interrompu3 = false;
+    private Boolean pause1 = false;
+    private Boolean pause2 = false;
+    private Boolean pause3 = false;
+    private Long compteur1 = 0L;
+    private Long compteur2 = 0L;
+    private Long compteur3 = 0L;
 
     public FormSeance() {
         super();
@@ -257,7 +257,5 @@ public class FormSeance {
     public void setActif(Boolean actif) {
         this.actif = actif;
     }
-    
-    
 
 }

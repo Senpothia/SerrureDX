@@ -2111,10 +2111,28 @@ public class Interface extends javax.swing.JFrame implements Observer {
         // System.out.println("total1 côté parser interface: " + totaux.get(0));
         totaux.add(Long.toString(rapport.getFormSeance().getCompteur2()));
         totaux.add(Long.toString(rapport.getFormSeance().getCompteur3()));
-        List<Boolean> erreurs = convertArrayToList(rapport.getErreurs());
-        List<Boolean> actifs = convertArrayToList(rapport.getActifs());
-        List<Boolean> pauses = convertArrayToList(rapport.getPauses());
-        List<Boolean> arrets = convertArrayToList(rapport.getArrets());
+
+        //  List<Boolean> erreurs = convertArrayToList(rapport.getErreurs());
+        List<Boolean> erreurs = new ArrayList<>();
+
+        erreurs.add(rapport.getFormSeance().getErreur1());
+        erreurs.add(rapport.getFormSeance().getErreur2());
+        erreurs.add(rapport.getFormSeance().getErreur3());
+
+        List<Boolean> actifs = new ArrayList<>();
+        actifs.add(rapport.getFormSeance().getActif1());
+        actifs.add(rapport.getFormSeance().getActif2());
+        actifs.add(rapport.getFormSeance().getActif3());
+
+        List<Boolean> pauses = new ArrayList<>();
+        pauses.add(rapport.getFormSeance().getPause1());
+        pauses.add(rapport.getFormSeance().getPause2());
+        pauses.add(rapport.getFormSeance().getPause3());
+
+        List<Boolean> arrets = new ArrayList<>();
+        arrets.add(rapport.getFormSeance().getInterrompu1());
+        arrets.add(rapport.getFormSeance().getInterrompu2());
+        arrets.add(rapport.getFormSeance().getInterrompu3());
 
         proccessStatusLists(totaux, erreurs, actifs, pauses, arrets);
 
@@ -2554,15 +2572,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             String total = totaux.get(i);
 
-            if (erreur) {
-
-                color = Color.RED;
-
-            } else {
-
-                color = Color.BLUE;
-            }
-
             if (!actif) {
 
                 echantillonsActifs.get(i).setSelected(false);
@@ -2582,6 +2591,15 @@ public class Interface extends javax.swing.JFrame implements Observer {
             if (arret) {
 
                 color = Color.YELLOW;
+            }
+
+            if (erreur) {
+
+                color = Color.RED;
+
+            } else {
+
+                color = Color.BLUE;
             }
 
             JLabel lab1 = compteurs.get(i);

@@ -83,7 +83,10 @@ public class Enregistreur {
         String date = dateActuelle.format(formatterDate);
         String heure = dateActuelle.format(formatterHeure);
         initFichier();
-        String ligneEnCours = date + ";" + heure + ";" + rapport.getFormSeance().getCompteur1() + ";" + rapport.getFormSeance().getCompteur2() + ";" + rapport.getFormSeance().getCompteur3() + ";" + rapport.getFormSeance().getActif1() + ";" + rapport.getFormSeance().getActif2() + ";" + rapport.getFormSeance().getActif3();
+        String ligneEnCours = date + ";" + heure + ";" + rapport.getFormSeance().getCompteur1() + ";" + rapport.getFormSeance().getCompteur2() + ";" + rapport.getFormSeance().getCompteur3() + ";" + rapport.getFormSeance().getActif1() + ";" + rapport.getFormSeance().getActif2() + ";" + rapport.getFormSeance().getActif3() +
+                ";" + rapport.getFormSeance().getErreur1() + ";" + rapport.getFormSeance().getErreur2() + ";" + rapport.getFormSeance().getErreur3() + ";" + rapport.getFormSeance().getPause1()+ ";" + rapport.getFormSeance().getPause2() + ";" + 
+                rapport.getFormSeance().getPause3();
+        System.out.println("Ligne enregistrée: " + ligneEnCours);
         sauvegarder(ligneEnCours);
 
         return 0;

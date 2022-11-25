@@ -293,7 +293,7 @@ public class Controller {
         // @ERREURS:#0:1:0:1 remonte les cas d'erreur sur les échantillons 1=erreur, 0=aucune erreur
         String[] extraction = extraire(inputLine);
 
-        System.out.println("traitement actifs");
+        System.out.println("traitement erreurs");
         for (int i = 0; i < 5; i++) {
 
             System.out.println("recept num: " + i + " " + extraction[i]);
