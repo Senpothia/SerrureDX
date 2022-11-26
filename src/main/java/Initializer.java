@@ -18,85 +18,85 @@ import java.util.Properties;
  * @author Michel
  */
 public class Initializer {
-
+    
     public Initialisation getInit() throws FileNotFoundException, IOException {
-
+        
         Properties cloudProperpies = new Properties();
-
+        
         FileReader reader = new FileReader("src\\main\\java\\remote.properties");
         cloudProperpies.load(reader);
-
+        
         String username = cloudProperpies.getProperty("username");
         String password = cloudProperpies.getProperty("password");
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");
         String remoteNames = cloudProperpies.getProperty("remoteNames");
         String sceance = cloudProperpies.getProperty("sceance");
-
+        
         List<String> listeRemotesUrls = getRemoteUrls(remoteUrls);
         List<String> listeRemotesNames = getRemoteUrls(remoteNames);
         Initialisation init = new Initialisation(username, password, listeRemotesUrls, listeRemotesNames, sceance);
-
+        
         init.setUsername(username);
         init.setPassword(password);
         init.setRemoteUrls(listeRemotesUrls);
         init.setRemoteNames(listeRemotesNames);
         init.setSceance(sceance);
-
+        
         System.out.println("username: " + username);
         System.out.println("password: " + password);
         System.out.println("Nombre de url remotes: " + listeRemotesUrls.size());
         System.out.println("Nombre de noms remotes: " + listeRemotesNames.size());
         System.out.println("sceance id: " + sceance);
-
+        
         for (String r : listeRemotesUrls) {
-
+            
             System.out.println("remote url:" + r);
-
+            
         }
-
+        
         return init;
     }
-
+    
     private List<String> getRemoteUrls(String remoteUrls) {
-
+        
         List<String> listeRemoteUrls = new ArrayList<String>();
-
+        
         String[] extraction = extraire(remoteUrls);
-
+        
         for (int i = 0; i < extraction.length; i++) {
-
+            
             listeRemoteUrls.add(extraction[i]);
         }
-
+        
         return listeRemoteUrls;
     }
-
+    
     private List<String> getRemoteNames(String remoteNames) {
-
+        
         List<String> listeRemoteNames = new ArrayList<String>();
-
+        
         String[] extraction = extraire(remoteNames);
-
+        
         for (int i = 0; i < extraction.length; i++) {
-
+            
             listeRemoteNames.add(extraction[i]);
         }
-
+        
         return listeRemoteNames;
     }
-
+    
     private String[] extraire(String remotes) {
-
+        
         String[] extraction = remotes.split(";");
-
+        
         return extraction;
-
+        
     }
-
+    
     public void update(String key, String value) {
-
+        
         try {
-
+            
             Properties cloudProperpies = new Properties();
             //first load old one:
             FileInputStream configStream = new FileInputStream("src\\main\\java\\remote.properties");
@@ -110,27 +110,31 @@ public class Initializer {
             FileOutputStream output = new FileOutputStream("src\\main\\java\\remote.properties");
             cloudProperpies.store(output, "DX200I tester - Properties");
             output.close();
-
+            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
+        
     }
-
-  
-
+    
     void addRemote(String newRemoteName, String newRemoteAdress) throws FileNotFoundException, IOException {
-
+        
         Properties cloudProperpies = new Properties();
-
+        
         FileReader reader = new FileReader("src\\main\\java\\remote.properties");
         cloudProperpies.load(reader);
-
+        
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");
         String remoteNames = cloudProperpies.getProperty("remoteNames");
         
+        remoteNames = remoteNames + ";" + newRemoteName;
+        remoteUrls = remoteUrls + ";" + "http://" + newRemoteAdress;
         
-
+        System.out.println("Noms de remotes: " + remoteNames);
+        System.out.println("URLs de remotes: " + remoteUrls);
+        update("remoteNames", remoteNames);
+        update("remoteUrls", remoteUrls);
+        
     }
-
+    
 }

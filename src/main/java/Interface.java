@@ -85,6 +85,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private String newRemoteName = "";
     private String newRemoteAdress = "";
 
+    private List<String> remotes = new ArrayList<>();
+
     /*
      * Creates new form Interface
      */
@@ -197,6 +199,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
             menuModifier.setEnabled(true);
         }
 
+        remotes = initialisation.getRemoteNames();
+        listerRemotes();
+
+        /*
         List<String> remotes = initialisation.getRemoteNames();
 
         for (JMenu mn : menusRemote) {
@@ -210,6 +216,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
 
         }
+        
+         */
         setEnabledMenusSceance(false);
         setEnabledMenusConfiguration();
         setEnabledSelecteurEchantillons(true);
@@ -649,33 +657,34 @@ public class Interface extends javax.swing.JFrame implements Observer {
         remoteForm.getContentPane().setLayout(remoteFormLayout);
         remoteFormLayout.setHorizontalGroup(
             remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, remoteFormLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89))
             .addGroup(remoteFormLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(remoteFormLayout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                        .addGap(25, 25, 25)
+                        .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(remoteFormLayout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addGroup(remoteFormLayout.createSequentialGroup()
+                                .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nomRemoteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(adresseLabel))
+                                .addGap(18, 18, 18)
+                                .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(nameRemote)
+                                    .addComponent(adresseRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(remoteFormLayout.createSequentialGroup()
-                        .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nomRemoteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(adresseLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nameRemote)
-                            .addComponent(adresseRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(102, 102, 102)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(86, Short.MAX_VALUE))
         );
         remoteFormLayout.setVerticalGroup(
             remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(remoteFormLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel5)
-                .addGap(46, 46, 46)
+                .addGap(40, 40, 40)
                 .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameRemote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nomRemoteLabel))
@@ -1687,7 +1696,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
 
         if (auto) {
-            
+
             pauseRequested();
             connecteur.envoyerData(Constants.ORDRE_PAUSE);
             controller.enregistrerSceanceLocal(sceance);
@@ -1696,7 +1705,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             } catch (IOException ex) {
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         } else {
 
         }
@@ -2131,16 +2140,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void addRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRemoteActionPerformed
 
         remoteForm.setVisible(true);
-        remoteForm.setSize(450, 300);
+        remoteForm.setSize(450, 350);
 
     }//GEN-LAST:event_addRemoteActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
         newRemoteName = nameRemote.getText();
-        newRemoteAdress = adresseRemote.getSelectedText();
+        newRemoteAdress = adresseRemote.getText();
         try {
             initializer.addRemote(newRemoteName, newRemoteAdress);
+            remoteForm.setVisible(false);
+            ajouterRemote();
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2965,6 +2976,38 @@ public class Interface extends javax.swing.JFrame implements Observer {
             cadence = 3;
 
         }
+
+    }
+
+    private void listerRemotes() throws IOException {
+
+        // menusRemote.removeAll(remotes);
+        initialisation = initializer.getInit();
+        remotes = initialisation.getRemoteNames();
+
+        for (JMenu mn : menusRemote) {
+
+            for (String r : remotes) {
+
+                JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
+                groupRemotes.add(m);
+                m.addActionListener(new RemoteSupplier());
+                mn.add(m);
+            }
+
+        }
+
+    }
+
+    private void ajouterRemote() throws IOException {
+
+        initialisation = initializer.getInit();
+        remotes = initialisation.getRemoteNames();
+        int lastIndex = remotes.size();
+        String r = remotes.get(lastIndex - 1);
+        JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
+        groupRemotes.add(m);
+        m.addActionListener(new RemoteSupplier());
 
     }
 

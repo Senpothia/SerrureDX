@@ -16,7 +16,8 @@ public class Initialisation {
     private String username;
     private String password;
     private List<String> remoteUrls = new ArrayList<>();
-    private List<String> remoteNames = new ArrayList<>();;
+    private List<String> remoteNames = new ArrayList<>();
+    ;
     private String remoteName;
     private String remoteUrl;
     private String sceance;     // id de la scéance en cours
@@ -33,8 +34,6 @@ public class Initialisation {
         this.remoteUrl = remoteUrl;
         this.sceance = sceance;
     }
-    
-    
 
     Initialisation(String username, String password, List<String> listeRemotesUrls, List<String> listeRemotesNames, String sceance) {
 
@@ -42,8 +41,8 @@ public class Initialisation {
         this.password = password;
         this.remoteUrls = remoteUrls;
         this.remoteNames = remoteNames;
-         this.sceance = sceance;
-      
+        this.sceance = sceance;
+
     }
 
     public String getUsername() {
