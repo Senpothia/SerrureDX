@@ -25,6 +25,8 @@ public class RemoteSupplier implements ActionListener {
         
         Interface.initialisation.setRemoteName(remoteName);
         Interface.initialisation.setRemoteUrl(Interface.initialisation.findUrl(remoteName));
+        Interface.findSourceMenuRemote(o);
+        
     }
 
 }

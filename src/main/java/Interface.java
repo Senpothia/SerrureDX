@@ -73,8 +73,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private List<JButton> btnResets = new ArrayList<>();
 
     private List<JMenu> menusRemote = new ArrayList<>();
-    private List<JMenuItem> menusSelectionRemote = new ArrayList<>();
-    private List<JMenuItem> menusDeleteRemote = new ArrayList<>();
+    public static List<JMenuItem> menusSelectionRemote = new ArrayList<>();
+    public static List<JMenuItem> menusDeleteRemote = new ArrayList<>();
 
     private List<String> ordresSETS = new ArrayList<>();
     private List<String> ordresRAZ = new ArrayList<>();
@@ -2980,31 +2980,26 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void listerRemotes() throws IOException {
 
-        
         initialisation = initializer.getInit();
         remotes = initialisation.getRemoteNames();
 
-        
+        for (String r : remotes) {
 
-            for (String r : remotes) {
+            JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
+            groupAjouterRemotes.add(m);
+            menusSelectionRemote.add(m);
+            m.addActionListener(new RemoteSupplier());
+            selectionRemote.add(m);
+        }
 
-                JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
-                groupAjouterRemotes.add(m);
-                menusSelectionRemote.add(m);
-                m.addActionListener(new RemoteSupplier());
-                selectionRemote.add(m);
-            }
-            
-               for (String r : remotes) {
+        for (String r : remotes) {
 
-                JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
-                groupSupprimerRemotes.add(m);
-                menusDeleteRemote.add(m);
-                m.addActionListener(new RemoteSupplier());
-                deleteRemote.add(m);
-            }
-
-        
+            JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
+            groupSupprimerRemotes.add(m);
+            menusDeleteRemote.add(m);
+            m.addActionListener(new RemoteSupplier());
+            deleteRemote.add(m);
+        }
 
     }
 
@@ -3022,6 +3017,25 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void supprimerRemote() {
 
+    }
+
+    public static void findSourceMenuRemote(Object o) {
+
+        JRadioButtonMenuItem btn = (JRadioButtonMenuItem) o;
+
+        boolean selectionPresent = menusSelectionRemote.contains(btn);
+        boolean deletePresent = menusDeleteRemote.contains(btn);
+
+        if (selectionPresent) {
+
+        }
+
+        if (deletePresent) {
+            
+           String nom =  btn.getText();
+            System.out.println("Nom du remote à supprimer: " + nom);
+            
+        }
     }
 
 }
