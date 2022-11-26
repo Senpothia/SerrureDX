@@ -19,7 +19,7 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="groupCadence">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="groupRemotes">
+    <Component class="javax.swing.ButtonGroup" name="groupAjouterRemotes">
     </Component>
     <Container class="javax.swing.JFrame" name="formulaire">
       <Properties>
@@ -563,6 +563,8 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.ButtonGroup" name="groupSupprimerRemotes">
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="MenuFichier">
@@ -845,14 +847,9 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRemoteActionPerformed"/>
           </Events>
           <SubComponents>
-            <Menu class="javax.swing.JMenu" name="SelectionRemote">
+            <Menu class="javax.swing.JMenu" name="selectionRemote">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Choisir"/>
-              </Properties>
-            </Menu>
-            <Menu class="javax.swing.JMenu" name="changeRemote">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Changer"/>
               </Properties>
             </Menu>
             <Menu class="javax.swing.JMenu" name="deleteRemote">

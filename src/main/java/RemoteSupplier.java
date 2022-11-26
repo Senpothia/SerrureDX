@@ -18,6 +18,11 @@ public class RemoteSupplier implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         String remoteName = e.getActionCommand();
+        Object o = e.getSource();
+       
+        System.out.println(o.toString());
+        System.out.println( o.hashCode());
+        
         Interface.initialisation.setRemoteName(remoteName);
         Interface.initialisation.setRemoteUrl(Interface.initialisation.findUrl(remoteName));
     }
