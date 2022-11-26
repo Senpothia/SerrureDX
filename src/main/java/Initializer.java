@@ -117,16 +117,5 @@ public class Initializer {
 
     }
 
-    void addRemte(String nomRemote) throws FileNotFoundException, IOException {
-
-        Properties cloudProperpies = new Properties();
-        FileReader reader = new FileReader("src\\main\\java\\remote.properties");
-        cloudProperpies.load(reader);
-
-        String remoteUrls = cloudProperpies.getProperty("remoteUrls");
-        remoteUrls = remoteUrls + ";" + nomRemote;
-        update("remoteUrls", remoteUrls );
-
-    }
 
 }
