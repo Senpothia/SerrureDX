@@ -82,6 +82,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private FormSeance sceance = new FormSeance();              // contient les éléments de définition / résultats de la scéance en cours à transmettre au cloud
     private Login login = new Login();                          // contient les identifiant de connexion au cloud
 
+    private String newRemoteName = "";
+    private String newRemoteAdress = "";
+
     /*
      * Creates new form Interface
      */
@@ -265,6 +268,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
         passwordField = new javax.swing.JTextField();
         annulerLogin = new javax.swing.JButton();
         ValideLogin = new javax.swing.JButton();
+        remoteForm = new javax.swing.JFrame();
+        nameRemote = new javax.swing.JTextField();
+        adresseRemote = new javax.swing.JTextField();
+        nomRemoteLabel = new javax.swing.JLabel();
+        adresseLabel = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         titre = new javax.swing.JLabel();
         compteur1 = new javax.swing.JLabel();
         selectEch1 = new javax.swing.JRadioButton();
@@ -608,6 +619,75 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addComponent(annulerLogin)
                     .addComponent(ValideLogin))
                 .addContainerGap(68, Short.MAX_VALUE))
+        );
+
+        remoteForm.setTitle("Ajouter remote");
+
+        nomRemoteLabel.setText("Nom");
+
+        adresseLabel.setText("Adressse");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel5.setText("Création d'un remote");
+
+        jButton1.setText("Annuler");
+        jButton1.setToolTipText("");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Valider");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout remoteFormLayout = new javax.swing.GroupLayout(remoteForm.getContentPane());
+        remoteForm.getContentPane().setLayout(remoteFormLayout);
+        remoteFormLayout.setHorizontalGroup(
+            remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, remoteFormLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(89, 89, 89))
+            .addGroup(remoteFormLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(remoteFormLayout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
+                    .addGroup(remoteFormLayout.createSequentialGroup()
+                        .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nomRemoteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(adresseLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nameRemote)
+                            .addComponent(adresseRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(86, Short.MAX_VALUE))
+        );
+        remoteFormLayout.setVerticalGroup(
+            remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(remoteFormLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel5)
+                .addGap(46, 46, 46)
+                .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameRemote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nomRemoteLabel))
+                .addGap(30, 30, 30)
+                .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(adresseRemote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(adresseLabel))
+                .addGap(45, 45, 45)
+                .addGroup(remoteFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -1063,9 +1143,19 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menuRemote.add(changeRemote);
 
         deleteRemote.setText("Supprimer");
+        deleteRemote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteRemoteActionPerformed(evt);
+            }
+        });
         menuRemote.add(deleteRemote);
 
         addRemote.setText("Ajouter");
+        addRemote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRemoteActionPerformed(evt);
+            }
+        });
         menuRemote.add(addRemote);
 
         connectRemote.setText("Connexion");
@@ -1518,6 +1608,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
             stopRequested();
             connecteur.envoyerData(Constants.ORDRE_ARRET);
             setEnabledSelecteurEchantillons(true);
+            try {
+                controller.actualiserSceanceRemote(sceance, login);
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            controller.enregistrerSceanceLocal(sceance);
 
         } else {
         }
@@ -1548,13 +1644,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
             if (result == JOptionPane.YES_OPTION) {
 
                 withoutRemote = true;
+                return;
 
             } else if (result == JOptionPane.NO_OPTION) {
                 return;
             }
         }
 
-        if (sceance == null && !withoutRemote) {
+        if (!withoutRemote && !loadedSceance) {
 
             montrerError("Vous devez définir une scéance!", "Scéance indéfinie");
             return;
@@ -1562,18 +1659,26 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         if (auto) {
 
+            controller.setFormSceance(sceance);
             int i = envoyerConfiguration();
-            console.setForeground(Color.RED);
-            console.setText("En attente de démarrage!");
-            setEnabledSelecteurEchantillons(false);
 
             if (i == -1) {
+
+                console.setForeground(Color.RED);
+                console.setText("Erreur de configuration: sélectionnez les échantillons actifs.");
+                setEnabledSelecteurEchantillons(true);
                 return;
+
             } else {
 
-                // TODO mode manuel
+                console.setForeground(Color.RED);
+                console.setText("En attente de démarrage!");
+                setEnabledSelecteurEchantillons(false);
             }
 
+        } else {
+
+            // TODO mode manuel
         }
 
 
@@ -1582,8 +1687,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
 
         if (auto) {
+            
             pauseRequested();
             connecteur.envoyerData(Constants.ORDRE_PAUSE);
+            controller.enregistrerSceanceLocal(sceance);
+            try {
+                controller.actualiserSceanceRemote(sceance, login);
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         } else {
 
         }
@@ -1788,7 +1901,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_connectRemoteActionPerformed
 
     private void menuRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRemoteActionPerformed
-        // TODO add your handling code here:
+
+
     }//GEN-LAST:event_menuRemoteActionPerformed
 
     private void valideFormulaireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valideFormulaireActionPerformed
@@ -1799,7 +1913,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             buildSceance();
 
-            boolean result = controller.enregistrerSceance(sceance, login);
+            boolean result = controller.enregistrerSceanceRemote(sceance, login);
             if (!result) {
 
                 montrerError("Accès remote refusé!", "Erreur authentification");
@@ -1862,17 +1976,54 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 deconnectRemote.setEnabled(true);
                 connectRemote.setEnabled(false);
                 setEnabledMenusSceance(true);
+                return;
 
             } else {
 
-                montrerError("Connexion refusée!", "Erreur connexion remote");
+                if (withoutRemote) {
+
+                    montrerError("Connexion refusée!", "Erreur connexion remote");
+                    return;
+
+                } else {
+
+                    int result = JOptionPane.showConfirmDialog(this, "Voulez-vous activer la connexion au remote?", "Connexion cloud",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
+                    if (result == JOptionPane.YES_OPTION) {
+
+                        withoutRemote = false;
+
+                    } else if (result == JOptionPane.NO_OPTION) {
+
+                        montrerError("Demande de connexion au remote rejetée", "Connexion cloud");
+                        return;
+                    }
+                }
+
             }
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
-    }//GEN-LAST:event_ValideLoginActionPerformed
+        boolean autorisation = false;
+        try {
+            autorisation = controller.connexionRemote(login);
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (autorisation) {
 
+            connexionRemoteActive = true;
+            statutRemote.setBackground(Color.GREEN);
+            statutRemote.setForeground(Color.GREEN);
+            deconnectRemote.setEnabled(true);
+            connectRemote.setEnabled(false);
+            setEnabledMenusSceance(true);
+
+    }//GEN-LAST:event_ValideLoginActionPerformed
+    }
     private void deconnectRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deconnectRemoteActionPerformed
 
         connexionRemoteActive = false;
@@ -1923,6 +2074,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         try {
             sceance = controller.getSceance(initialisation.getSceance(), login);
+            sceance.formaterDate();
+            System.out.println("Date scéance au chargement: " + sceance.getDate());
             console.setForeground(Color.red);
             console.setText("La scéance a été initialisée à partir du cloud");
             updateDisplayInterface(0, sceance);
@@ -1975,6 +2128,34 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
     }//GEN-LAST:event_cad_1_par_5minsStateChanged
 
+    private void addRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRemoteActionPerformed
+
+        remoteForm.setVisible(true);
+        remoteForm.setSize(450, 300);
+
+    }//GEN-LAST:event_addRemoteActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        newRemoteName = nameRemote.getText();
+        newRemoteAdress = adresseRemote.getSelectedText();
+        try {
+            initializer.addRemote(newRemoteName, newRemoteAdress);
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void deleteRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRemoteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteRemoteActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        remoteForm.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2026,6 +2207,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JCheckBox actif2;
     private javax.swing.JCheckBox actif3;
     private javax.swing.JMenuItem addRemote;
+    private javax.swing.JLabel adresseLabel;
+    private javax.swing.JTextField adresseRemote;
     private javax.swing.JButton annulerFormulaire;
     private javax.swing.JButton annulerLogin;
     private javax.swing.JButton arret1;
@@ -2065,8 +2248,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.ButtonGroup groupPorts;
     private javax.swing.ButtonGroup groupRemotes;
     private javax.swing.ButtonGroup groupStop;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -2088,6 +2274,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenu menuRemote;
     private javax.swing.JMenuItem menuSauvegardes;
     private javax.swing.JMenu menuStop;
+    private javax.swing.JTextField nameRemote;
+    private javax.swing.JLabel nomRemoteLabel;
     private javax.swing.JRadioButtonMenuItem parityEven;
     private javax.swing.JRadioButtonMenuItem parityNone;
     private javax.swing.JRadioButtonMenuItem parityOdd;
@@ -2096,6 +2284,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton pause1;
     private javax.swing.JButton pause2;
     private javax.swing.JButton pause3;
+    private javax.swing.JFrame remoteForm;
     private javax.swing.JButton reset1;
     private javax.swing.JButton reset2;
     private javax.swing.JButton reset3;
@@ -2200,7 +2389,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             if (loadedSceance) {
 
-                controller.actualiserSceance(rapport.getFormSeance(), login);
+                controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
             }
 
             System.exit(0);
@@ -2208,7 +2397,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         if (rapport.isSauvegarde()) {
 
-            controller.actualiserSceance(rapport.getFormSeance(), login);
+            controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
             return;
         }
         if (rapport.isAcquittement()) {
@@ -2245,6 +2434,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         arrets.add(rapport.getFormSeance().getInterrompu1());
         arrets.add(rapport.getFormSeance().getInterrompu2());
         arrets.add(rapport.getFormSeance().getInterrompu3());
+        sceance = rapport.getFormSeance();
 
         proccessStatusLists(rapport.getMessage(), totaux, erreurs, actifs, pauses, arrets);
 
@@ -2525,6 +2715,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (ordre.equals("W:CONFIG:0:0:0")) {
 
             montrerError("Vous devez sélectionner les échantillons actifs", "Défaut de configuration");
+            setEnabledSelecteurEchantillons(true);
             return -1;
         }
 

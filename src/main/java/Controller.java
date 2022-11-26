@@ -176,7 +176,7 @@ public class Controller {
         rapport.setColor(Color.RED);
         rapport.setMessage(0);
         rapport.setSauvegarde(true);
-        enregistreur.sauvegarder(rapport);   //  sauvegardes en locale
+        enregistreur.sauvegarderLocal(rapport);   //  sauvegardes en locale
         if (!context.isWithoutRemote()) {
 
             remoteController.sauvegarderSequence(formSceance, context.getLogin());
@@ -342,7 +342,7 @@ public class Controller {
 
     private void gestionSauvegarde(String inputLine) {
 
-        enregistreur.sauvegarder(rapport);
+        enregistreur.sauvegarderLocal(rapport);
     }
 
     public int creationFichier(String inputLine) {
@@ -363,7 +363,7 @@ public class Controller {
 
         rapport.setLog("Fin de test");
         rapport.setSauvegarde(true);
-        enregistreur.sauvegarder(rapport);
+        enregistreur.sauvegarderLocal(rapport);
 
     }
 
@@ -382,14 +382,14 @@ public class Controller {
         rapport.setFermeture(true);
         try {
 
-            enregistreur.sauvegarder(rapport);
+            enregistreur.sauvegarderLocal(rapport);
 
         } catch (Exception e) {
         }
 
     }
 
-    public boolean enregistrerSceance(FormSeance sceance, Login login) {
+    public boolean enregistrerSceanceRemote(FormSeance sceance, Login login) {
 
         if (context.isConnexionRemoteActive() && context.isConnexionRemoteActive()) {
 
@@ -467,13 +467,27 @@ public class Controller {
         this.context = context;
     }
 
-    void actualiserSceance(FormSeance formSeance, Login login) throws IOException {
+    void actualiserSceanceRemote(FormSeance formSeance, Login login) throws IOException {
 
         if (!context.isWithoutRemote() && context.isConnexionRemoteActive()) {
 
             boolean reponse = remoteController.actualiserSceance(formSeance, login);
         }
 
+    }
+
+    public FormSeance getFormSceance() {
+        return formSceance;
+    }
+
+    public void setFormSceance(FormSeance formSceance) {
+        this.formSceance = formSceance;
+    }
+    
+    public void enregistrerSceanceLocal(FormSeance sceance){
+        
+        
+        enregistreur.sauvegarderSceanceLocal(sceance);
     }
 
 }
