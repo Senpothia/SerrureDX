@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 
 public class Interface extends javax.swing.JFrame implements Observer {
 
-    private Initializer initializer = new Initializer();  // Charge les propriétés du fichier properties contenant les données liées au cloud(remote)
+    public static Initializer initializer = new Initializer();  // Charge les propriétés du fichier properties contenant les données liées au cloud(remote)
     public static Initialisation initialisation;          // Centralise les données rapportées par l'initializez
     private boolean buzzer = false;
     private boolean test_off = true;            // le test est arrêté
@@ -3031,10 +3031,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
 
         if (deletePresent) {
-            
-           String nom =  btn.getText();
+
+            String nom = btn.getText();
             System.out.println("Nom du remote à supprimer: " + nom);
-            
+            initializer.deleteRemote(nom);
         }
     }
 
