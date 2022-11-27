@@ -1433,6 +1433,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void menuNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNouveauActionPerformed
         if (connexionRemoteActive) {
 
+            formulaire.getContentPane().setBackground(new Color(143, 106, 196));
             formulaire.setVisible(true);
             formulaire.setSize(900, 700);
             descriptionField.setText(null);
@@ -1902,6 +1903,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
             loginForm.setSize(400, 400);
             loginForm.setVisible(true);
+            loginForm.getContentPane().setBackground(new Color(166, 214, 161));
 
         }
 
@@ -2054,8 +2056,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
             modification = true;
             FormSeance f = controller.getSceance(initialisation.getSceance(), login);
             f.formaterDate();
+
             formulaire.setSize(900, 700);
             formulaire.setVisible(true);
+            formulaire.getContentPane().setBackground(new Color(232, 186, 146));
             descriptionField.setText(f.getDescription());
             dateField.setText(f.getDate());
             counter1.setText(String.valueOf(f.getCompteur1()));
