@@ -2,6 +2,9 @@
 import com.sun.corba.se.impl.naming.cosnaming.InterOperableNamingImpl;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,8 +28,11 @@ public class RemoteSupplier implements ActionListener {
         
         Interface.initialisation.setRemoteName(remoteName);
         Interface.initialisation.setRemoteUrl(Interface.initialisation.findUrl(remoteName));
-        Interface.findSourceMenuRemote(o);
-        
+        try {
+            Interface.findSourceMenuRemote(o);
+        } catch (IOException ex) {
+            Logger.getLogger(RemoteSupplier.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

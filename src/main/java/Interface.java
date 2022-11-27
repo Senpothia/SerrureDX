@@ -88,7 +88,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private String newRemoteName = "";
     private String newRemoteAdress = "";
 
-    private List<String> remotes = new ArrayList<>();
+    private static List<String> remotes = new ArrayList<>();
 
     /*
      * Creates new form Interface
@@ -2246,7 +2246,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JTextField counter3;
     private javax.swing.JTextField dateField;
     private javax.swing.JMenuItem deconnectRemote;
-    private javax.swing.JMenu deleteRemote;
+    private static javax.swing.JMenu deleteRemote;
     private javax.swing.JTextField descriptionField;
     private javax.swing.JFrame formulaire;
     private javax.swing.ButtonGroup groupAjouterRemotes;
@@ -2301,7 +2301,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JRadioButton selectEch2;
     private javax.swing.JRadioButton selectEch3;
     private javax.swing.JFileChooser selectionFichier;
-    private javax.swing.JMenu selectionRemote;
+    private static javax.swing.JMenu selectionRemote;
     private javax.swing.JButton set1;
     private javax.swing.JButton set2;
     private javax.swing.JButton set3;
@@ -3009,32 +3009,47 @@ public class Interface extends javax.swing.JFrame implements Observer {
         remotes = initialisation.getRemoteNames();
         int lastIndex = remotes.size();
         String r = remotes.get(lastIndex - 1);
-        JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
-        groupAjouterRemotes.add(m);
-        m.addActionListener(new RemoteSupplier());
+        JRadioButtonMenuItem mAdd = new JRadioButtonMenuItem(r);
+        groupAjouterRemotes.add(mAdd);
+        mAdd.addActionListener(new RemoteSupplier());
+        selectionRemote.add(mAdd);
+        menusSelectionRemote.add(mAdd);
+
+        JRadioButtonMenuItem mDel = new JRadioButtonMenuItem(r);
+        groupSupprimerRemotes.add(mDel);
+        mDel.addActionListener(new RemoteSupplier());
+        deleteRemote.add(mDel);
+        menusDeleteRemote.add(mDel);
 
     }
 
-    private void supprimerRemote() {
-
-    }
-
-    public static void findSourceMenuRemote(Object o) {
+    public static void findSourceMenuRemote(Object o) throws IOException {
 
         JRadioButtonMenuItem btn = (JRadioButtonMenuItem) o;
-
         boolean selectionPresent = menusSelectionRemote.contains(btn);
         boolean deletePresent = menusDeleteRemote.contains(btn);
 
         if (selectionPresent) {
 
+            System.out.println("Interface.findSourceMenuRemote() - selectionPresent = true");
+
         }
 
         if (deletePresent) {
 
+            System.out.println("Interface.findSourceMenuRemote() - deletePresent = true");
             String nom = btn.getText();
             System.out.println("Nom du remote à supprimer: " + nom);
+            int indexASupprimer = menusDeleteRemote.indexOf(btn);
+            System.out.println("Indice du remote à supprimer: " + indexASupprimer);
             initializer.deleteRemote(nom);
+            deleteRemote.remove(btn);
+            menusDeleteRemote.remove(btn);
+
+            JMenuItem btnListeSelection = menusSelectionRemote.get(indexASupprimer);
+            selectionRemote.remove(btnListeSelection);
+            menusSelectionRemote.remove(btnListeSelection);
+
         }
     }
 

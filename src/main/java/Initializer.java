@@ -161,14 +161,21 @@ public class Initializer {
 
         for (int i = 0; i < extraction.length; i++) {
 
+            System.out.println("Valeur extraction " + i + ":" + extraction[i]);
             if (i != indiceASupprimer) {
 
                 if (i != extraction.length - 1) {
 
-                    nouveauNomdeRemote = nouveauNomdeRemote + extraction[i] + ";";
+                    if (!extraction[i].equals("")) {
+
+                        nouveauNomdeRemote = nouveauNomdeRemote + extraction[i] + ";";
+                    }
+
                 } else {
 
-                    nouveauNomdeRemote = nouveauNomdeRemote + extraction[i];
+                    if (!extraction[i].equals("")) {
+                        nouveauNomdeRemote = nouveauNomdeRemote + extraction[i];
+                    }
 
                 }
 

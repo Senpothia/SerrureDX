@@ -851,6 +851,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Choisir"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
+              </AuxValues>
             </Menu>
             <Menu class="javax.swing.JMenu" name="deleteRemote">
               <Properties>
@@ -859,6 +862,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteRemoteActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
+              </AuxValues>
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="addRemote">
               <Properties>
