@@ -178,8 +178,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         menusRemote.add(selectionRemote);
         menusRemote.add(deleteRemote);
 
-        this.getContentPane().setBackground(new Color(128, 193, 255));
-
+        //this.getContentPane().setBackground(new Color(128, 193, 255));
+        this.getContentPane().setBackground(new Color(83, 141, 163));
         List<JRadioButtonMenuItem> listePorts = new ArrayList<JRadioButtonMenuItem>();
 
         List<String> listePortString = connecteur.getListPorts();
@@ -204,27 +204,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         remotes = initialisation.getRemoteNames();
         listerRemotes();
 
-        /*
-        List<String> remotes = initialisation.getRemoteNames();
-
-        for (JMenu mn : menusRemote) {
-
-            for (String r : remotes) {
-
-                JRadioButtonMenuItem m = new JRadioButtonMenuItem(r);
-                groupRemotes.add(m);
-                m.addActionListener(new RemoteSupplier());
-                mn.add(m);
-            }
-
-        }
-        
-         */
         setEnabledMenusSceance(false);
         setEnabledMenusConfiguration();
         setEnabledSelecteurEchantillons(true);
+        setEnabledBordControl(false);
 
-        //  this.setDefaultCloseOperation(this.closeWindow());
     }
 
     /**
@@ -1617,6 +1601,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             stopRequested();
             connecteur.envoyerData(Constants.ORDRE_ARRET);
             setEnabledSelecteurEchantillons(true);
+            setEnabledBordControl(false);
             try {
                 controller.actualiserSceanceRemote(sceance, login);
             } catch (IOException ex) {
@@ -1676,6 +1661,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 console.setForeground(Color.RED);
                 console.setText("Erreur de configuration: sélectionnez les échantillons actifs.");
                 setEnabledSelecteurEchantillons(true);
+                setEnabledBordControl(false);
                 return;
 
             } else {
@@ -1683,6 +1669,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 console.setForeground(Color.RED);
                 console.setText("En attente de démarrage!");
                 setEnabledSelecteurEchantillons(false);
+                setEnabledBordControl(true);
             }
 
         } else {
@@ -2839,6 +2826,26 @@ public class Interface extends javax.swing.JFrame implements Observer {
         selectEch2.setForeground(Color.BLACK);
         selectEch3.setEnabled(actifs);
         selectEch3.setForeground(Color.BLACK);
+
+    }
+
+    void setEnabledBordControl(boolean actifs) {
+
+        setCompteur1.setEnabled(actifs);
+        setCompteur2.setEnabled(actifs);
+        setCompteur3.setEnabled(actifs);
+        set1.setEnabled(actifs);
+        set2.setEnabled(actifs);
+        set3.setEnabled(actifs);
+        reset1.setEnabled(actifs);
+        reset2.setEnabled(actifs);
+        reset3.setEnabled(actifs);
+        pause1.setEnabled(actifs);
+        pause2.setEnabled(actifs);
+        pause3.setEnabled(actifs);
+        arret1.setEnabled(actifs);
+        arret2.setEnabled(actifs);
+        arret3.setEnabled(actifs);
 
     }
 
