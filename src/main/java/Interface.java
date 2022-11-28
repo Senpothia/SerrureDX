@@ -2014,7 +2014,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-
+            montrerError("Vérifiez que le serveur est actif!", "Connexion cloud");
         }
 
         boolean autorisation = false;
@@ -2022,6 +2022,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             autorisation = controller.connexionRemote(login);
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            montrerError("Vérifiez que le serveur est actif!", "Connexion cloud");
         }
         if (autorisation) {
 
@@ -2093,6 +2094,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             updateDisplayInterface(0, sceance);
             loadedSceance = true;
             setEnabledMenusSceance(true);
+            controller.setFormSceance(sceance);
         } catch (IOException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
