@@ -95,7 +95,10 @@ void loop()
 {
 
     lecture();
-    //simulationCycle();
+      if(marche && !pause)
+    {
+        simulationCycle();
+    }
 
 
 }// fin loop
@@ -131,7 +134,7 @@ void lecture()
         delay(1000);
         marche = true;
         pause = false;
-        simulationCycle();
+       // simulationCycle();
         return;
 
     }
@@ -518,16 +521,6 @@ void lecture()
 
     }
 
-
-    if(marche)
-    {
-
-        simulationCycle();
-        return;
-    }
-
-
-
 } //*** Fin lecteur()
 
 
@@ -630,8 +623,7 @@ void transfertActifs()
 void simulationCycle()
 {
 
-    if (!pause || marche)
-    {
+ 
 
         for(int i=0; i<ECHANTILLONS; i++)
         {
@@ -656,33 +648,31 @@ void simulationCycle()
             }
 
         }
-        delay(3000);
+        delay(2000);
         transfertActifs();
-        //Serial.print("Actifs transmis");
+    
         delay(1000);
-        String info = "@TOTAL ECH #";
+        String info = "@TOTAL:#0";
         for(int i=0; i<ECHANTILLONS; i++)
         {
-            info = String(i) + ": "  + String(totaux[i]);
+            info =  info + ":" + String(totaux[i]);
         }
 
         Serial.print(info);
-
-      //  Serial.print("Rapport compteurs transmis");
         delay(1000);
 
-        info = "@ERREUR ECH #";;
+        info = "@ERREURS:#0";
         for(int i=0; i<ECHANTILLONS; i++)
-        {
-            info = String(i) + ": "  + String(erreurs[i]);
+        { 
+            String statut = erreurs[i]? "1":"0";
+            info = info + ":" + statut  ;
         }
 
 
         Serial.print(info);
-       // Serial.print("Rapport erreurs transmis");
         delay(1000);
         Serial.print("@SEQ");
 
-    }
+    
 
 }

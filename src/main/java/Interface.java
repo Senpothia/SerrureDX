@@ -1660,7 +1660,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
 
         if (withoutRemote) {
-
+            
             sceance.setActif1(selectEch1.isSelected());
             sceance.setActif2(selectEch2.isSelected());
             sceance.setActif3(selectEch3.isSelected());
