@@ -83,7 +83,7 @@ public class Constants {
                public static final String CADENCE1 = "W:CADENCE:1";
                public static final String CADENCE2 = "W:CADENCE:2";
                public static final String CADENCE3 = "W:CADENCE:3";
-               public static final String CONFIG = "W:CONFIG";
+               public static final String CONFIG = "W:CONFIG";          // W:CONFIG:0:0:0:1:2 - actif1:actif2:actif3:cadence:mode
                public static final String FERMETURE = "W:FERMER";       // Ordre d'arrêt du programme arduino
 
                public static final String TOTAL = "@TOTAL";             // @TOTAL:#0:111:222:333 remonte la valeur des compteurs. 111, valeur compteur 1, ...Transmis en fin de séquence
@@ -104,8 +104,8 @@ public class Constants {
     
                1- W: envoi config
                2- @: acquittement config @ACQ
-               2a- W: envoi cadence
-               2b- @: acquittement cadence @CAD
+                  W: transfert des compteurs
+                  @: acquittement des compteurs
                3- W: ordre de démarrage
                4- @: envoi totaux
                5- W: acquittement   W:ACQ

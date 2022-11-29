@@ -37,6 +37,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private boolean arret_valide = false;       // le test est arrêté et la séquence/cycle est terminé
     private boolean auto = true;                // le mode de marche: auto ou manuel
     private boolean modification = false;       // indique si une modification de scéance est en cours. Pilote la fonctionnalité du btn de validation du formulaire
+    private boolean startProcess = false;       // indique que la séquence de démarrage est en cours. C'est la phase durant laquelle les données de définition
+    // du test sont transférer à l'arduino
+    private boolean ordreMarcheAcq = false;
+    private boolean startAcq = false;
+    private boolean compteursAcq = false;
+    private boolean actifsAcq = false;
+    private boolean configAcq = false;
     // S'il n'y a pas modification alors il s'agit d'une ouverture (création de scéance)
 
     private boolean[] actifs = {false, false, false};
@@ -1654,7 +1661,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (auto) {
 
             controller.setFormSceance(sceance);
-            int i = envoyerConfiguration();
+            int i = startSequence();
 
             if (i == -1) {
 
@@ -2388,6 +2395,39 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         System.out.println("Interface.traiterRapport");
 
+        if (startProcess) {
+
+            if (rapport.isAcquittement()) {
+
+                if (configAcq) {
+
+                    envoyerActifs();
+                    configAcq = false;
+                    actifsAcq = true;
+                    return;
+                }
+
+                if (actifsAcq) {
+
+                    envoyerCompteurs();
+                    actifsAcq = false;
+                    ordreMarcheAcq = true;
+                    return;
+
+                }
+
+                if (ordreMarcheAcq) {
+
+                    envoyerOrdreMarche();
+                    ordreMarcheAcq = false;
+                    startProcess = false;
+                    return;
+                }
+
+            }
+
+        }
+
         if (rapport.isFermeture()) {
 
             if (loadedSceance) {
@@ -2403,7 +2443,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
             return;
         }
-        if (rapport.isAcquittement()) {
+
+        if (rapport.isAcquittement() && !startProcess) {
 
             startRequested();
             connecteur.envoyerData(Constants.ORDRE_MARCHE);
@@ -2660,15 +2701,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 String ordre = ordresSETS.get(i - 1) + ":" + compteur;
                 System.out.println("Ordre:" + ordre);
                 connecteur.envoyerData(ordre);
+                setCompteurs.get(i - 1).setText("");
 
             } catch (Exception e) {
 
                 montrerError("Vous devez indiquez une valeur numérique!", "Erreur de format");
+                setCompteurs.get(i - 1).setText("");
             }
 
         } catch (Exception e) {
 
             montrerError("Vous devez determiner une valeur", "Défaut de valeur");
+            setCompteurs.get(i - 1).setText("");
         }
 
     }
@@ -2702,57 +2746,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     }
 
-    private int envoyerConfiguration() {
+    private int startSequence() {
 
-        String ordre = Constants.CONFIG;
-        String s;
-
-        for (int i = 0; i < 3; i++) {
-
-            actifs[i] = echantillonsActifs.get(i).isSelected();
-
-            s = actifs[i] ? ":1" : ":0";
-            ordre = ordre + s;
-
-        }
-        if (ordre.equals("W:CONFIG:0:0:0")) {
-
-            montrerError("Vous devez sélectionner les échantillons actifs", "Défaut de configuration");
-            setEnabledSelecteurEchantillons(true);
-            return -1;
-        }
-
-        String cadence = null;
-        if (cad_1_par_2mins.isSelected()) {
-            cadence = ":2";
-        }
-
-        if (cad_1_par_5mins.isSelected()) {
-            cadence = ":3";
-        }
-
-        if (cad_2_par_1min.isSelected()) {
-            cadence = ":1";
-        }
-
-        ordre = ordre + cadence;
-
-        String mode = null;
-
-        if (menuManuel.isSelected()) {
-
-            mode = ":0";
-
-        } else {
-            mode = ":1";
-        }
-
-        ordre = ordre + mode;
-
-        System.out.println("Config: " + ordre);
-        connecteur.envoyerData(ordre);
+        startProcess = true;
+        int i = transfertConfig();
+        configAcq = true;
         return 0;
-
     }
 
     private void fermeture() {
@@ -3064,6 +3063,85 @@ public class Interface extends javax.swing.JFrame implements Observer {
             menusSelectionRemote.remove(btnListeSelection);
 
         }
+    }
+
+    private int transfertConfig() {
+
+        String ordre = Constants.CONFIG;
+        String s;
+
+        for (int i = 0; i < 3; i++) {
+
+            actifs[i] = echantillonsActifs.get(i).isSelected();
+
+            s = actifs[i] ? ":1" : ":0";
+            ordre = ordre + s;
+
+        }
+        if (ordre.equals("W:CONFIG:0:0:0")) {
+
+            montrerError("Vous devez sélectionner les échantillons actifs", "Défaut de configuration");
+            setEnabledSelecteurEchantillons(true);
+            return -1;
+        }
+
+        String cadence = null;
+
+        if (cad_2_par_1min.isSelected()) {
+            cadence = ":1";
+        }
+
+        if (cad_1_par_2mins.isSelected()) {
+            cadence = ":2";
+        }
+
+        if (cad_1_par_5mins.isSelected()) {
+            cadence = ":3";
+        }
+
+        ordre = ordre + cadence;
+
+        String mode = null;
+
+        if (menuManuel.isSelected()) {
+
+            mode = ":0";
+
+        } else {
+            mode = ":1";
+        }
+
+        ordre = ordre + mode;
+
+        System.out.println("Config: " + ordre);
+        connecteur.envoyerData(ordre);
+        return 0;
+
+    }
+
+    private void envoyerCompteurs() {
+
+        String ordre = Constants.TOTAL;
+        ordre = ordre + ":" + sceance.getCompteur1() + ":" + sceance.getCompteur2() + ":" + sceance.getCompteur3();
+        connecteur.envoyerData(ordre);
+
+    }
+
+    private void envoyerActifs() {
+
+        String ordre = Constants.ACTIFS;
+        String act1 = sceance.getActif1() ? "1" : "0";
+        String act2 = sceance.getActif2() ? "1" : "0";
+        String act3 = sceance.getActif3() ? "1" : "0";
+
+        ordre = ordre + ":" + act1 + ":" + act2 + ":" + act3;
+        connecteur.envoyerData(ordre);
+
+    }
+
+    private void envoyerOrdreMarche() {
+
+        connecteur.envoyerData(Constants.ORDRE_MARCHE);
     }
 
 }
