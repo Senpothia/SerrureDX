@@ -118,6 +118,7 @@ void lecture()
         {
 
             Serial.print(String("@:ACQ"));
+            return;
 
         }
 
@@ -131,6 +132,7 @@ void lecture()
         marche = true;
         pause = false;
         simulationCycle();
+        return;
 
     }
 
@@ -141,7 +143,7 @@ void lecture()
         Serial.print(String("@ARRET DU TEST"));
         marche = false;
         pause = false;
-
+         return;
 
     }
 
@@ -151,6 +153,7 @@ void lecture()
         Serial.print(String("@:TEST EN PAUSE"));
         marche = true;
         pause = true;
+         return;
     }
 
     if (reception.startsWith("W:CONFIG:"))    //  Configuration de test
@@ -231,6 +234,7 @@ void lecture()
 
             manuel = false;
         }
+         return;
 
     }
 
@@ -240,6 +244,7 @@ void lecture()
 
         Serial.print(String("@FERMER"));
         marche = false;
+         return;
 
     }
 
@@ -249,6 +254,7 @@ void lecture()
 
         Serial.print(String("@:RESET COMPTEUR ECH1"));
         totaux[0] = 0;
+         return;
 
 
     }
@@ -258,6 +264,7 @@ void lecture()
 
         Serial.print(String("@:RESET COMPTEUR ECH2"));
         totaux[1] = 0;
+         return;
 
     }
 
@@ -266,6 +273,7 @@ void lecture()
 
         Serial.print(String("@:RESET COMPTEUR ECH3"));
         totaux[2] = 0;
+         return;
 
 
     }
@@ -276,6 +284,7 @@ void lecture()
 
         Serial.print(String("@:ARRET ECH 1"));
         stops[0] = 0;
+         return;
 
 
     }
@@ -285,6 +294,7 @@ void lecture()
 
         Serial.print(String("@:ARRET ECH 2"));
         stops[1] = 0;
+         return;
 
     }
 
@@ -293,6 +303,7 @@ void lecture()
 
         Serial.print(String("@:ARRET ECH 3"));
         stops[2] = 0;
+         return;
 
 
     }
@@ -303,6 +314,7 @@ void lecture()
 
         Serial.print(String("@:PAUSE ECH 1"));
         pauses[0] = 0;
+         return;
 
 
     }
@@ -313,6 +325,7 @@ void lecture()
 
         Serial.print(String("@:PAUSE ECH 2"));
         pauses[1] = 0;
+         return;
 
 
     }
@@ -323,6 +336,7 @@ void lecture()
 
         Serial.print(String("@:PAUSE ECH 3"));
         pauses[2] = 0;
+         return;
 
 
     }
@@ -346,6 +360,7 @@ void lecture()
 
         Serial.println("Résultat:");
         Serial.print(ret);
+         return;
 
     }
 
@@ -355,6 +370,7 @@ void lecture()
 
         Serial.print(String("@ACQ"));
         TEMPO = CADENCE1;
+         return;
 
 
     }
@@ -365,6 +381,7 @@ void lecture()
 
         Serial.print(String("@ACQ"));
         TEMPO = CADENCE2;
+         return;
 
     }
 
@@ -373,6 +390,7 @@ void lecture()
 
         Serial.print(String("@ACQ"));
         TEMPO = CADENCE3;
+         return;
 
     }
 
@@ -419,6 +437,7 @@ void lecture()
 
 
         Serial.print(String("@ACQ"));
+         return;
     }
 
     if (reception.startsWith("W:TOTAL:"))    //  Réception des valeurs de compteurs
@@ -488,6 +507,7 @@ void lecture()
         long ret;
         totaux[2] = strtol(arr3, &ptr3, 10);
         Serial.print(String("@ACQ"));
+         return;
         /*
        
         Serial.println(String("-----"));
@@ -503,6 +523,7 @@ void lecture()
     {
 
         simulationCycle();
+        return;
     }
 
 
@@ -622,14 +643,14 @@ void simulationCycle()
                 {
 
                     erreurs[i] = false;
-                    Serial.print("Erreur sur ech: " + String(i));
+                   // Serial.print("Erreur sur ech: " + String(i));
 
                 }
                 else
                 {
 
                     totaux[i]++;
-                    Serial.print("Conforme ech: " + String(i));
+                    //Serial.print("Conforme ech: " + String(i));
 
                 }
             }
@@ -637,7 +658,7 @@ void simulationCycle()
         }
         delay(3000);
         transfertActifs();
-        Serial.print("Actifs transmis");
+        //Serial.print("Actifs transmis");
         delay(1000);
         String info = "@TOTAL ECH #";
         for(int i=0; i<ECHANTILLONS; i++)
@@ -647,7 +668,7 @@ void simulationCycle()
 
         Serial.print(info);
 
-        Serial.print("Rapport compteurs transmis");
+      //  Serial.print("Rapport compteurs transmis");
         delay(1000);
 
         info = "@ERREUR ECH #";;
@@ -658,7 +679,7 @@ void simulationCycle()
 
 
         Serial.print(info);
-        Serial.print("Rapport erreurs transmis");
+       // Serial.print("Rapport erreurs transmis");
         delay(1000);
         Serial.print("@SEQ");
 

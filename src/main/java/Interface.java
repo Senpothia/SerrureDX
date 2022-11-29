@@ -44,8 +44,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private boolean compteursAcq = false;
     private boolean actifsAcq = false;
     private boolean configAcq = false;
-    // S'il n'y a pas modification alors il s'agit d'une ouverture (création de scéance)
+    private boolean demarrageAcq = false;
 
+    // S'il n'y a pas modification alors il s'agit d'une ouverture (création de scéance)
     private boolean[] actifs = {false, false, false};
     private boolean[] erreurs = {false, false, false};
     private long[] totaux = {0, 0, 0};
@@ -1658,6 +1659,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
             return;
         }
 
+        if (withoutRemote) {
+
+            sceance.setActif1(selectEch1.isSelected());
+            sceance.setActif2(selectEch2.isSelected());
+            sceance.setActif3(selectEch3.isSelected());
+           
+        }
+
         if (auto) {
 
             controller.setFormSceance(sceance);
@@ -2418,8 +2427,17 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
                 if (ordreMarcheAcq) {
 
+                    startRequested();
                     envoyerOrdreMarche();
                     ordreMarcheAcq = false;
+                    demarrageAcq = true;
+                    //startProcess = false;
+                    return;
+                }
+
+                if (demarrageAcq) {
+
+                    demarrageAcq = false;
                     startProcess = false;
                     return;
                 }
@@ -2444,13 +2462,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
             return;
         }
 
+        /*
         if (rapport.isAcquittement() && !startProcess) {
 
             startRequested();
             connecteur.envoyerData(Constants.ORDRE_MARCHE);
             return;
         }
-
+         */
         List<String> totaux = new ArrayList<>();
         totaux.add(Long.toString(rapport.getFormSeance().getCompteur1()));
         // System.out.println("total1 côté parser interface: " + totaux.get(0));
@@ -3139,6 +3158,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         String act3 = sceance.getActif3() ? "1" : "0";
 
         ordre = ordre + ":" + act1 + ":" + act2 + ":" + act3;
+        System.out.println("liste des actifs: " + ordre);
         connecteur.envoyerData(ordre);
 
         System.out.println("Liste des actifs envoyés");
