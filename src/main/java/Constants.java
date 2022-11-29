@@ -33,6 +33,9 @@ public class Constants {
     public static final String SET2 = "W:SET:2";
     public static final String SET3 = "W:SET:3";
 
+    public static final String ACTIFS_UI = "W:ACTIFS";
+    public static final String TOTAL_UI = "W:TOTAL";
+
     public static final String FICHIER = "W:FICHIER";
     public static final String CADENCE1 = "W:CADENCE:1";
     public static final String CADENCE2 = "W:CADENCE:2";

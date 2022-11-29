@@ -3124,15 +3124,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void envoyerCompteurs() {
 
-        String ordre = Constants.TOTAL;
+        String ordre = Constants.TOTAL_UI;
         ordre = ordre + ":" + sceance.getCompteur1() + ":" + sceance.getCompteur2() + ":" + sceance.getCompteur3();
         connecteur.envoyerData(ordre);
+        System.out.println("Valeurs de compteurs envoyés");
 
     }
 
     private void envoyerActifs() {
 
-        String ordre = Constants.ACTIFS;
+        String ordre = Constants.ACTIFS_UI;
         String act1 = sceance.getActif1() ? "1" : "0";
         String act2 = sceance.getActif2() ? "1" : "0";
         String act3 = sceance.getActif3() ? "1" : "0";
@@ -3140,11 +3141,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
         ordre = ordre + ":" + act1 + ":" + act2 + ":" + act3;
         connecteur.envoyerData(ordre);
 
+        System.out.println("Liste des actifs envoyés");
+
     }
 
     private void envoyerOrdreMarche() {
 
         connecteur.envoyerData(Constants.ORDRE_MARCHE);
+        System.out.println("Ordre de marche envoyé");
     }
 
 }

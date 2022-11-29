@@ -95,7 +95,7 @@ void loop()
 {
 
     lecture();
-    simulationCycle();
+    //simulationCycle();
 
 
 }// fin loop
@@ -117,16 +117,17 @@ void lecture()
         if (!pause)
         {
 
-            Serial.print(String("@:LANCEMENT TEST"));
-            
+            Serial.print(String("@:ACQ"));
+
         }
 
         else
         {
 
-            Serial.print(String("@:SORTIE DE PAUSE"));
+            Serial.print(String("@:ACQ"));
         }
 
+        delay(1000);
         marche = true;
         pause = false;
         simulationCycle();
@@ -156,7 +157,7 @@ void lecture()
     {
 
 
-        Serial.print(String("@:CONFIGURATION OK"));
+        // Serial.print(String("@:CONFIGURATION OK"));
         Serial.print(String("@ACQ"));
         char actEch1 = reception.charAt(9);
         char actEch2 = reception.charAt(11);
@@ -199,29 +200,34 @@ void lecture()
         }
 
 
-          if(cadence == '1'){
+        if(cadence == '1')
+        {
 
             TEMPO = CADENCE1;
         }
 
 
-          if(cadence == '2'){
+        if(cadence == '2')
+        {
 
             TEMPO = CADENCE2;
         }
 
 
-          if(cadence == '3'){
+        if(cadence == '3')
+        {
 
             TEMPO = CADENCE3;
         }
 
-          if(modeMarche == '0'){
+        if(modeMarche == '0')
+        {
 
             manuel = true;
         }
 
-         if(modeMarche == '1'){
+        if(modeMarche == '1')
+        {
 
             manuel = false;
         }
@@ -232,7 +238,8 @@ void lecture()
     {
 
 
-        Serial.print(String("@FERMETURE"));
+        Serial.print(String("@FERMER"));
+        marche = false;
 
     }
 
@@ -353,8 +360,6 @@ void lecture()
     }
 
 
-
-
     if (reception == ("W:CADENCE:2"))    //  Réception cadence 2
     {
 
@@ -369,6 +374,135 @@ void lecture()
         Serial.print(String("@ACQ"));
         TEMPO = CADENCE3;
 
+    }
+
+    if (reception.startsWith("W:ACTIFS:"))    //  Réception liste des actifs
+    {
+        char actEch1 = reception.charAt(9);
+        char actEch2 = reception.charAt(11);
+        char actEch3 = reception.charAt(13);
+
+        if(actEch1 == '0')
+        {
+
+            actifs[0] = false;
+        }
+
+        if(actEch1 == '1')
+        {
+
+            actifs[0] = true;
+        }
+
+        if(actEch2 == '0')
+        {
+
+            actifs[1] = false;
+        }
+
+        if(actEch2 == '1')
+        {
+
+            actifs[1] = true;
+        }
+        if(actEch3 == '0')
+        {
+
+            actifs[2] = false;
+        }
+
+        if(actEch3 == '1')
+        {
+
+            actifs[2] = true;
+        }
+
+
+        Serial.print(String("@ACQ"));
+    }
+
+    if (reception.startsWith("W:TOTAL:"))    //  Réception des valeurs de compteurs
+    {
+        //Serial.println("total reçu");
+        String valeurs = reception.substring(8);
+        int taille = valeurs.length();
+        int indices[2] = {0,0};
+        String cpt1 = "";
+        String cpt2 = "";
+        String cpt3 = "";
+        int detected = 0;
+        int indice = 0;
+
+
+        while(detected<2)
+        {
+
+            char c = valeurs.charAt(indice);
+            if(c != ':')
+            {
+
+                indice++;
+
+            }
+            else
+            {
+
+                indices[detected] = indice;
+                detected++;
+                indice++;
+
+            }
+        }
+
+        /*
+        Serial.println(valeurs);
+        Serial.println(indices[0]);
+        Serial.println(indices[1]);
+        */
+        
+        cpt1 = valeurs.substring(0,indices[0]);
+        cpt2 = valeurs.substring(indices[0]+1, indices[1]);
+        cpt3 = valeurs.substring(indices[1]+1);
+
+        /*
+        Serial.println(cpt1);
+        Serial.println(cpt2);
+        Serial.println(cpt3);
+        */
+        
+        char arr1[cpt1.length()+1];
+        strcpy(arr1, cpt1.c_str());
+        char *ptr1;
+        long ret1;
+        totaux[0] = strtol(arr1, &ptr1, 10);
+
+        char arr2[cpt2.length()+1];
+        strcpy(arr2, cpt2.c_str());
+        char *ptr2;
+        long ret2;
+        totaux[1] = strtol(arr2, &ptr2, 10);
+
+        char arr3[cpt3.length()+1];
+        strcpy(arr3, cpt3.c_str());
+        char *ptr3;
+        long ret;
+        totaux[2] = strtol(arr3, &ptr3, 10);
+        Serial.print(String("@ACQ"));
+        /*
+       
+        Serial.println(String("-----"));
+        Serial.println(String(totaux[0]));
+        Serial.println(String(totaux[1]));
+        Serial.println(String(totaux[2]));
+        */
+
+    }
+
+
+    if(marche)
+    {
+
+        simulationCycle();
     }
 
 
@@ -475,7 +609,7 @@ void transfertActifs()
 void simulationCycle()
 {
 
-    if (!pause || !marche)
+    if (!pause || marche)
     {
 
         for(int i=0; i<ECHANTILLONS; i++)
@@ -484,43 +618,50 @@ void simulationCycle()
             if (!erreurs[i] && actifs[i])
             {
                 int r = random(0,20);
-                if(r<3 || r>17){
-                  
-                  erreurs[i] = false;
-                  Serial.println("Erreur sur ech: " + String(i));
-                  
-                  }else{
+                if(r<3 || r>17)
+                {
+
+                    erreurs[i] = false;
+                    Serial.print("Erreur sur ech: " + String(i));
+
+                }
+                else
+                {
 
                     totaux[i]++;
-                       Serial.println("Conforme ech: " + String(i));
-                    
-                    }
+                    Serial.print("Conforme ech: " + String(i));
+
+                }
             }
 
         }
         delay(3000);
         transfertActifs();
-        Serial.println("Actifs transmis");
+        Serial.print("Actifs transmis");
         delay(1000);
-         String info = "@TOTAL ECH #";
-          for(int i=0; i<ECHANTILLONS; i++)
-        { info = String(i) + ": "  + String(totaux[i]);}
+        String info = "@TOTAL ECH #";
+        for(int i=0; i<ECHANTILLONS; i++)
+        {
+            info = String(i) + ": "  + String(totaux[i]);
+        }
 
         Serial.print(info);
-        
-        Serial.println("Rapport compteurs transmis");
+
+        Serial.print("Rapport compteurs transmis");
         delay(1000);
 
-         info = "@ERREUR ECH #";;
-          for(int i=0; i<ECHANTILLONS; i++)
-        { info = String(i) + ": "  + String(erreurs[i]);}
-      
-      
+        info = "@ERREUR ECH #";;
+        for(int i=0; i<ECHANTILLONS; i++)
+        {
+            info = String(i) + ": "  + String(erreurs[i]);
+        }
+
+
         Serial.print(info);
-        Serial.println("Rapport erreurs transmis");
+        Serial.print("Rapport erreurs transmis");
         delay(1000);
         Serial.print("@SEQ");
-        
+
     }
 
 }
