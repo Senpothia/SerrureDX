@@ -1668,7 +1668,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 console.setForeground(Color.RED);
                 console.setText("Erreur de configuration: sélectionnez les échantillons actifs.");
                 setEnabledSelecteurEchantillons(true);
-                setEnabledBordControl(false);
+                setEnabledBordControl(true);
                 return;
 
             } else {
@@ -2750,6 +2750,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         startProcess = true;
         int i = transfertConfig();
+        if (i == -1) {
+            return -1;
+        }
         configAcq = true;
         return 0;
     }
