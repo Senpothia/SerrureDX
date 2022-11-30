@@ -45,6 +45,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private boolean actifsAcq = false;
     private boolean configAcq = false;
     private boolean demarrageAcq = false;
+    private boolean testTermine = false;
 
     // S'il n'y a pas modification alors il s'agit d'une ouverture (création de scéance)
     private boolean[] actifs = {false, false, false};
@@ -1608,7 +1609,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
 
-        if (auto) {
+        if (auto && !testTermine) {
 
             stopRequested();
             connecteur.envoyerData(Constants.ORDRE_ARRET);
@@ -1621,7 +1622,31 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
             controller.enregistrerSceanceLocal(sceance);
 
-        } else {
+        }
+
+        if (!auto && !testTermine) {
+
+            // TODO mode manuel
+        }
+
+        if (testTermine) {
+
+            int result = JOptionPane.showConfirmDialog(this, "Voulez-vous lancer une nouvelle scéance?", "Remise à zéro des données",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (result == JOptionPane.YES_OPTION) {
+
+                resetStateMachine();
+                resetTestResults();
+                connecteur.resetTestBoard();
+                newTestRequested();
+
+            } else if (result == JOptionPane.NO_OPTION) {
+
+                return;
+            }
+
         }
 
 
@@ -2468,16 +2493,17 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (rapport.isSauvegarde()) {
 
             controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
-          //  return;
+            //  return;
         }
-        
-        if(rapport.isFin()){
-            
+
+        if (rapport.isFin()) {
+
             controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
-           // startWaiting(true);
-            resetStateMachine();
-            resetTestResults();
-        //    return;
+            testTermine = true;
+            // startWaiting(true);
+            // resetStateMachine();
+            // resetTestResults();
+            //    return;
         }
 
         /*
@@ -2609,6 +2635,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
         test_on = false;
         test_pause = false;
         arret_valide = false;
+        testTermine = false;
+        withoutRemote = false;
+        loadedSceance = false;
 
     }
 
@@ -3195,10 +3224,40 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }
 
     private void resetTestResults() {
-       
+
         sceance.reset();
         controller.setFormSceance(sceance);
+
+        for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
+
+            actifs[i] = false;
+            erreurs[i] = false;
+            totaux[i] = 0;
+        }
+
+    }
+
+    private void newTestRequested() {
+
+        startWaiting(true);
+        setEnabledSelecteurEchantillons(true);
+        setEnabledCounterSetter(true);
+        nomDeFichier = "";
+        repertoire = null;
+        setCompteur1.setText("0");
+        setCompteur2.setText("0");
+        setCompteur3.setText("0");
+        for (int i = 0; i < Constants.NBRE_ECHANTILLONS; i++) {
+
+            JLabel lab2 = statutsEchs.get(i);
+            lab2.setForeground(Color.GRAY);
+            lab2.setBackground(Color.GRAY);
+
+        }
         
+        voyant.setBackground(Color.RED);
+        voyant.setForeground(Color.red);
+
     }
 
 }

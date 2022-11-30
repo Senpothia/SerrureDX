@@ -212,9 +212,13 @@ public class Connecteur extends Observable {
         this.notifyObservers(this.getInputLine());
 
     }
-
-    void connexionRemote() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+   
+    
+    void resetTestBoard() {
+        
+        envoyerData(Constants.NEW);
+        
     }
 
    

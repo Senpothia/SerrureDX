@@ -44,6 +44,7 @@ public class Constants {
     public static final String FERMETURE = "W:FERMER";
     public static final String ACQ_SEQUENCE = "W:SEQ";
     public static final String ACQ_SIMPLE = "W:ACQ";
+    public static final String NEW = "W:NEW";            // Initialisation arduino pour nouvelle scéance de test. Mise à jour des paramètres de test: erreurs, compteurs...
 
     public static final String TOTAL = "@TOTAL";
     public static final String ACTIFS = "@ACTIFS";
@@ -56,6 +57,7 @@ public class Constants {
     public static final String FIN = "@FIN";
     public static final String ACQUITTEMENT = "@ACQ";  // ex: utilisé pour attester de la reception de configuration
     public static final String ACQ_CAD = "@CAD";
+
 
     /*        
                PROTOCOLE RS-232

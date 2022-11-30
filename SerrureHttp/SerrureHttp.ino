@@ -118,6 +118,25 @@ void lecture()
     reception = Serial.readString();
     reception.trim();
 
+     if (reception == "W:NEW"){
+      
+       for (int i = 0; i < ECHANTILLONS; i++) {
+
+            actifs[i] = false;
+            erreurs[i] = false;
+            totaux[i] = 0;
+            marche = false;   // Indique si le test est en cours (marche = true) ou s'il est arrêté
+            pause = false;    // Flag état de pause
+            manuel = false;      // Mode de marche: automatique ou manuel
+            fin = false;      // indique si tous les échantillons sont en défaut
+        }
+
+        return;
+      }
+
+
+     
+
     if (reception == "W:0")    // Demande lancement de test - ordre de démarrage
     {
       /*
@@ -131,6 +150,11 @@ void lecture()
         marche = true;
         pause = false;
         fin = false;
+        for(int i=0; i<ECHANTILLONS; i++){
+
+          erreurs[i] = false;
+          
+          }
         Serial.print(String("@:ACQ"));
       //  Serial.println(String("Démarrage"));
         delay(500);
@@ -164,6 +188,13 @@ void lecture()
       
        // Ex de trâme: W:CONFIG:1:1:1:1:1
         // Serial.print(String("@:CONFIGURATION OK"));
+
+         for(int i=0; i<ECHANTILLONS; i++){
+
+          erreurs[i] = false;
+          
+          }
+          
         Serial.print(String("@ACQ"));
         char actEch1 = reception.charAt(9);
         char actEch2 = reception.charAt(11);
@@ -524,9 +555,6 @@ void lecture()
         */
         Serial.print(String("@ACQ"));
         return;
-        
-       
-      
         
 
     }
