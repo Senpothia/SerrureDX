@@ -563,103 +563,8 @@ void lecture()
 
 
 
-//******************************************************************************************
 
-
-
-
-void cycle()
-{
-    
-      if (!pause || !marche)
-    {
-
-        for(int i=0; i<ECHANTILLONS; i++)
-        {
-
-            if (!erreurs[i] && actifs[i])
-            {
-
-                digitalWrite(relais[i], HIGH);
-
-                delay(500);
-                digitalWrite(relais[i], LOW);
-                delay(2000);
-                e1 = digitalRead(sensors[i]);    // Lecture entrée I1
-                if (e1 != LOW)     // si erreur sur sensor
-                {
-
-                    erreurs[i] = true;
-                    actifs[i] = false;
-
-                    Serial.print("@:ERREUR:SR:" + String(i+1));
-
-                    sonorite = true;
-
-                }
-
-                e2 = digitalRead(contacts[i]);    // Lecture entrée I2
-
-                if (e2 != LOW)      // si erreur sur contact porte
-                {
-
-                    erreurs[i] = true;
-                    actifs[i] = false;
-
-                    Serial.print("@:ERREUR:CP:" + String(i+1));
-                    //start = false;
-                    sonorite = true;
-
-                }
-                delay(5000);
-
-                totaux[i]++;
-                String info = "@TOTAL ECH #" + String(i+1) + ": "  + String(totaux[i]);
-                Serial.print(info);
-            }
-
-        }
-        delay(3000);
-        transfertActifs();
-        Serial.print("@SEQ");
-        delay(1000);
-    }
-    
-    
-  
-  
-
-}
-
-//********************************************************************************
-
-void transfertActifs()
-{
-
-    String listeActifs ="@ACTIFS";
-
-    for (int i=0; i<ECHANTILLONS; i++)
-    {
-
-        if (actifs[i])
-        {
-
-            listeActifs = listeActifs + ":1";
-
-        }
-        else
-        {
-
-            listeActifs = listeActifs + ":0";
-
-        }
-
-    }
-
-    Serial.print(listeActifs);
-    delay(1000);
-
-}
+//**********************************************************************************************************************
 
 
 void simulationCycle()
@@ -713,9 +618,7 @@ void simulationCycle()
         }
         Serial.print(info);
         delay(2000);
-        
-      //  transfertActifs();
-        
+             
         info = "@TOTAL:#0";
         for(int i=0; i<ECHANTILLONS; i++)
         {
@@ -733,9 +636,97 @@ void simulationCycle()
       delay(2000);
       Serial.print("@FIN");
 
-      
       }
+}
 
+//**********************************************************************************************************************
 
-    
+void cycle()
+{    
+    fin = erreurs[0] && erreurs[1] && erreurs[2];
+    if(!fin){
+        for(int i=0; i<ECHANTILLONS; i++)
+        {
+
+            if (!erreurs[i] && actifs[i])
+            {
+              
+                digitalWrite(relais[i], HIGH);
+
+                delay(500);
+                digitalWrite(relais[i], LOW);
+                delay(2000);
+                e1 = digitalRead(sensors[i]);    // Lecture entrée I1
+                if (e1 != LOW)     // si erreur sur sensor
+                {
+
+                    erreurs[i] = true;
+                    actifs[i] = false;
+
+                    Serial.print("@:ERREUR:SR:" + String(i+1));
+
+                    sonorite = true;
+
+                }
+
+                e2 = digitalRead(contacts[i]);    // Lecture entrée I2
+
+                if (e2 != LOW)      // si erreur sur contact porte
+                {
+
+                    erreurs[i] = true;
+                    actifs[i] = false;
+
+                    Serial.print("@:ERREUR:CP:" + String(i+1));
+                    //start = false;
+                    sonorite = true;
+
+                }
+                delay(5000);
+
+                totaux[i]++;
+                String info = "@TOTAL ECH #" + String(i+1) + ": "  + String(totaux[i]);
+                Serial.print(info);
+             
+            }
+
+        }
+      
+        delay(500);
+
+        String info = "@ERREURS:#0";
+        for(int i=0; i<ECHANTILLONS; i++)
+        { 
+            String statut;
+            if(erreurs[i]){
+
+              statut = "1";
+              }else{
+                
+                  statut = "0";
+                
+                }
+            info = info + ":" + statut  ;
+        }
+        Serial.print(info);
+        delay(2000);
+             
+        info = "@TOTAL:#0";
+        for(int i=0; i<ECHANTILLONS; i++)
+        {
+            info =  info + ":" + String(totaux[i]);
+        }
+
+        Serial.print(info);
+        delay(2000);
+        Serial.print("@SEQ");
+
+          }else{
+
+      marche = false;
+      Serial.print("@SEQ");
+      delay(2000);
+      Serial.print("@FIN");
+
+      }
 }
