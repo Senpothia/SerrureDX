@@ -661,11 +661,7 @@ void cycle()
                 {
 
                     erreurs[i] = true;
-                    actifs[i] = false;
-
-                    Serial.print("@:ERREUR:SR:" + String(i+1));
-
-                    sonorite = true;
+                  
 
                 }
 
@@ -675,18 +671,11 @@ void cycle()
                 {
 
                     erreurs[i] = true;
-                    actifs[i] = false;
-
-                    Serial.print("@:ERREUR:CP:" + String(i+1));
-                    //start = false;
-                    sonorite = true;
-
+                
                 }
-                delay(5000);
+                delay(2000);
 
                 totaux[i]++;
-                String info = "@TOTAL ECH #" + String(i+1) + ": "  + String(totaux[i]);
-                Serial.print(info);
              
             }
 
