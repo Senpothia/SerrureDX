@@ -2468,16 +2468,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (rapport.isSauvegarde()) {
 
             controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
-            return;
+          //  return;
         }
         
         if(rapport.isFin()){
             
             controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
-            startWaiting(true);
+           // startWaiting(true);
             resetStateMachine();
             resetTestResults();
-            return;
+        //    return;
         }
 
         /*
@@ -3167,7 +3167,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void envoyerCompteurs() {
 
         String ordre = Constants.TOTAL_UI;
-        ordre = ordre + ":" + sceance.getCompteur1() + ":" + sceance.getCompteur2() + ":" + sceance.getCompteur3();
+        ordre = ordre + sceance.getCompteur1() + ":" + sceance.getCompteur2() + ":" + sceance.getCompteur3();
         connecteur.envoyerData(ordre);
         System.out.println("Valeurs de compteurs envoyés");
 

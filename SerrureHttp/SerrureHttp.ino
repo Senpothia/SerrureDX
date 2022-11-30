@@ -88,7 +88,7 @@ void setup()
 // Initialisation du port série
 
     Serial.begin(9600);
-    randomSeed(12333);
+    randomSeed(analogRead(0));
 
 }
 
@@ -130,6 +130,7 @@ void lecture()
         digitalWrite(LED_BUILTIN, HIGH);
         marche = true;
         pause = false;
+        fin = false;
         Serial.print(String("@:ACQ"));
       //  Serial.println(String("Démarrage"));
         delay(500);
@@ -350,7 +351,7 @@ void lecture()
         // Exemple de trâme: W:SET:1:1233 fixe la valeur du compteur 1 à 1233
         char num = reception.charAt(6);
         String compteur = reception.substring(8);
-        Serial.println(compteur);
+        Serial.print(compteur);
         int numEch = (int)(num);
 
         char arr[compteur.length() + 1];
@@ -363,7 +364,7 @@ void lecture()
 
         totaux[numEch] = ret;
 
-        Serial.println("Résultat:");
+        Serial.print("Résultat:");
         Serial.print(ret);
         return;
 
@@ -447,10 +448,10 @@ void lecture()
         return;
     }
 
-    if (reception.startsWith("W:TOTAL:"))    //  Réception des valeurs de compteurs
+    if (reception.startsWith("W:TOTAL:#0"))    //  Réception des valeurs de compteurs
     {
-        //Serial.println("total reçu");
-        String valeurs = reception.substring(8);
+       // Serial.println("total reçu");
+        String valeurs = reception.substring(11);
         int taille = valeurs.length();
         int indices[2] = {0,0};
         String cpt1 = "";
@@ -479,9 +480,9 @@ void lecture()
 
             }
         }
-
         /*
-        Serial.println(valeurs);
+        Serial.println("indices");
+        Serial.println("valeurs: " + valeurs);
         Serial.println(indices[0]);
         Serial.println(indices[1]);
         */
@@ -491,6 +492,7 @@ void lecture()
         cpt3 = valeurs.substring(indices[1]+1);
 
         /*
+        Serial.println("substrings");
         Serial.println(cpt1);
         Serial.println(cpt2);
         Serial.println(cpt3);
@@ -511,17 +513,21 @@ void lecture()
         char arr3[cpt3.length()+1];
         strcpy(arr3, cpt3.c_str());
         char *ptr3;
-        long ret;
+        long ret3;
         totaux[2] = strtol(arr3, &ptr3, 10);
-        Serial.print(String("@ACQ"));
-         return;
+
         /*
-       
         Serial.println(String("-----"));
         Serial.println(String(totaux[0]));
         Serial.println(String(totaux[1]));
         Serial.println(String(totaux[2]));
         */
+        Serial.print(String("@ACQ"));
+        return;
+        
+       
+      
+        
 
     }
 
@@ -642,19 +648,20 @@ void simulationCycle()
                 if(r<3 || r>27)
                 {
 
-                    erreurs[i] = true;
-                   // Serial.println("r= " + String(r));
-                   // Serial.println("Erreur sur ech: " + String(i));
+                      erreurs[i] = true;
+                  //  Serial.println("r=" + String(r));
+                  //  Serial.println("Erreur sur ech: " + String(i+1));
 
                 }
                 else
                 {
-                    erreurs[i] = false;
-                    totaux[i] = totaux[i]+ 1L;
-                 //   Serial.println("r= " + String(r));
-                 //   Serial.println("Conforme ech: " + String(i));
-                 //   Serial.println("Total ech: " + String(i) + ":" + String(totaux[i]));
-
+                     erreurs[i] = false;
+                     totaux[i] = totaux[i]+ 1L;
+                    /*
+                    Serial.println("r= " + String(r));
+                    Serial.println("Conforme ech: " + String(i+1));
+                    Serial.println("Total ech" + String(i+1) + ":" + String(totaux[i]));
+                    */
                 }
             }
 
@@ -677,7 +684,7 @@ void simulationCycle()
             info = info + ":" + statut  ;
         }
         Serial.print(info);
-        delay(1000);
+        delay(2000);
         
       //  transfertActifs();
         
@@ -695,7 +702,7 @@ void simulationCycle()
 
       marche = false;
       Serial.print("@SEQ");
-      delay(1500);
+      delay(2000);
       Serial.print("@FIN");
 
       
