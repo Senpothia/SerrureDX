@@ -3257,7 +3257,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
         
         voyant.setBackground(Color.RED);
         voyant.setForeground(Color.red);
-
+        
+        for(JLabel c: compteurs){
+            
+            c.setText("0");
+            c.setForeground(Color.GRAY);
+            c.setBackground(Color.GRAY);
+        }
     }
 
 }
