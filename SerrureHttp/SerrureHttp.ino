@@ -38,11 +38,12 @@ boolean sonorite;         // Flag de validation du buzzer
 boolean marche = false;   // Indique si le test est en cours (marche = true) ou s'il est arrêté
 boolean pause = false;    // Flag état de pause
 boolean manuel = false;      // Mode de marche: automatique ou manuel
+boolean fin = false;      // indique si tous les échantillons sont en défaut
 
 // Variables de test
 
 int ECHANTILLONS = 3;      // Nombre d'emplacement d'échantillon sur le banc de test
-int TEMPO = 10000;         // Varialble en fonction de la cadence
+int TEMPO = 10000;         // Variable en fonction de la cadence
 int CADENCE1 = 1000;
 int CADENCE2 = 1500;
 int CADENCE3 = 2000;
@@ -71,6 +72,8 @@ void setup()
     pinMode(R6, OUTPUT);
     pinMode(R7, OUTPUT);
     pinMode(R8, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
+
 
 
     pinMode(I1, INPUT);
@@ -117,23 +120,12 @@ void lecture()
     if (reception == "W:0")    // Demande lancement de test - ordre de démarrage
     {
 
-        if (!pause)
-        {
-
-            Serial.print(String("@:ACQ"));
-            return;
-
-        }
-
-        else
-        {
-
-            Serial.print(String("@:ACQ"));
-        }
-
         delay(1000);
+        digitalWrite(LED_BUILTIN, HIGH);
         marche = true;
         pause = false;
+        Serial.print(String("@:ACQ"));
+        delay(500);
        // simulationCycle();
         return;
 
@@ -146,7 +138,7 @@ void lecture()
         Serial.print(String("@ARRET DU TEST"));
         marche = false;
         pause = false;
-         return;
+        return;
 
     }
 
@@ -156,13 +148,13 @@ void lecture()
         Serial.print(String("@:TEST EN PAUSE"));
         marche = true;
         pause = true;
-         return;
+        return;
     }
 
     if (reception.startsWith("W:CONFIG:"))    //  Configuration de test
     {
-
-
+      
+       // Ex de trâme: W:CONFIG:1:1:1:1:1
         // Serial.print(String("@:CONFIGURATION OK"));
         Serial.print(String("@ACQ"));
         char actEch1 = reception.charAt(9);
@@ -247,7 +239,9 @@ void lecture()
 
         Serial.print(String("@FERMER"));
         marche = false;
-         return;
+        pause = false;
+        digitalWrite(LED_BUILTIN, LOW);
+        return;
 
     }
 
@@ -257,7 +251,7 @@ void lecture()
 
         Serial.print(String("@:RESET COMPTEUR ECH1"));
         totaux[0] = 0;
-         return;
+        return;
 
 
     }
@@ -267,7 +261,7 @@ void lecture()
 
         Serial.print(String("@:RESET COMPTEUR ECH2"));
         totaux[1] = 0;
-         return;
+        return;
 
     }
 
@@ -276,7 +270,7 @@ void lecture()
 
         Serial.print(String("@:RESET COMPTEUR ECH3"));
         totaux[2] = 0;
-         return;
+        return;
 
 
     }
@@ -287,7 +281,7 @@ void lecture()
 
         Serial.print(String("@:ARRET ECH 1"));
         stops[0] = 0;
-         return;
+        return;
 
 
     }
@@ -297,7 +291,7 @@ void lecture()
 
         Serial.print(String("@:ARRET ECH 2"));
         stops[1] = 0;
-         return;
+        return;
 
     }
 
@@ -306,7 +300,7 @@ void lecture()
 
         Serial.print(String("@:ARRET ECH 3"));
         stops[2] = 0;
-         return;
+        return;
 
 
     }
@@ -317,7 +311,7 @@ void lecture()
 
         Serial.print(String("@:PAUSE ECH 1"));
         pauses[0] = 0;
-         return;
+        return;
 
 
     }
@@ -328,7 +322,7 @@ void lecture()
 
         Serial.print(String("@:PAUSE ECH 2"));
         pauses[1] = 0;
-         return;
+        return;
 
 
     }
@@ -339,13 +333,14 @@ void lecture()
 
         Serial.print(String("@:PAUSE ECH 3"));
         pauses[2] = 0;
-         return;
+        return;
 
 
     }
 
     if (reception.startsWith("W:SET:"))    //  Réinitialisation compteur ech
     {
+        // Exemple de trâme: W:SET:1:1233 fixe la valeur du compteur 1 à 1233
         char num = reception.charAt(6);
         String compteur = reception.substring(8);
         Serial.println(compteur);
@@ -363,7 +358,7 @@ void lecture()
 
         Serial.println("Résultat:");
         Serial.print(ret);
-         return;
+        return;
 
     }
 
@@ -373,7 +368,7 @@ void lecture()
 
         Serial.print(String("@ACQ"));
         TEMPO = CADENCE1;
-         return;
+        return;
 
 
     }
@@ -384,7 +379,7 @@ void lecture()
 
         Serial.print(String("@ACQ"));
         TEMPO = CADENCE2;
-         return;
+        return;
 
     }
 
@@ -393,12 +388,14 @@ void lecture()
 
         Serial.print(String("@ACQ"));
         TEMPO = CADENCE3;
-         return;
+        return;
 
     }
 
     if (reception.startsWith("W:ACTIFS:"))    //  Réception liste des actifs
-    {
+    {   
+        // Exemple de trâme: W:ACTIFS:1:0:1
+        
         char actEch1 = reception.charAt(9);
         char actEch2 = reception.charAt(11);
         char actEch3 = reception.charAt(13);
@@ -440,7 +437,7 @@ void lecture()
 
 
         Serial.print(String("@ACQ"));
-         return;
+        return;
     }
 
     if (reception.startsWith("W:TOTAL:"))    //  Réception des valeurs de compteurs
@@ -533,7 +530,11 @@ void lecture()
 void cycle()
 {
 
-    if (!pause || !marche)
+
+    
+    
+    
+      if (!pause || !marche)
     {
 
         for(int i=0; i<ECHANTILLONS; i++)
@@ -586,6 +587,10 @@ void cycle()
         Serial.print("@SEQ");
         delay(1000);
     }
+    
+    
+  
+  
 
 }
 
@@ -615,16 +620,15 @@ void transfertActifs()
     }
 
     Serial.print(listeActifs);
-    delay(5000);
+    delay(1000);
 
 }
 
 
 void simulationCycle()
-{
-
- 
-
+{    
+    fin = erreurs[0] && erreurs[1] && erreurs[2];
+    if(!fin){
         for(int i=0; i<ECHANTILLONS; i++)
         {
 
@@ -634,13 +638,13 @@ void simulationCycle()
                 if(r<3 || r>17)
                 {
 
-                    erreurs[i] = false;
+                    erreurs[i] = true;
                    // Serial.print("Erreur sur ech: " + String(i));
 
                 }
                 else
                 {
-
+                    erreurs[i] = true;
                     totaux[i]++;
                     //Serial.print("Conforme ech: " + String(i));
 
@@ -648,31 +652,39 @@ void simulationCycle()
             }
 
         }
-        delay(2000);
-        transfertActifs();
-    
+      
+        delay(500);
+
+        String info = "@ERREURS:#0";
+        for(int i=0; i<ECHANTILLONS; i++)
+        { 
+            String statut = erreurs[i]? "1" : "0";
+            info = info + ":" + statut  ;
+        }
+        Serial.print(info);
         delay(1000);
-        String info = "@TOTAL:#0";
+        
+      //  transfertActifs();
+        
+        info = "@TOTAL:#0";
         for(int i=0; i<ECHANTILLONS; i++)
         {
             info =  info + ":" + String(totaux[i]);
         }
 
         Serial.print(info);
-        delay(1000);
-
-        info = "@ERREURS:#0";
-        for(int i=0; i<ECHANTILLONS; i++)
-        { 
-            String statut = erreurs[i]? "1":"0";
-            info = info + ":" + statut  ;
-        }
-
-
-        Serial.print(info);
+        
         delay(1000);
         Serial.print("@SEQ");
 
-    
+          }else{
 
+      marche = false;
+      Serial.print("@SEQ");
+
+      
+      }
+
+
+    
 }
