@@ -2470,6 +2470,15 @@ public class Interface extends javax.swing.JFrame implements Observer {
             controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
             return;
         }
+        
+        if(rapport.isFin()){
+            
+            controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
+            startWaiting(true);
+            resetStateMachine();
+            resetTestResults();
+            return;
+        }
 
         /*
         if (rapport.isAcquittement() && !startProcess) {
@@ -3183,6 +3192,13 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         connecteur.envoyerData(Constants.ORDRE_MARCHE);
         System.out.println("Ordre de marche envoyé");
+    }
+
+    private void resetTestResults() {
+       
+        sceance.reset();
+        controller.setFormSceance(sceance);
+        
     }
 
 }

@@ -264,4 +264,21 @@ public class FormSeance {
         this.date = extraction[2] + "-" + extraction[1] + "-" + extraction[0];
     }
 
+    void reset() {
+       
+         this.id = id;
+        Description = "";
+        this.date = "";
+        this.type1 = "";
+        this.type2 = "";
+        this.type3 = "";
+        this.actif1 = false;
+        this.actif2 = false;
+        this.actif3 = false;
+        this.compteur1 = 0L;
+        this.compteur2 = 0L;
+        this.compteur3 = 0L;
+        
+    }
+
 }

@@ -52,7 +52,7 @@ boolean actifs[3] =  {false, false, false};
 boolean erreurs[3] = {false, false, false};
 boolean pauses[3] = {false, false, false};
 boolean stops[3] = {false, false, false};
-long totaux[3] = {0,0,0};        // compteurs de séquences par échantillons
+long totaux[3] = {0L,0L,0L};        // compteurs de séquences par échantillons
 
 
 int relais[3] = {R1, R2, R3};
@@ -88,6 +88,7 @@ void setup()
 // Initialisation du port série
 
     Serial.begin(9600);
+    randomSeed(12333);
 
 }
 
@@ -119,12 +120,18 @@ void lecture()
 
     if (reception == "W:0")    // Demande lancement de test - ordre de démarrage
     {
-
+      /*
+        erreurs[0]  = false;
+        erreurs[1]  = false;
+        erreurs[2]  = false;
+        */
+        
         delay(1000);
         digitalWrite(LED_BUILTIN, HIGH);
         marche = true;
         pause = false;
         Serial.print(String("@:ACQ"));
+      //  Serial.println(String("Démarrage"));
         delay(500);
        // simulationCycle();
         return;
@@ -529,10 +536,6 @@ void lecture()
 
 void cycle()
 {
-
-
-    
-    
     
       if (!pause || !marche)
     {
@@ -634,19 +637,23 @@ void simulationCycle()
 
             if (!erreurs[i] && actifs[i])
             {
-                int r = random(0,20);
-                if(r<3 || r>17)
+                int r = random(0,30);
+              
+                if(r<3 || r>27)
                 {
 
                     erreurs[i] = true;
-                   // Serial.print("Erreur sur ech: " + String(i));
+                   // Serial.println("r= " + String(r));
+                   // Serial.println("Erreur sur ech: " + String(i));
 
                 }
                 else
                 {
-                    erreurs[i] = true;
-                    totaux[i]++;
-                    //Serial.print("Conforme ech: " + String(i));
+                    erreurs[i] = false;
+                    totaux[i] = totaux[i]+ 1L;
+                 //   Serial.println("r= " + String(r));
+                 //   Serial.println("Conforme ech: " + String(i));
+                 //   Serial.println("Total ech: " + String(i) + ":" + String(totaux[i]));
 
                 }
             }
@@ -658,7 +665,15 @@ void simulationCycle()
         String info = "@ERREURS:#0";
         for(int i=0; i<ECHANTILLONS; i++)
         { 
-            String statut = erreurs[i]? "1" : "0";
+            String statut;
+            if(erreurs[i]){
+
+              statut = "1";
+              }else{
+                
+                  statut = "0";
+                
+                }
             info = info + ":" + statut  ;
         }
         Serial.print(info);
@@ -673,14 +688,15 @@ void simulationCycle()
         }
 
         Serial.print(info);
-        
-        delay(1000);
+        delay(2000);
         Serial.print("@SEQ");
 
           }else{
 
       marche = false;
       Serial.print("@SEQ");
+      delay(1500);
+      Serial.print("@FIN");
 
       
       }

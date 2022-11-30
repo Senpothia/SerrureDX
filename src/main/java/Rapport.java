@@ -24,6 +24,7 @@ public class Rapport {
     private boolean pause = false;
     private boolean acquittement = false;
     private boolean fermeture = false;
+    private boolean fin = false;
     private FormSeance formSeance = new FormSeance();
     String log = "";
     Color color = Color.BLACK;
@@ -212,6 +213,14 @@ public class Rapport {
 
     public void setMessage(int message) {
         this.message = message;
+    }
+
+    public boolean isFin() {
+        return fin;
+    }
+
+    public void setFin(boolean fin) {
+        this.fin = fin;
     }
     
     

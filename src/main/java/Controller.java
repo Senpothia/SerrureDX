@@ -361,8 +361,9 @@ public class Controller {
 
     private void gestionFin(String inputLine) {
 
+        rapport.setColor(Color.RED);
         rapport.setLog("Fin de test");
-        rapport.setSauvegarde(true);
+        rapport.setFin(true);
         enregistreur.sauvegarderLocal(rapport);
 
     }
@@ -445,8 +446,8 @@ public class Controller {
 
                     return false;
                 } else {
-                    
-                   // getSceance(Interface.initialisation.getSceance(), login);
+
+                    // getSceance(Interface.initialisation.getSceance(), login);
                     return true;
                 }
             } catch (IOException ex) {
@@ -483,10 +484,9 @@ public class Controller {
     public void setFormSceance(FormSeance formSceance) {
         this.formSceance = formSceance;
     }
-    
-    public void enregistrerSceanceLocal(FormSeance sceance){
-        
-        
+
+    public void enregistrerSceanceLocal(FormSeance sceance) {
+
         enregistreur.sauvegarderSceanceLocal(sceance);
     }
 
