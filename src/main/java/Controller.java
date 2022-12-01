@@ -45,7 +45,7 @@ public class Controller {
         isFichier = inputLine.startsWith(Constants.FICHIER);
         isFin = inputLine.startsWith(Constants.FIN);
         isFermeture = inputLine.startsWith(Constants.ACQ_FERMER);
-        rapport.setAcquittement(false);
+        rapport.setAcquittement(false);                               
 
         System.out.println("isCompteur: " + isCompteur);
         System.out.println("isActif: " + isActifs);
@@ -176,10 +176,10 @@ public class Controller {
         rapport.setColor(Color.RED);
         rapport.setMessage(0);
         rapport.setSauvegarde(true);
-        enregistreur.sauvegarderLocal(rapport);   //  sauvegardes en locale
+        enregistreur.sauvegarderLocal(rapport);                                     //  sauvegardes en locale
         if (!context.isWithoutRemote()) {
 
-            remoteController.sauvegarderSequence(formSceance, context.getLogin());
+            remoteController.sauvegarderSequence(formSceance, context.getLogin());  // sauvegarde en cloud
 
         }
 

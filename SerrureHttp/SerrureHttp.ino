@@ -632,7 +632,7 @@ void simulationCycle()
           }else{
 
       marche = false;
-      Serial.print("@SEQ");
+     // Serial.print("@SEQ");
       delay(2000);
       Serial.print("@FIN");
 
@@ -712,6 +712,7 @@ void cycle()
 
           }else{
 
+      delay(2000);
       marche = false;
       Serial.print("@SEQ");
       delay(2000);

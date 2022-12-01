@@ -51,7 +51,6 @@ public class Constants {
     public static final String ARRETS = "@ARRETS";
     public static final String PAUSES = "@PAUSES";
     public static final String ERREUR = "@ERREURS";
-
     public static final String SEQUENCE = "@SEQ";
     public static final String ACQ_FERMER = "@FERMER";
     public static final String FIN = "@FIN";

@@ -1696,6 +1696,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             sceance.setCompteur1(Long.parseLong(setCompteur1.getText()));
             sceance.setCompteur2(Long.parseLong(setCompteur2.getText()));
             sceance.setCompteur3(Long.parseLong(setCompteur3.getText()));
+            sceance.setActif(true);
 
         }
 
@@ -2125,6 +2126,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         try {
             sceance = controller.getSceance(initialisation.getSceance(), login);
             sceance.formaterDate();
+            sceance.setActif(true);
             System.out.println("Date scéance au chargement: " + sceance.getDate());
             console.setForeground(Color.red);
             console.setText("La scéance a été initialisée à partir du cloud");
@@ -2493,7 +2495,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         if (rapport.isSauvegarde()) {
 
             controller.actualiserSceanceRemote(rapport.getFormSeance(), login);
-            //  return;
+            //return;
         }
 
         if (rapport.isFin()) {
@@ -2938,6 +2940,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         sceance = new FormSeance();
         sceance.setDescription(descriptionField.getText());
         sceance.setDate(dateField.getText());
+        sceance.setActif(true);
         sceance.setActif1(actif1.isSelected());
         sceance.setActif2(actif2.isSelected());
         sceance.setActif3(actif3.isSelected());

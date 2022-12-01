@@ -125,7 +125,7 @@ public class RemoteController {
 
             System.out.println("RemoteController.enregistrerSceance()");
             //   URL url = new URL("http://127.0.0.1:8090/creer/sceance/windows");
-            URL url = new URL(Interface.initialisation.getRemoteUrl() + "/enregistrer/sequence/windows/" + Interface.initialisation.getSceance());
+            URL url = new URL(Interface.initialisation.getRemoteUrl() + "/actualiser/sequence/windows/" + Interface.initialisation.getSceance());
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
