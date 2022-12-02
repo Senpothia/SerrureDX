@@ -2439,6 +2439,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void traiterRapport(Rapport rapport) throws IOException {  // Gestion des affichages en fonction des résultats remontés par Arduino
 
         System.out.println("Interface.traiterRapport");
+        setEnabledBordControl(false);
 
         if (startProcess) {
 
@@ -2546,6 +2547,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         sceance = rapport.getFormSeance();
 
         proccessStatusLists(rapport.getMessage(), totaux, erreurs, actifs, pauses, arrets);
+        setEnabledBordControl(true);
 
     }
 
@@ -3257,12 +3259,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
             lab2.setBackground(Color.GRAY);
 
         }
-        
+
         voyant.setBackground(Color.RED);
         voyant.setForeground(Color.red);
-        
-        for(JLabel c: compteurs){
-            
+
+        for (JLabel c : compteurs) {
+
             c.setText("0");
             c.setForeground(Color.GRAY);
             c.setBackground(Color.GRAY);

@@ -316,11 +316,11 @@ public class Controller {
         formSceance.setErreur3(rapport.getErreurs()[2]);
 
         String log = "RAPPORT ERREURS: Ech1: ";
-        String s = rapport.getErreur1() ? "actif - " : "en erreur - ";
+        String s = rapport.getErreur1() ? "en erreur - " : "actif - ";
         log = log + s;
-        s = rapport.getErreur2() ? "actif - " : "en erreur - ";
+        s = rapport.getErreur2() ? "en erreur - " : "actif - ";
         log = log + "Ech2: " + s;
-        s = rapport.getErreur3() ? "actif" : "en erreur";
+        s = rapport.getErreur3() ? "en erreur - " : "actif - ";
         log = log + "Ech3: " + s;
 
         rapport.setLog(log);
@@ -364,6 +364,7 @@ public class Controller {
         rapport.setColor(Color.RED);
         rapport.setLog("Fin de test");
         rapport.setFin(true);
+        formSceance.setActif(false);
         enregistreur.sauvegarderLocal(rapport);
 
     }

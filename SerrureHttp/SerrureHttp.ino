@@ -39,14 +39,15 @@ boolean marche = false;   // Indique si le test est en cours (marche = true) ou 
 boolean pause = false;    // Flag état de pause
 boolean manuel = false;      // Mode de marche: automatique ou manuel
 boolean fin = false;      // indique si tous les échantillons sont en défaut
+boolean arretTest = false;
 
 // Variables de test
 
 int ECHANTILLONS = 3;      // Nombre d'emplacement d'échantillon sur le banc de test
 int TEMPO = 10000;         // Variable en fonction de la cadence
-int CADENCE1 = 1000;
-int CADENCE2 = 1500;
-int CADENCE3 = 2000;
+int CADENCE1 = 2000;
+int CADENCE2 = 3000;
+int CADENCE3 = 5000;
 
 boolean actifs[3] =  {false, false, false};
 boolean erreurs[3] = {false, false, false};
@@ -97,12 +98,22 @@ void setup()
 
 void loop()
 {
-
+    fin = erreurs[0]||stops[0] && erreurs[1]||stops[1] && erreurs[2]||stops[2];
+    if(fin && !arretTest){
+      
+      delay(2000);
+      Serial.print("@FIN");
+      arretTest = true;
+      
+    }
+    
     lecture();
-      if(marche && !pause)
+      if(marche && !pause  &&!fin)
     {
         simulationCycle();
     }
+
+    
 
 
 }// fin loop
@@ -122,6 +133,7 @@ void lecture()
       
        for (int i = 0; i < ECHANTILLONS; i++) {
 
+            
             actifs[i] = false;
             erreurs[i] = false;
             totaux[i] = 0;
@@ -147,6 +159,7 @@ void lecture()
         
         delay(1000);
         digitalWrite(LED_BUILTIN, HIGH);
+        arretTest = false;
         marche = true;
         pause = false;
         fin = false;
@@ -167,9 +180,10 @@ void lecture()
     if (reception == "W:1")    // Ordre de mise à l'arrêt
     {
 
-        Serial.print(String("@ARRET DU TEST"));
+       // Serial.print(String("@ARRET DU TEST"));
         marche = false;
         pause = false;
+        
         return;
 
     }
@@ -177,9 +191,9 @@ void lecture()
     if (reception == "W:2")    // Ordre de mise en pause
     {
 
-        Serial.print(String("@:TEST EN PAUSE"));
+        //Serial.print(String("@:TEST EN PAUSE"));
         marche = true;
-        pause = true;
+        !pause;
         return;
     }
 
@@ -288,7 +302,7 @@ void lecture()
     if (reception == "W:RAZ:1")   // Ordre de reset compteur échantillon 1
     {
 
-        Serial.print(String("@:RESET COMPTEUR ECH1"));
+        //Serial.print(String("@:RESET COMPTEUR ECH1"));
         totaux[0] = 0;
         return;
 
@@ -298,7 +312,7 @@ void lecture()
     if (reception == "W:RAZ:2")   // Ordre de reset compteur échantillon 2
     {
 
-        Serial.print(String("@:RESET COMPTEUR ECH2"));
+        //Serial.print(String("@:RESET COMPTEUR ECH2"));
         totaux[1] = 0;
         return;
 
@@ -307,7 +321,7 @@ void lecture()
     if (reception == "W:RAZ:3")   // Ordre de reset compteur échantillon 3
     {
 
-        Serial.print(String("@:RESET COMPTEUR ECH3"));
+        //Serial.print(String("@:RESET COMPTEUR ECH3"));
         totaux[2] = 0;
         return;
 
@@ -318,8 +332,8 @@ void lecture()
     if (reception == "W:STOP:1")   // Ordre d'arrêt échantillon 1
     {
 
-        Serial.print(String("@:ARRET ECH 1"));
-        stops[0] = 0;
+        //Serial.print(String("@:ARRET ECH 1"));
+        stops[0] = true;
         return;
 
 
@@ -328,8 +342,8 @@ void lecture()
     if (reception == "W:STOP:2")   // Ordre d'arrêt échantillon 2
     {
 
-        Serial.print(String("@:ARRET ECH 2"));
-        stops[1] = 0;
+       //Serial.print(String("@:ARRET ECH 2"));
+        stops[1] = true;
         return;
 
     }
@@ -337,8 +351,8 @@ void lecture()
     if (reception == "W:STOP:3")   // Ordre d'arrêt échantillon 3
     {
 
-        Serial.print(String("@:ARRET ECH 3"));
-        stops[2] = 0;
+        //Serial.print(String("@:ARRET ECH 3"));
+        stops[2] = true;
         return;
 
 
@@ -348,8 +362,8 @@ void lecture()
     if (reception == "W:PAUSE:1")   // Ordre d'arrêt échantillon 1
     {
 
-        Serial.print(String("@:PAUSE ECH 1"));
-        pauses[0] = 0;
+        //Serial.print(String("@:PAUSE ECH 1"));
+        !pauses[0];
         return;
 
 
@@ -359,8 +373,8 @@ void lecture()
     if (reception == "W:PAUSE:2")   // Ordre d'arrêt échantillon 2
     {
 
-        Serial.print(String("@:PAUSE ECH 2"));
-        pauses[1] = 0;
+        //Serial.print(String("@:PAUSE ECH 2"));
+        !pauses[1];
         return;
 
 
@@ -370,8 +384,8 @@ void lecture()
     if (reception == "W:PAUSE:3")   // Ordre d'arrêt échantillon 3
     {
 
-        Serial.print(String("@:PAUSE ECH 3"));
-        pauses[2] = 0;
+        //Serial.print(String("@:PAUSE ECH 3"));
+        !pauses[2];
         return;
 
 
@@ -382,7 +396,7 @@ void lecture()
         // Exemple de trâme: W:SET:1:1233 fixe la valeur du compteur 1 à 1233
         char num = reception.charAt(6);
         String compteur = reception.substring(8);
-        Serial.print(compteur);
+       // Serial.print(compteur);
         int numEch = (int)(num);
 
         char arr[compteur.length() + 1];
@@ -395,8 +409,8 @@ void lecture()
 
         totaux[numEch] = ret;
 
-        Serial.print("Résultat:");
-        Serial.print(ret);
+       // Serial.print("Résultat:");
+       // Serial.print(ret);
         return;
 
     }
@@ -405,7 +419,7 @@ void lecture()
     if (reception == ("W:CADENCE:1"))    //  Réception cadence 1
     {
 
-        Serial.print(String("@ACQ"));
+        //Serial.print(String("@ACQ"));
         TEMPO = CADENCE1;
         return;
 
@@ -416,7 +430,7 @@ void lecture()
     if (reception == ("W:CADENCE:2"))    //  Réception cadence 2
     {
 
-        Serial.print(String("@ACQ"));
+       // Serial.print(String("@ACQ"));
         TEMPO = CADENCE2;
         return;
 
@@ -425,7 +439,7 @@ void lecture()
     if (reception == ("W:CADENCE:3"))    //  Réception cadence 3
     {
 
-        Serial.print(String("@ACQ"));
+       // Serial.print(String("@ACQ"));
         TEMPO = CADENCE3;
         return;
 
@@ -569,12 +583,12 @@ void lecture()
 
 void simulationCycle()
 {    
-    fin = erreurs[0] && erreurs[1] && erreurs[2];
+    fin = erreurs[0]||stops[0] && erreurs[1]||stops[1] && erreurs[2]||stops[2];
     if(!fin){
         for(int i=0; i<ECHANTILLONS; i++)
         {
 
-            if (!erreurs[i] && actifs[i])
+            if (!erreurs[i] && actifs[i] &&!stops[i] && !pauses[i])
             {
                 int r = random(0,30);
               
@@ -632,8 +646,8 @@ void simulationCycle()
           }else{
 
       marche = false;
-     // Serial.print("@SEQ");
-      delay(2000);
+      Serial.print("@SEQ");
+      delay(TEMPO);
       Serial.print("@FIN");
 
       }
@@ -643,12 +657,12 @@ void simulationCycle()
 
 void cycle()
 {    
-    fin = erreurs[0] && erreurs[1] && erreurs[2];
-    if(!fin){
+  //  fin = erreurs[0]||stops[0] && erreurs[1]||stops[1] && erreurs[2]||stops[2];
+  //  if(!fin){
         for(int i=0; i<ECHANTILLONS; i++)
         {
 
-            if (!erreurs[i] && actifs[i])
+            if (!erreurs[i] && actifs[i] &&!stops[i] && !pauses[i])
             {
               
                 digitalWrite(relais[i], HIGH);
@@ -710,7 +724,10 @@ void cycle()
         delay(2000);
         Serial.print("@SEQ");
 
-          }else{
+      /*
+          }
+          
+          else{
 
       delay(2000);
       marche = false;
@@ -719,4 +736,6 @@ void cycle()
       Serial.print("@FIN");
 
       }
+
+      */
 }
