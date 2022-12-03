@@ -158,11 +158,6 @@ void lecture()
 
     if (reception == "W:0")    // Demande lancement de test - ordre de démarrage
     {
-      /*
-        erreurs[0]  = false;
-        erreurs[1]  = false;
-        erreurs[2]  = false;
-        */
         
         delay(1000);
         digitalWrite(LED_BUILTIN, HIGH);

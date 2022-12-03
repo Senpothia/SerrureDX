@@ -491,4 +491,9 @@ public class Controller {
         enregistreur.sauvegarderSceanceLocal(sceance);
     }
 
+    void resetSequenceVaribles() {
+      
+        rapport.resetSequenceVariables();
+    }
+
 }

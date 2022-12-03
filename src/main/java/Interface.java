@@ -1638,7 +1638,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             if (result == JOptionPane.YES_OPTION) {
 
                 resetStateMachine();
-                resetTestResults();
+                //resetTestResults();
                 connecteur.resetTestBoard();
                 newTestRequested();
 
@@ -1697,6 +1697,42 @@ public class Interface extends javax.swing.JFrame implements Observer {
             sceance.setCompteur2(Long.parseLong(setCompteur2.getText()));
             sceance.setCompteur3(Long.parseLong(setCompteur3.getText()));
             sceance.setActif(true);
+
+            if (selectEch1.isSelected()) {
+
+                compteur1.setForeground(Color.BLUE);
+                statutEch1.setBackground(Color.BLUE);
+                statutEch1.setForeground(Color.BLUE);
+            } else {
+
+                compteur1.setForeground(Color.GRAY);
+                statutEch1.setBackground(Color.GRAY);
+                statutEch1.setForeground(Color.GRAY);
+            }
+
+            if (selectEch2.isSelected()) {
+
+                compteur2.setForeground(Color.BLUE);
+                statutEch2.setBackground(Color.BLUE);
+                statutEch2.setForeground(Color.BLUE);
+            } else {
+
+                compteur2.setForeground(Color.GRAY);
+                statutEch2.setBackground(Color.GRAY);
+                statutEch2.setForeground(Color.GRAY);
+            }
+
+            if (selectEch3.isSelected()) {
+
+                compteur3.setForeground(Color.BLUE);
+                statutEch3.setBackground(Color.BLUE);
+                statutEch3.setForeground(Color.BLUE);
+            } else {
+
+                compteur3.setForeground(Color.GRAY);
+                statutEch3.setBackground(Color.GRAY);
+                statutEch3.setForeground(Color.GRAY);
+            }
 
         }
 
@@ -2818,12 +2854,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private int startSequence() {
 
+        testTermine = false;
         startProcess = true;
         int i = transfertConfig();
         if (i == -1) {
             return -1;
         }
         configAcq = true;
+
         return 0;
     }
 
@@ -3269,6 +3307,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
             c.setForeground(Color.GRAY);
             c.setBackground(Color.GRAY);
         }
+
+        controller.resetSequenceVaribles();
+        sceance.setErreur1(false);
+        sceance.setErreur2(false);
+        sceance.setErreur3(false);
+        sceance.setPause1(false);
+        sceance.setPause2(false);
+        sceance.setPause3(false);
+        sceance.setInterrompu1(false);
+        sceance.setInterrompu2(false);
+        sceance.setInterrompu3(false);
+
     }
 
 }
