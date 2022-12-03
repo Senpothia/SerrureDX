@@ -83,9 +83,11 @@ public class Enregistreur {
         String date = dateActuelle.format(formatterDate);
         String heure = dateActuelle.format(formatterHeure);
         initFichier();
-        String ligneEnCours = date + ";" + heure + ";" + rapport.getFormSeance().getCompteur1() + ";" + rapport.getFormSeance().getCompteur2() + ";" + rapport.getFormSeance().getCompteur3() + ";" + rapport.getFormSeance().getActif1() + ";" + rapport.getFormSeance().getActif2() + ";" + rapport.getFormSeance().getActif3()
-                + ";" + rapport.getFormSeance().getErreur1() + ";" + rapport.getFormSeance().getErreur2() + ";" + rapport.getFormSeance().getErreur3() + ";" + rapport.getFormSeance().getPause1() + ";" + rapport.getFormSeance().getPause2() + ";"
-                + rapport.getFormSeance().getPause3();
+        String ligneEnCours = date + ";" + heure + ";" 
+                + rapport.getFormSeance().getCompteur1() + ";" + rapport.getFormSeance().getCompteur2() + ";" + rapport.getFormSeance().getCompteur3() + ";" 
+                + rapport.getFormSeance().getActif1() + ";" + rapport.getFormSeance().getActif2() + ";" + rapport.getFormSeance().getActif3() + ";" 
+                + rapport.getFormSeance().getPause1() + ";" + rapport.getFormSeance().getPause2() + ";" + rapport.getFormSeance().getPause3() + ";" 
+                + rapport.getFormSeance().getErreur1() + ";" + rapport.getFormSeance().getErreur2() + ";" + rapport.getFormSeance().getErreur3() ;
         System.out.println("Ligne enregistrée: " + ligneEnCours);
         sauvegarder(ligneEnCours);
 
@@ -101,9 +103,11 @@ public class Enregistreur {
         String date = dateActuelle.format(formatterDate);
         String heure = dateActuelle.format(formatterHeure);
         initFichier();
-        String ligneEnCours = date + ";" + heure + ";" + sceance.getCompteur1() + ";" + sceance.getCompteur2() + ";" + sceance.getCompteur3() + ";" + sceance.getActif1() + ";" + sceance.getActif2() + ";" + sceance.getActif3()
-                + ";" + sceance.getErreur1() + ";" + sceance.getErreur2() + ";" + sceance.getErreur3() + ";" + sceance.getPause1() + ";" + sceance.getPause2() + ";"
-                + sceance.getPause3();
+        String ligneEnCours = date + ";" + heure + ";" 
+                + sceance.getCompteur1() + ";" + sceance.getCompteur2() + ";" + sceance.getCompteur3() + ";" 
+                + sceance.getActif1() + ";" + sceance.getActif2() + ";" + sceance.getActif3() + ";" 
+                + sceance.getPause1() + ";" + sceance.getPause2() + ";" + sceance.getPause3() + ";" 
+                + sceance.getErreur1() + ";" + sceance.getErreur2() + ";" + sceance.getErreur3();
         System.out.println("Ligne enregistrée: " + ligneEnCours);
         sauvegarder(ligneEnCours);
 

@@ -316,12 +316,12 @@ public class Controller {
         formSceance.setErreur3(rapport.getErreurs()[2]);
 
         String log = "RAPPORT ERREURS: Ech1: ";
-        String s = rapport.getErreur1() ? "en erreur - " : "actif - ";
+        String s = rapport.getErreur1() ? "- en erreur " : " - actif ";
         log = log + s;
-        s = rapport.getErreur2() ? "en erreur - " : "actif - ";
-        log = log + "Ech2: " + s;
-        s = rapport.getErreur3() ? "en erreur - " : "actif - ";
-        log = log + "Ech3: " + s;
+        s = rapport.getErreur2() ? "- en erreur " : " - actif ";
+        log = log + " Ech2: " + s;
+        s = rapport.getErreur3() ? "- en erreur" : " - actif ";
+        log = log + " Ech3: " + s;
 
         rapport.setLog(log);
         rapport.setColor(Color.RED);
