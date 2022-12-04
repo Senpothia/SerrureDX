@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -23,8 +24,12 @@ public class Initializer {
 
         Properties cloudProperpies = new Properties();
 
-        FileReader reader = new FileReader("src\\main\\java\\remote.properties");
-        cloudProperpies.load(reader);
+        // FileReader reader = new FileReader("src\\main\\java\\remote.properties");
+        ClassLoader cl = this.getClass().getClassLoader();
+        try (InputStream reader = cl.getResourceAsStream("remote.properties")) {
+            cloudProperpies.load(reader);
+        }
+        // cloudProperpies.load(reader);
 
         String username = cloudProperpies.getProperty("username");
         String password = cloudProperpies.getProperty("password");
@@ -99,18 +104,23 @@ public class Initializer {
 
             Properties cloudProperpies = new Properties();
             //first load old one:
-            FileInputStream configStream = new FileInputStream("src\\main\\java\\remote.properties");
-            cloudProperpies.load(configStream);
-            configStream.close();
+            // FileInputStream configStream = new FileInputStream("src\\main\\java\\remote.properties");
+
+            ClassLoader cl = this.getClass().getClassLoader();
+            try (InputStream configStream = cl.getResourceAsStream("remote.properties")) {
+                cloudProperpies.load(configStream);
+                configStream.close();
+
+                cloudProperpies.setProperty(key, value);
+
+                //save modified property file
+                FileOutputStream output = new FileOutputStream("src\\main\\java\\remote.properties");
+                cloudProperpies.store(output, "DX200I tester - Properties");
+                output.close();
+            }
+            // cloudProperpies.load(configStream);
 
             //modifies existing or adds new property
-            cloudProperpies.setProperty(key, value);
-
-            //save modified property file
-            FileOutputStream output = new FileOutputStream("src\\main\\java\\remote.properties");
-            cloudProperpies.store(output, "DX200I tester - Properties");
-            output.close();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -121,8 +131,12 @@ public class Initializer {
 
         Properties cloudProperpies = new Properties();
 
-        FileReader reader = new FileReader("src\\main\\java\\remote.properties");
-        cloudProperpies.load(reader);
+        //FileReader reader = new FileReader("src\\main\\java\\remote.properties");
+        //cloudProperpies.load(reader);
+        ClassLoader cl = this.getClass().getClassLoader();
+        try (InputStream reader = cl.getResourceAsStream("remote.properties")) {
+            cloudProperpies.load(reader);
+        }
 
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");
         String remoteNames = cloudProperpies.getProperty("remoteNames");
@@ -141,8 +155,13 @@ public class Initializer {
 
         Properties cloudProperpies = new Properties();
 
-        FileReader reader = new FileReader("src\\main\\java\\remote.properties");
-        cloudProperpies.load(reader);
+        //FileReader reader = new FileReader("src\\main\\java\\remote.properties");
+        //cloudProperpies.load(reader);
+        
+         ClassLoader cl = this.getClass().getClassLoader();
+        try (InputStream reader = cl.getResourceAsStream("remote.properties")) {
+            cloudProperpies.load(reader);
+        }
 
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");
         String remoteNames = cloudProperpies.getProperty("remoteNames");
