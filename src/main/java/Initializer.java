@@ -1,10 +1,14 @@
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -28,6 +32,7 @@ public class Initializer {
         ClassLoader cl = this.getClass().getClassLoader();
         try (InputStream reader = cl.getResourceAsStream("remote.properties")) {
             cloudProperpies.load(reader);
+
         }
         // cloudProperpies.load(reader);
 
@@ -98,7 +103,7 @@ public class Initializer {
 
     }
 
-    public void update(String key, String value) {
+    public void update(String key, String value) throws URISyntaxException {
 
         try {
 
@@ -107,6 +112,8 @@ public class Initializer {
             // FileInputStream configStream = new FileInputStream("src\\main\\java\\remote.properties");
 
             ClassLoader cl = this.getClass().getClassLoader();
+
+            // cl.getResources("remote.properties");
             try (InputStream configStream = cl.getResourceAsStream("remote.properties")) {
                 cloudProperpies.load(configStream);
                 configStream.close();
@@ -114,7 +121,10 @@ public class Initializer {
                 cloudProperpies.setProperty(key, value);
 
                 //save modified property file
-                FileOutputStream output = new FileOutputStream("src\\main\\java\\remote.properties");
+                // FileOutputStream output = new FileOutputStream("src\\main\\java\\remote.properties");
+                URL url = this.getClass().getResource("remote.properties");
+                File file = new File(url.toURI());
+                OutputStream output = new FileOutputStream(file);
                 cloudProperpies.store(output, "DX200I tester - Properties");
                 output.close();
             }
@@ -127,7 +137,7 @@ public class Initializer {
 
     }
 
-    void addRemote(String newRemoteName, String newRemoteAdress) throws FileNotFoundException, IOException {
+    void addRemote(String newRemoteName, String newRemoteAdress) throws FileNotFoundException, IOException, URISyntaxException {
 
         Properties cloudProperpies = new Properties();
 
@@ -151,14 +161,13 @@ public class Initializer {
 
     }
 
-    void deleteRemote(String nom) throws FileNotFoundException, IOException {
+    void deleteRemote(String nom) throws FileNotFoundException, IOException, URISyntaxException {
 
         Properties cloudProperpies = new Properties();
 
         //FileReader reader = new FileReader("src\\main\\java\\remote.properties");
         //cloudProperpies.load(reader);
-        
-         ClassLoader cl = this.getClass().getClassLoader();
+        ClassLoader cl = this.getClass().getClassLoader();
         try (InputStream reader = cl.getResourceAsStream("remote.properties")) {
             cloudProperpies.load(reader);
         }
