@@ -1,14 +1,9 @@
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -28,13 +23,8 @@ public class Initializer {
 
         Properties cloudProperpies = new Properties();
 
-        // FileReader reader = new FileReader("src\\main\\java\\remote.properties");
-        ClassLoader cl = this.getClass().getClassLoader();
-        try (InputStream reader = cl.getResourceAsStream("remote.properties")) {
-            cloudProperpies.load(reader);
-
-        }
-        // cloudProperpies.load(reader);
+        FileReader reader = new FileReader(".\\remote.properties");
+        cloudProperpies.load(reader);
 
         String username = cloudProperpies.getProperty("username");
         String password = cloudProperpies.getProperty("password");
@@ -103,50 +93,36 @@ public class Initializer {
 
     }
 
-    public void update(String key, String value) throws URISyntaxException {
+    public void update(String key, String value) {
 
         try {
 
             Properties cloudProperpies = new Properties();
             //first load old one:
-            // FileInputStream configStream = new FileInputStream("src\\main\\java\\remote.properties");
-
-            ClassLoader cl = this.getClass().getClassLoader();
-
-            // cl.getResources("remote.properties");
-            try (InputStream configStream = cl.getResourceAsStream("remote.properties")) {
-                cloudProperpies.load(configStream);
-                configStream.close();
-
-                cloudProperpies.setProperty(key, value);
-
-                //save modified property file
-                // FileOutputStream output = new FileOutputStream("src\\main\\java\\remote.properties");
-                URL url = this.getClass().getResource("remote.properties");
-                File file = new File(url.toURI());
-                OutputStream output = new FileOutputStream(file);
-                cloudProperpies.store(output, "DX200I tester - Properties");
-                output.close();
-            }
-            // cloudProperpies.load(configStream);
+            FileInputStream configStream = new FileInputStream(".\\remote.properties");
+            cloudProperpies.load(configStream);
+            configStream.close();
 
             //modifies existing or adds new property
+            cloudProperpies.setProperty(key, value);
+
+            //save modified property file
+            FileOutputStream output = new FileOutputStream(".\\remote.properties");
+            cloudProperpies.store(output, "DX200I tester - Properties");
+            output.close();
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
     }
 
-    void addRemote(String newRemoteName, String newRemoteAdress) throws FileNotFoundException, IOException, URISyntaxException {
+    void addRemote(String newRemoteName, String newRemoteAdress) throws FileNotFoundException, IOException {
 
         Properties cloudProperpies = new Properties();
 
-        //FileReader reader = new FileReader("src\\main\\java\\remote.properties");
-        //cloudProperpies.load(reader);
-        ClassLoader cl = this.getClass().getClassLoader();
-        try (InputStream reader = cl.getResourceAsStream("remote.properties")) {
-            cloudProperpies.load(reader);
-        }
+        FileReader reader = new FileReader(".\\remote.properties");
+        cloudProperpies.load(reader);
 
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");
         String remoteNames = cloudProperpies.getProperty("remoteNames");
@@ -161,16 +137,12 @@ public class Initializer {
 
     }
 
-    void deleteRemote(String nom) throws FileNotFoundException, IOException, URISyntaxException {
+    void deleteRemote(String nom) throws FileNotFoundException, IOException {
 
         Properties cloudProperpies = new Properties();
 
-        //FileReader reader = new FileReader("src\\main\\java\\remote.properties");
-        //cloudProperpies.load(reader);
-        ClassLoader cl = this.getClass().getClassLoader();
-        try (InputStream reader = cl.getResourceAsStream("remote.properties")) {
-            cloudProperpies.load(reader);
-        }
+        FileReader reader = new FileReader(".\\remote.properties");
+        cloudProperpies.load(reader);
 
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");
         String remoteNames = cloudProperpies.getProperty("remoteNames");
