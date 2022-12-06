@@ -117,7 +117,8 @@ void loop()
     
       if(marche == 1 && pause == 0  && fin == 0)
     {
-        simulationCycle();
+       // simulationCycle();
+       cycle();
     }
 
     
@@ -153,8 +154,6 @@ void lecture()
         return;
       }
 
-
-     
 
     if (reception == "W:0")    // Demande lancement de test - ordre de démarrage
     {
@@ -586,94 +585,6 @@ void lecture()
 
 //**********************************************************************************************************************
 
-void cycle()
-{    
-  //  fin = erreurs[0]||stops[0] && erreurs[1]||stops[1] && erreurs[2]||stops[2];
-  //  if(!fin){
-        for(int i=0; i<ECHANTILLONS; i++)
-        {
-
-            if (!erreurs[i] && actifs[i] &&!stops[i] && !pauses[i])
-            {
-              
-                digitalWrite(relais[i], HIGH);
-
-                delay(500);
-                digitalWrite(relais[i], LOW);
-                delay(2000);
-                e1 = digitalRead(sensors[i]);    // Lecture entrée I1
-                if (e1 != LOW)     // si erreur sur sensor
-                {
-
-                    erreurs[i] = true;
-                  
-
-                }
-
-                e2 = digitalRead(contacts[i]);    // Lecture entrée I2
-
-                if (e2 != LOW)      // si erreur sur contact porte
-                {
-
-                    erreurs[i] = true;
-                
-                }
-                delay(2000);
-
-                totaux[i]++;
-             
-            }
-
-        }
-      
-        delay(500);
-
-        String info = "@ERREURS:#0";
-        for(int i=0; i<ECHANTILLONS; i++)
-        { 
-            String statut;
-            if(erreurs[i]){
-
-              statut = "1";
-              }else{
-                
-                  statut = "0";
-                
-                }
-            info = info + ":" + statut  ;
-        }
-        Serial.print(info);
-        delay(2000);
-             
-        info = "@TOTAL:#0";
-        for(int i=0; i<ECHANTILLONS; i++)
-        {
-            info =  info + ":" + String(totaux[i]);
-        }
-
-        Serial.print(info);
-        delay(2000);
-        Serial.print("@SEQ");
-
-      /*
-          }
-          
-          else{
-
-      delay(2000);
-      marche = false;
-      Serial.print("@SEQ");
-      delay(2000);
-      Serial.print("@FIN");
-
-      }
-
-      */
-}
-
-//**********************************************************************************************************************
-
-
 void simulationCycle()
 {    
    // fin = erreurs[0]||stops[0] && erreurs[1]||stops[1] && erreurs[2]||stops[2];
@@ -744,6 +655,74 @@ void simulationCycle()
          Serial.println("Ech 3 : actif: " + String(actifs[2]) + " - erreur: " + String(erreurs[2]) + " - stops: " + String(stops[2]));
         */
 
+}
+
+
+//**********************************************************************************************************************
+
+
+void cycle()
+{    
+  
+        for(int i=0; i<ECHANTILLONS; i++)
+        {
+
+            if (!erreurs[i] && actifs[i] && !stops[i] && !pauses[i])
+            {
+
+                digitalWrite(relais[i], HIGH);
+                delay(500);
+                digitalWrite(relais[i], LOW);
+                delay(2000);
+                e1 = digitalRead(sensors[i]);    // Lecture entrée I1
+                if (e1 != LOW)                   // si erreur sur sensor
+                {
+                    erreurs[i] = true;
+                  
+                }
+
+                e2 = digitalRead(contacts[i]);    // Lecture entrée I2
+
+                if (e2 != LOW)                    // si erreur sur contact porte
+                {
+
+                    erreurs[i] = true;
+                
+                }
+                delay(2000);
+
+                totaux[i]++;
+               
+            }
+
+        }
       
- 
+        delay(500);
+
+        String info = "@ERREURS:#0";
+        
+        for(int i=0; i<ECHANTILLONS; i++)
+        { 
+            String statut;
+            if(erreurs[i]){
+
+              statut = "1";
+              
+              }else{
+                
+              statut = "0";
+                
+                }
+            info = info + ":" + statut  ;
+        }
+        
+        
+       
+        Serial.print(info);
+        delay(2000);
+
+        info = "@TOTAL:#0:"+ String(totaux[0]) +":"+ String(totaux[1]) +":"+ String(totaux[2]);
+        Serial.print(info);
+        delay(2000);
+        Serial.print("@SEQ");
 }
