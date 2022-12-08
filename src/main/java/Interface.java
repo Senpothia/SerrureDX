@@ -2055,6 +2055,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             if (autorisation) {
 
                 connexionRemoteActive = true;
+                Context c = buildContext();
+                controller.setContext(c);
                 statutRemote.setBackground(Color.GREEN);
                 statutRemote.setForeground(Color.GREEN);
                 deconnectRemote.setEnabled(true);

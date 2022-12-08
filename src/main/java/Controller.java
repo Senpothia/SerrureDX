@@ -393,23 +393,25 @@ public class Controller {
 
     public boolean enregistrerSceanceRemote(FormSeance sceance, Login login) {
 
-        if (context.isConnexionRemoteActive() && context.isConnexionRemoteActive()) {
+        if (context.isConnexionRemoteActive()) {
 
             try {
                 boolean result = remoteController.enregistrerSceance(sceance, login);
                 if (!result) {
-
+                    System.out.println("enregistrement sceance: false");
                     return false;
                 } else {
-
+                       System.out.println("enregistrement sceance: true");
                     return true;
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                   System.out.println("enregistrement sceance: autre1");
                 return false;
             }
 
         }
+          System.out.println("enregistrement sceance: autre2");
         return false;
 
     }
