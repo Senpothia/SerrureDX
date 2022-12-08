@@ -393,7 +393,7 @@ public class Controller {
 
     public boolean enregistrerSceanceRemote(FormSeance sceance, Login login) {
 
-        if (context.isConnexionRemoteActive() && context.isConnexionRemoteActive()) {
+        if (context.isConnexionRemoteActive()) {
 
             try {
                 boolean result = remoteController.enregistrerSceance(sceance, login);
