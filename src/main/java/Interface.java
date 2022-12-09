@@ -2005,6 +2005,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
             } else {
 
                 console.setText("La séquence a été enregistrée sur le remote");
+                try {
+                    chargerSceance();
+                    initializer.update("sceance", initialisation.getSceance());
+                } catch (IOException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 loadedSceance = true;
 
             }
@@ -3322,6 +3328,21 @@ public class Interface extends javax.swing.JFrame implements Observer {
         sceance.setInterrompu2(false);
         sceance.setInterrompu3(false);
 
+    }
+    
+    private void chargerSceance() throws IOException{
+    
+            sceance = controller.getSceance(initialisation.getSceance(), login);
+            sceance.formaterDate();
+            sceance.setActif(true);
+            System.out.println("Date scéance au chargement: " + sceance.getDate());
+            console.setForeground(Color.red);
+            console.setText("La scéance a été initialisée à partir du cloud");
+            updateDisplayInterface(0, sceance);
+            loadedSceance = true;
+            setEnabledMenusSceance(true);
+            controller.setFormSceance(sceance);
+    
     }
 
 }
