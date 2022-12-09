@@ -1616,6 +1616,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             setEnabledSelecteurEchantillons(true);
             setEnabledBordControl(false);
             try {
+                sceance.setActif(false);
                 controller.actualiserSceanceRemote(sceance, login);
             } catch (IOException ex) {
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
