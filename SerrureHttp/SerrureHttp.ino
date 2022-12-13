@@ -199,6 +199,41 @@ void lecture()
         return;
     }
 
+     if (reception.startsWith("W:ACTIVER:"))    //  Configuration de test
+    {
+
+         bool defautEch = false;
+         String result = "OK";
+      
+        char num = reception.charAt(10);
+        int i = (int)(num);
+
+         digitalWrite(relais[i], HIGH);
+         delay(1000);
+         digitalWrite(relais[i], LOW);
+         delay(1000);
+         e1 = digitalRead(sensors[i]);    // Lecture entrée I1
+         if (e1 != LOW)                   // si erreur sur sensor
+             {
+                 defautEch = true;
+                  
+             }
+
+         e2 = digitalRead(contacts[i]);    // Lecture entrée I2
+
+         if (e2 != LOW)                    // si erreur sur contact porte
+            {
+
+                defautEch = true;
+                
+            }
+         delay(1000);
+         if(defautEch){result = "KO";}
+         
+         Serial.print("@ACTIVATION:" + String(i) + ":" + String(result));
+      
+      }
+
     if (reception.startsWith("W:CONFIG:"))    //  Configuration de test
     {
       

@@ -1797,7 +1797,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         if (!connexionRS232Active) {
 
-            montrerError("Vous devez activer la connexion Rs-232", "Défaut de connexion RS-232");
+            montrerError("Vous devez activer la connexion RS-232", "Défaut de connexion RS-232");
             return;
         }
         auto = false;
