@@ -118,7 +118,8 @@ void loop()
       if(marche == 1 && pause == 0  && fin == 0)
     {
        // simulationCycle();
-        cycle();
+       delay(TEMPO);
+       cycle();
     }
 
     
@@ -671,9 +672,9 @@ void cycle()
             {
 
                 digitalWrite(relais[i], HIGH);
-                delay(500);
+                delay(1000);
                 digitalWrite(relais[i], LOW);
-                delay(2000);
+                delay(1000);
                 e1 = digitalRead(sensors[i]);    // Lecture entrée I1
                 if (e1 != LOW)                   // si erreur sur sensor
                 {

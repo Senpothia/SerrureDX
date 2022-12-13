@@ -45,6 +45,9 @@ public class Constants {
     public static final String ACQ_SEQUENCE = "W:SEQ";
     public static final String ACQ_SIMPLE = "W:ACQ";
     public static final String NEW = "W:NEW";            // Initialisation arduino pour nouvelle scéance de test. Mise à jour des paramètres de test: erreurs, compteurs...
+    public static final String ACTIVER1 = "W:ACTIVER:1";
+    public static final String ACTIVER2 = "W:ACTIVER:2";
+    public static final String ACTIVER3 = "W:ACTIVER:3";
 
     public static final String TOTAL = "@TOTAL";
     public static final String ACTIFS = "@ACTIFS";

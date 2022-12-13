@@ -22,8 +22,9 @@ public class Initializer {
     public Initialisation getInit() throws FileNotFoundException, IOException {
 
         Properties cloudProperpies = new Properties();
-
-        FileReader reader = new FileReader(".\\remote.properties");
+        
+        FileReader reader = new FileReader("src\\main\\java\\remote.properties");
+       // FileReader reader = new FileReader(".\\remote.properties");
         cloudProperpies.load(reader);
 
         String username = cloudProperpies.getProperty("username");
@@ -99,7 +100,9 @@ public class Initializer {
 
             Properties cloudProperpies = new Properties();
             //first load old one:
-            FileInputStream configStream = new FileInputStream(".\\remote.properties");
+
+            FileInputStream configStream = new FileInputStream("src\\main\\java\\remote.properties");
+            //   FileInputStream configStream = new FileInputStream(".\\remote.properties");
             cloudProperpies.load(configStream);
             configStream.close();
 
@@ -107,7 +110,8 @@ public class Initializer {
             cloudProperpies.setProperty(key, value);
 
             //save modified property file
-            FileOutputStream output = new FileOutputStream(".\\remote.properties");
+            FileOutputStream output = new FileOutputStream("src\\main\\java\\remote.properties");
+            //FileOutputStream output = new FileOutputStream(".\\remote.properties");
             cloudProperpies.store(output, "DX200I tester - Properties");
             output.close();
 
@@ -121,7 +125,8 @@ public class Initializer {
 
         Properties cloudProperpies = new Properties();
 
-        FileReader reader = new FileReader(".\\remote.properties");
+        FileReader reader = new FileReader("src\\main\\java\\remote.properties");
+        //FileReader reader = new FileReader(".\\remote.properties");
         cloudProperpies.load(reader);
 
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");
@@ -141,7 +146,8 @@ public class Initializer {
 
         Properties cloudProperpies = new Properties();
 
-        FileReader reader = new FileReader(".\\remote.properties");
+        FileReader reader = new FileReader("src\\main\\java\\remote.properties");
+       // FileReader reader = new FileReader(".\\remote.properties");
         cloudProperpies.load(reader);
 
         String remoteUrls = cloudProperpies.getProperty("remoteUrls");

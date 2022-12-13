@@ -29,7 +29,7 @@ import javax.swing.JTextField;
 public class Interface extends javax.swing.JFrame implements Observer {
 
     public static Initializer initializer = new Initializer();  // Charge les propriétés du fichier properties contenant les données liées au cloud(remote)
-    public static Initialisation initialisation;          // Centralise les données rapportées par l'initializez
+    public static Initialisation initialisation;          // Centralise les données rapportées par l'initializer
     private boolean buzzer = false;
     private boolean test_off = true;            // le test est arrêté
     private boolean test_on = false;            // le test est en cours
@@ -1454,8 +1454,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_menuNouveauActionPerformed
 
     private void arret1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret1ActionPerformed
+        if (auto) {
 
-        envoyerOrdreStop(1);
+            envoyerOrdreStop(1);
+        } else {
+
+            envoyerActivation(1);
+        }
+
     }//GEN-LAST:event_arret1ActionPerformed
 
     private void btnConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnexionActionPerformed
@@ -1627,7 +1633,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         if (!auto && !testTermine) {
 
-            // TODO mode manuel
+          console.setText("");
         }
 
         if (testTermine) {
@@ -1789,6 +1795,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void menuManuelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuManuelActionPerformed
 
+        if (!connexionRS232Active) {
+
+            montrerError("Vous devez activer la connexion Rs-232", "Défaut de connexion RS-232");
+            return;
+        }
         auto = false;
         start.setEnabled(false);
         start.setForeground(Color.GRAY);
@@ -1803,6 +1814,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         for (int i = 0; i < 3; i++) {
 
             btnStops.get(i).setText("Activer");
+            btnStops.get(i).setEnabled(true);
         }
 
         for (int i = 0; i < 3; i++) {
@@ -1929,12 +1941,26 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void arret2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret2ActionPerformed
 
-        envoyerOrdreStop(2);
+        if (auto) {
+
+            envoyerOrdreStop(2);
+        } else {
+
+            envoyerActivation(2);
+        }
+
     }//GEN-LAST:event_arret2ActionPerformed
 
     private void arret3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arret3ActionPerformed
 
-        envoyerOrdreStop(3);
+        if (auto) {
+
+            envoyerOrdreStop(3);
+        } else {
+
+            envoyerActivation(3);
+        }
+
     }//GEN-LAST:event_arret3ActionPerformed
 
     private void cad_2_par_1minActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cad_2_par_1minActionPerformed
@@ -2671,6 +2697,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             start.setForeground(new Color(0, 102, 0));
             stop.setEnabled(false);
             stop.setForeground(Color.GRAY);
+            menuManuel.setEnabled(true);
 
         } else {
 
@@ -2863,6 +2890,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private int startSequence() {
 
+        menuManuel.setEnabled(false);
         testTermine = false;
         startProcess = true;
         int i = transfertConfig();
@@ -3294,6 +3322,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         startWaiting(true);
         setEnabledSelecteurEchantillons(true);
         setEnabledCounterSetter(true);
+        menuManuel.setEnabled(true);
         nomDeFichier = "";
         repertoire = null;
         setCompteur1.setText("0");
@@ -3329,20 +3358,42 @@ public class Interface extends javax.swing.JFrame implements Observer {
         sceance.setInterrompu3(false);
 
     }
-    
-    private void chargerSceance() throws IOException{
-    
-            sceance = controller.getSceance(initialisation.getSceance(), login);
-            sceance.formaterDate();
-            sceance.setActif(true);
-            System.out.println("Date scéance au chargement: " + sceance.getDate());
-            console.setForeground(Color.red);
-            console.setText("La scéance a été initialisée à partir du cloud");
-            updateDisplayInterface(0, sceance);
-            loadedSceance = true;
-            setEnabledMenusSceance(true);
-            controller.setFormSceance(sceance);
-    
+
+    private void chargerSceance() throws IOException {
+
+        sceance = controller.getSceance(initialisation.getSceance(), login);
+        sceance.formaterDate();
+        sceance.setActif(true);
+        System.out.println("Date scéance au chargement: " + sceance.getDate());
+        console.setForeground(Color.red);
+        console.setText("La scéance a été initialisée à partir du cloud");
+        updateDisplayInterface(0, sceance);
+        loadedSceance = true;
+        setEnabledMenusSceance(true);
+        controller.setFormSceance(sceance);
+
+    }
+
+    private void envoyerActivation(int i) {
+
+        switch (i) {
+
+            case 1:
+
+                connecteur.envoyerData(Constants.ACTIVER1);
+                break;
+
+            case 2:
+                connecteur.envoyerData(Constants.ACTIVER2);
+                break;
+
+            case 3:
+
+                connecteur.envoyerData(Constants.ACTIVER3);
+                break;
+
+        }
+
     }
 
 }
