@@ -115,7 +115,7 @@ void loop()
     
     lecture();
     
-      if(marche == 1 && pause == 0  && fin == 0)
+      if(marche == 1 && pause == 0  && fin == 0 && manuel == 0)
     {
        // simulationCycle();
        delay(TEMPO);
@@ -165,6 +165,7 @@ void lecture()
         marche = true;
         pause = false;
         fin = false;
+        manuel = false;
         for(int i=0; i<ECHANTILLONS; i++){
 
           erreurs[i] = false;
@@ -185,6 +186,7 @@ void lecture()
        // Serial.print(String("@ARRET DU TEST"));
         marche = false;
         pause = false;
+        manuel = false;
         
         return;
 
@@ -196,30 +198,31 @@ void lecture()
         //Serial.print(String("@:TEST EN PAUSE"));
         marche = true;
         !pause;
+        manuel = false;
         return;
     }
 
      if (reception.startsWith("W:ACTIVER:"))    //  Configuration de test
     {
-
+         manuel = true;
          bool defautEch = false;
          String result = "OK";
       
         char num = reception.charAt(10);
         int i = (int)(num);
-
-         digitalWrite(relais[i], HIGH);
+         Serial.print(String("@ACTIVATION: ") + String(i-48));
+         digitalWrite(relais[i-49], HIGH);
          delay(1000);
-         digitalWrite(relais[i], LOW);
+         digitalWrite(relais[i-49], LOW);
          delay(1000);
-         e1 = digitalRead(sensors[i]);    // Lecture entrée I1
+         e1 = digitalRead(sensors[i-49]);    // Lecture entrée I1
          if (e1 != LOW)                   // si erreur sur sensor
              {
                  defautEch = true;
                   
              }
 
-         e2 = digitalRead(contacts[i]);    // Lecture entrée I2
+         e2 = digitalRead(contacts[i-49]);    // Lecture entrée I2
 
          if (e2 != LOW)                    // si erreur sur contact porte
             {
@@ -230,7 +233,7 @@ void lecture()
          delay(1000);
          if(defautEch){result = "KO";}
          
-         Serial.print("@ACTIVATION:" + String(i) + ":" + String(result));
+         Serial.print("@ACTIVATION:" + String(i-48) + ":" + String(result));
       
       }
 

@@ -1633,7 +1633,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         if (!auto && !testTermine) {
 
-          console.setText("");
+            console.setText("");
         }
 
         if (testTermine) {
@@ -1788,6 +1788,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
 
         } else {
+            
+            connecteur.envoyerData(console.getText());
 
         }
 
@@ -2487,24 +2489,33 @@ public class Interface extends javax.swing.JFrame implements Observer {
     public void update(Observable o, Object arg) {
 
         String inputLine = (String) arg;
-        console.setText(inputLine);
-        Context context = buildContext();
-        controller.setContext(context);
-        Rapport rapport = new Rapport();
-        try {
-            rapport = controller.parser(inputLine);
-            System.out.println("rapport reçu");
-        } catch (IOException ex) {
-            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            traiterRapport(rapport);                    // Analyse du rapport pour mise à jour de l'interface
-        } catch (IOException ex) {
-            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        console.setForeground(rapport.getColor());
-        console.setText(rapport.getLog());
+        if (auto) {
 
+           
+            Context context = buildContext();
+            controller.setContext(context);
+            Rapport rapport = new Rapport();
+            try {
+                rapport = controller.parser(inputLine);
+                System.out.println("rapport reçu");
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                traiterRapport(rapport);                    // Analyse du rapport pour mise à jour de l'interface
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            console.setForeground(rapport.getColor());
+            console.setText(rapport.getLog());
+
+        }else{
+        
+             console.setText(inputLine);
+        }
+        
+        
+        
     }
 
     private void traiterRapport(Rapport rapport) throws IOException {  // Gestion des affichages en fonction des résultats remontés par Arduino
@@ -2905,7 +2916,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void fermeture() {
 
         if (connexionRS232Active) {
-
+            
+            auto = true;
             connecteur.envoyerData(Constants.FERMETURE);
 
         } else {
